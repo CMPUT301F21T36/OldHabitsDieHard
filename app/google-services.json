@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "554611293013",
+    "project_id": "oldhabitsdiehard-7e33c",
+    "storage_bucket": "oldhabitsdiehard-7e33c.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:554611293013:android:16631efdb184c7056f8ddc",
+        "android_client_info": {
+          "package_name": "com.example.oldhabitsdiehard"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "554611293013-ddqcl8b9l8frm5cc4t9mfs0ch7qh6grc.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCVAisivSkK01E1mSTL4HvgXAtQkTUDQm4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "554611293013-ddqcl8b9l8frm5cc4t9mfs0ch7qh6grc.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
