@@ -1,5 +1,7 @@
 package com.example.oldhabitsdiehard;
 
+import android.location.Location;
+import android.location.LocationManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.widget.ArrayAdapter;
@@ -8,8 +10,8 @@ import android.widget.ListView;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.google.android.gms.location.FusedLocationProviderClient;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 
 /**
@@ -31,10 +33,11 @@ public class HabitEventListActivity extends AppCompatActivity {
         habiteventlist = new ArrayList<>();
         habiteventAdapter = new HabitEventList(this, habiteventlist);
         habiteventlistview.setAdapter(habiteventAdapter);
-
-        Habit habit = new Habit("Exercise","Fat");
-        HabitEvent habitevent = new HabitEvent(habit, 2009-12-01,222.2222);
-
+        boolean myweekdays[] = {true, true, true, true, true, true, true};
+        Habit habit = new Habit("Exercise","Fat",myweekdays);
+        Location location_test = new Location(LocationManager.PASSIVE_PROVIDER);
+        HabitEvent habitevent = new HabitEvent(habit, " at the gym ", LocalDate.now(),location_test);
+        habiteventlist.add(habitevent);
 
     }
 }
