@@ -13,6 +13,9 @@
             android:name=".HabitListActivity"
             android:exported="true" />
         <activity
+            android:name=".HabitEventListActivity"
+            android:exported="true" />
+        <activity
             android:name=".MainActivity"
             android:exported="true">
             <intent-filter>
