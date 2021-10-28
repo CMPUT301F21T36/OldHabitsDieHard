@@ -10,6 +10,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.OldHabitsDieHard">
         <activity
+            android:name=".HabitListActivity"
+            android:exported="true" />
+        <activity
             android:name=".HabitEventListActivity"
             android:exported="true" />
         <activity

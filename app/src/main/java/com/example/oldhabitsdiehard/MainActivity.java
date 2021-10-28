@@ -25,8 +25,12 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.habitevent_list);
-        Intent intent = new Intent(this, HabitEventListActivity.class);
+        setContentView(R.layout.activity_main);
+
+        // made this go straight to the HabitListActivity for now, can change this later
+        Intent intent = new Intent(this, HabitListActivity.class);
+        // setContentView(R.layout.habitevent_list);
+        // Intent intent = new Intent(this, HabitEventListActivity.class);
         startActivity(intent);
     }
 }
