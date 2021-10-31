@@ -14,6 +14,7 @@ public class Habit {
     private String reason;
     private LocalDate startDate;
     private boolean[] weekdays;
+    private HabitEventList events;
 
     /**
      * Habit constructor specifying all fields.
@@ -27,6 +28,7 @@ public class Habit {
         this.setReason(reason);
         this.setStartDate(startDate);
         this.setWeekdays(weekdays);
+        events = new HabitEventList();
     }
 
     /**
@@ -43,6 +45,7 @@ public class Habit {
         this.setReason(reason);
         this.setStartDate(defDate);
         this.setWeekdays(weekdays);
+        events = new HabitEventList();
     }
 
     Habit(String title, String reason, LocalDate startDate) {
@@ -51,6 +54,7 @@ public class Habit {
         this.setReason(reason);
         this.setStartDate(startDate);
         this.setWeekdays(defWeekdays);
+        events = new HabitEventList();
     }
 
     /**
@@ -68,6 +72,7 @@ public class Habit {
         this.setReason(reason);
         this.setStartDate(defDate);
         this.setWeekdays(defWeekdays);
+        events = new HabitEventList();
     }
 
     /**
@@ -102,6 +107,12 @@ public class Habit {
     public boolean[] getWeekdays() {
         return this.weekdays;
     }
+
+    /**
+     * Return the events associated with this habit
+     * @return HabitEventList object
+     */
+    public HabitEventList getHabitEvents() { return this.events; }
 
     /**
      * Sets the title of a habit
