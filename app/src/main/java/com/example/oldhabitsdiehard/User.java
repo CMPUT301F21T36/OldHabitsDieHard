@@ -9,7 +9,9 @@ import java.util.ArrayList;
 public class User {
     private String username;
     private String password;
+    private String bio;
     HabitList habits;
+
 
     /**
      * User constructor
@@ -40,4 +42,11 @@ public class User {
      * @return User's HabitList
      */
     public HabitList getHabits() { return habits; }
+
+    /**
+     * Bio getter
+     * @return User's bio
+     */
+    public String getBio() { return bio; }
+
 }
