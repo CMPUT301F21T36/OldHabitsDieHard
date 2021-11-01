@@ -16,45 +16,15 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 
 /**
- * Provides a custom list adapter for Habit objects
+ * Provides a custom list for Habit objects
  */
-public class HabitList extends ArrayAdapter<Habit> {
-    private ArrayList<Habit> habits;
-    private Context context;
+public class HabitList extends ArrayList<Habit> {
 
     /**
-     * Constructs a HabitList object
-     * @param context the current context
-     * @param habits an ArrayList of Habit objects
+     * Constructor
      */
-    public HabitList(Context context, ArrayList<Habit> habits) {
-        super(context, 0, habits);
-        this.habits = habits;
-        this.context = context;
-    }
-
-    /**
-     * Gets a view for this habit list so that it can be displayed
-     * @param position the position in the list
-     * @param convertView
-     * @param parent
-     * @return the view for the HabitList
-     */
-    @NonNull
-    @Override
-    public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
-        View view = convertView;
-
-        if (view == null) {
-            view = LayoutInflater.from(context).inflate(R.layout.habit_list_content, parent, false);
-        }
-
-        Habit habit = habits.get(position);
-
-        TextView habitTitle = view.findViewById(R.id.habit_title);
-        habitTitle.setText(habit.getTitle());
-
-        return view;
+    public HabitList() {
+        super();
     }
 
     /**
@@ -71,11 +41,11 @@ public class HabitList extends ArrayAdapter<Habit> {
             // it's sunday, switch to 0 to match our notation
             today = 0;
         }
-        for (int i = 0; i < habits.size(); i++) {
+        for (int i = 0; i < this.size(); i++) {
             // iterate through habits in list
-            if (habits.get(i).getWeekdays()[today]) {
+            if (this.get(i).getWeekdays()[today]) {
                 // habit i is performed on this day
-                todayList.add(habits.get(i));
+                todayList.add(this.get(i));
             }
         }
         return todayList;
