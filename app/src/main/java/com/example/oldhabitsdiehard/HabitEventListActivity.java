@@ -19,7 +19,7 @@ import java.util.ArrayList;
  */
 public class HabitEventListActivity extends AppCompatActivity {
     private ListView habiteventlistview;
-    private ArrayAdapter<HabitEvent> habiteventAdapter;
+    private HabitEventAdapter habiteventAdapter;
     private HabitEventList habiteventlist;
 
     @RequiresApi(api = Build.VERSION_CODES.O)
@@ -39,11 +39,11 @@ public class HabitEventListActivity extends AppCompatActivity {
         // Get event list from habit and set adapter
         habiteventlist = habit.getHabitEvents(); // should be empty
         habiteventAdapter = new HabitEventAdapter(this, habiteventlist);
+        habiteventlistview.setAdapter(habiteventAdapter);
 
         // Add test habit event to habiteventlist
         Location location_test = new Location(LocationManager.PASSIVE_PROVIDER);
         HabitEvent habitevent = new HabitEvent(habit, " at the gym ", LocalDate.now(), location_test);
-        habiteventAdapter.add(habitevent);
-        habiteventAdapter.notifyDataSetChanged();
+        habiteventlist.add(habitevent);
     }
 }
