@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="horizontal">
@@ -9,8 +8,10 @@
         android:id="@+id/habitevent_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Habit Events"
-        android:padding="15dp"
-        android:textSize="20sp"
-        android:gravity="center_horizontal"/>
-</androidx.constraintlayout.widget.ConstraintLayout>
+        android:padding="20dp"
+        android:text="Title"
+        android:textSize="20sp">
+
+    </TextView>
+
+</LinearLayout>

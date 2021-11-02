@@ -20,7 +20,7 @@ import java.util.ArrayList;
 public class HabitEventListActivity extends AppCompatActivity {
     private ListView habiteventlistview;
     private ArrayAdapter<HabitEvent> habiteventAdapter;
-    private ArrayList<HabitEvent> habiteventlist;
+    private HabitEventList habiteventlist;
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
@@ -28,16 +28,22 @@ public class HabitEventListActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.habitevent_list);
 
-        // Initialization of habit event list and adapter of it
+        // Initialization
         habiteventlistview = findViewById(R.id.habitevent_list);
-        habiteventlist = new ArrayList<>();
-        habiteventAdapter = new HabitEventList(this, habiteventlist);
         habiteventlistview.setAdapter(habiteventAdapter);
-        boolean myweekdays[] = {true, true, true, true, true, true, true};
-        Habit habit = new Habit("Exercise","Fat",myweekdays);
-        Location location_test = new Location(LocationManager.PASSIVE_PROVIDER);
-        HabitEvent habitevent = new HabitEvent(habit, " at the gym ", LocalDate.now(),location_test);
-        habiteventlist.add(habitevent);
 
+        // Create test habit
+        boolean myweekdays[] = {true, true, true, true, true, true, true};
+        Habit habit = new Habit("Exercise","Fat", myweekdays);
+
+        // Get event list from habit and set adapter
+        habiteventlist = habit.getHabitEvents(); // should be empty
+        habiteventAdapter = new HabitEventAdapter(this, habiteventlist);
+
+        // Add test habit event to habiteventlist
+        Location location_test = new Location(LocationManager.PASSIVE_PROVIDER);
+        HabitEvent habitevent = new HabitEvent(habit, " at the gym ", LocalDate.now(), location_test);
+        habiteventAdapter.add(habitevent);
+        habiteventAdapter.notifyDataSetChanged();
     }
 }

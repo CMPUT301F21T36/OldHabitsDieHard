@@ -28,7 +28,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         // made this go straight to the HabitListActivity for now, can change this later
-        Intent intent = new Intent(this, HabitListActivity.class);
+        Intent intent = new Intent(this, HabitEventListActivity.class);
         // setContentView(R.layout.habitevent_list);
         // Intent intent = new Intent(this, HabitEventListActivity.class);
         startActivity(intent);
