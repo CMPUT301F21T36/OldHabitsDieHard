@@ -27,10 +27,14 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        // made this go straight to the HabitListActivity for now, can change this later
-        Intent intent = new Intent(this, HabitEventListActivity.class);
-        // setContentView(R.layout.habitevent_list);
-        // Intent intent = new Intent(this, HabitEventListActivity.class);
+        // Database testing
+        //UserDatabase db = UserDatabase.getInstance();
+        //User test1 = db.getUser("test1");
+        //test1.setBio("test bio");
+        //db.updateUser(test1);
+
+        // Intent
+        Intent intent = new Intent(this, Login.class);
         startActivity(intent);
     }
 }

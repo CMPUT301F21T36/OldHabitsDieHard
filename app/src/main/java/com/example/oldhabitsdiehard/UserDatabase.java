@@ -1,8 +1,11 @@
 package com.example.oldhabitsdiehard;
 
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
 
 /**
@@ -10,10 +13,8 @@ import com.google.firebase.firestore.QuerySnapshot;
  * Connects to Firestore
  *
  * (Collection) Users
- *      (Document) username1 -> "name" : (String) username1
- *                              "object" : (User) obj
- *      (Document) username2 -> "name": (String) username2
- *                              "object" : (User) obj
+ *      (Document) username1 -> (User) obj
+ *      (Document) username2 -> (User) obj
  *
  * @author Rowan Tilroe
  */
@@ -21,7 +22,6 @@ public class UserDatabase {
     private static final UserDatabase instance = new UserDatabase();
     private FirebaseFirestore database;
     private CollectionReference userCollection;
-
 
     /**
      * Private constructor
@@ -44,7 +44,7 @@ public class UserDatabase {
      */
     public boolean addUser(User user) {
         User check = getUser(user.getUsername());
-        if (check == null) {
+        if (check != null) {
             return false;
         }
         else {
@@ -59,9 +59,30 @@ public class UserDatabase {
      * @return User found (NULL if no user found)
      */
     public User getUser(String username) {
-        Query filter = userCollection.whereEqualTo("name", username);
-        Task<QuerySnapshot> results = filter.get();
+        User result = null;
 
+        DocumentReference userDocRef = userCollection.document(username);
+        Task<DocumentSnapshot> task = userDocRef.get();
+        while (!task.isComplete()) {}
+        result = task.getResult().toObject(User.class);
+
+        return result;
+    }
+
+    /**
+     * Updates the user's state in the database
+     * @param user User to update
+     * @return True if update successful, false if unsuccessful (i.e. User does not exist in
+     */
+    public boolean updateUser(User user) {
+        User check = getUser(user.getUsername());
+        if (user == null) {
+            return false;
+        }
+        else {
+            userCollection.document(user.getUsername()).set(user);
+            return true;
+        }
     }
 
     /**
@@ -71,6 +92,17 @@ public class UserDatabase {
      * @return NULL if login information fails, User object if login information correct
      */
     public User checkLogin(String username, String password) {
-
+        User user = getUser(username);
+        if (user == null) {
+            return null;
+        }
+        else {
+            if (password.equals(user.getPassword())) {
+                return user;
+            }
+            else {
+                return null;
+            }
+        }
     }
 }

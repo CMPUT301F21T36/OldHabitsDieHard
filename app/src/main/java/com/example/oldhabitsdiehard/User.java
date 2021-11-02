@@ -10,20 +10,21 @@ public class User {
     private String username;
     private String password;
     private String bio;
-    HabitList habits;
+    ArrayList<Habit> habits;
 
 
     /**
      * User constructor
      * @param username User's username (for login)
      * @param password User's password (for login)
-     * @param id
      */
-    public User(String username, String password, int id) {
-        this.username = username;
-        this.password = password;
-        habits = new HabitList();
+    public User(String username, String password) throws IllegalArgumentException {
+        setUsername(username);
+        setPassword(password);
+        setBio("");
+        habits = new ArrayList<Habit>();
     }
+    public User() {}
 
     /**
      * Username getter
@@ -41,7 +42,7 @@ public class User {
      * Habits getter
      * @return User's HabitList
      */
-    public HabitList getHabits() { return habits; }
+    public ArrayList<Habit> getHabits() { return habits; }
 
     /**
      * Bio getter
@@ -49,4 +50,39 @@ public class User {
      */
     public String getBio() { return bio; }
 
+    /**
+     * Username setter
+     * @param username
+     * @throws IllegalArgumentException
+     */
+    public void setUsername(String username) throws IllegalArgumentException {
+        if (username.length() < 1) {
+            throw new IllegalArgumentException();
+        }
+        else {
+            this.username = username;
+        }
+    }
+
+    /**
+     * Password setter
+     * @param password
+     * @throws IllegalArgumentException
+     */
+    public void setPassword(String password) throws IllegalArgumentException {
+        if (password.length() < 1) {
+            throw new IllegalArgumentException();
+        }
+        else {
+            this.password = password;
+        }
+    }
+
+    /**
+     * Bio setter
+     * @param bio
+     */
+    public void setBio(String bio) {
+        this.bio = bio;
+    }
 }
