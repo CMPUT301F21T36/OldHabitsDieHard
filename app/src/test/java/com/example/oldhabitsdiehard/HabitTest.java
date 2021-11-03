@@ -1,11 +1,16 @@
 package com.example.oldhabitsdiehard;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDate;
 
+/**
+ * Tests for the Habit class
+ */
 public class HabitTest {
     private Habit mockHabit() {
         LocalDate myDate = LocalDate.of(2021,1,1);
@@ -67,10 +72,20 @@ public class HabitTest {
     }
 
     @Test
+    void testGetPublic() {
+        Habit myHabit = mockHabit();
+        assertTrue(myHabit.getPublic());
+    }
+
+    @Test
     void testSetTitle() {
         Habit myHabit = mockHabit();
         myHabit.setTitle("Yoga");
         assertEquals("Yoga", myHabit.getTitle());
+
+        // test title longer than 20
+        myHabit.setTitle("this is longer than 20 characters");
+        assertEquals("this is longer than ", myHabit.getTitle());
     }
 
     @Test
@@ -78,6 +93,10 @@ public class HabitTest {
         Habit myHabit = mockHabit();
         myHabit.setReason("Exercise");
         assertEquals("Exercise", myHabit.getReason());
+
+        // test reason longer than 30
+        myHabit.setReason("this reason is much much longer than 30 characters");
+        assertEquals("this reason is much much longe", myHabit.getReason());
     }
 
     @Test
@@ -95,5 +114,12 @@ public class HabitTest {
         for (int i = 0; i < 7; i++) {
             assertEquals(testDays[i], myHabit.getWeekdays()[i]);
         }
+    }
+
+    @Test
+    void testSetPublic() {
+        Habit myHabit = mockHabit();
+        myHabit.setPublic(false);
+        assertFalse(myHabit.getPublic());
     }
 }

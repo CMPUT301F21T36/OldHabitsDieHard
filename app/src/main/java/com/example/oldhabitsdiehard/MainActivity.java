@@ -17,9 +17,6 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
-    private ListView habiteventlistview;
-    private ArrayAdapter<HabitEvent> habiteventAdapter;
-    private ArrayList<HabitEvent> habiteventlist;
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override

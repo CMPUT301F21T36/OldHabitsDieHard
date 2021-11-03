@@ -2,6 +2,7 @@ package com.example.oldhabitsdiehard;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -35,9 +36,14 @@ public class Login extends AppCompatActivity {
 
                 if (success) {
                     infoBox.setText("Created account");
+                    CurrentUser.set(newUser);
+                    Intent intent = new Intent(view.getContext(), HabitEventListActivity.class);
+                    startActivity(intent);
                 }
                 else {
                     infoBox.setText("Username already exists");
+                    usernameBox.setText("");
+                    passwordBox.setText("");
                 }
             }
         });
@@ -53,9 +59,13 @@ public class Login extends AppCompatActivity {
                 if (user != null) {
                     infoBox.setText("Login success");
                     CurrentUser.set(user);
+                    Intent intent = new Intent(view.getContext(), HabitEventListActivity.class);
+                    startActivity(intent);
                 }
                 else {
                     infoBox.setText("Login fail");
+                    usernameBox.setText("");
+                    passwordBox.setText("");
                 }
             }
         });
