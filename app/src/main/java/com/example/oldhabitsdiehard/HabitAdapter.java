@@ -25,7 +25,7 @@ public class HabitAdapter extends ArrayAdapter<Habit> {
      * @param context
      * @param habits
      */
-    public HabitAdapter(Context context, HabitList habits) {
+    public HabitAdapter(Context context, ArrayList<Habit> habits) {
         super(context, 0, habits);
         this.habits = habits;
         this.context = context;

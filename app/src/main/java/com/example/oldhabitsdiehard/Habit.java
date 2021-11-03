@@ -5,6 +5,7 @@ import android.os.Build;
 import androidx.annotation.RequiresApi;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 
 /**
  * This class represents a habit.
@@ -14,7 +15,7 @@ public class Habit {
     private String reason;
     private LocalDate startDate;
     private boolean[] weekdays;
-    private HabitEventList events;
+    private ArrayList<HabitEvent> events;
 
     /**
      * Habit constructor specifying all fields.
@@ -28,7 +29,7 @@ public class Habit {
         this.setReason(reason);
         this.setStartDate(startDate);
         this.setWeekdays(weekdays);
-        events = new HabitEventList();
+        events = new ArrayList<HabitEvent>();
     }
 
     /**
@@ -45,7 +46,7 @@ public class Habit {
         this.setReason(reason);
         this.setStartDate(defDate);
         this.setWeekdays(weekdays);
-        events = new HabitEventList();
+        events = new ArrayList<HabitEvent>();
     }
 
     Habit(String title, String reason, LocalDate startDate) {
@@ -54,7 +55,7 @@ public class Habit {
         this.setReason(reason);
         this.setStartDate(startDate);
         this.setWeekdays(defWeekdays);
-        events = new HabitEventList();
+        events = new ArrayList<HabitEvent>();
     }
 
     /**
@@ -72,7 +73,7 @@ public class Habit {
         this.setReason(reason);
         this.setStartDate(defDate);
         this.setWeekdays(defWeekdays);
-        events = new HabitEventList();
+        events = new ArrayList<HabitEvent>();
     }
 
     /**
@@ -112,7 +113,7 @@ public class Habit {
      * Return the events associated with this habit
      * @return HabitEventList object
      */
-    public HabitEventList getHabitEvents() { return this.events; }
+    public HabitEventList getHabitEvents() { return (HabitEventList) this.events; }
 
     /**
      * Sets the title of a habit

@@ -24,7 +24,7 @@ public class HabitEventAdapter extends ArrayAdapter<HabitEvent> {
      * @param context
      * @param habitevents
      */
-    public HabitEventAdapter(Context context, HabitEventList habitevents) {
+    public HabitEventAdapter(Context context, ArrayList<HabitEvent> habitevents) {
         super(context, 0, habitevents);
         this.context = context;
         this.habitevents = habitevents;
