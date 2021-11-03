@@ -10,16 +10,16 @@ import java.time.LocalDate;
  */
 
 public class HabitEvent {
-    Habit habit;
+    Habit habit; // required
     String comment;
     Bitmap image;
-    LocalDate date;
-    Location location;
+    LocalDate date; // required
+    Location location; // required
 
 
     /**
      * Constructor having all attributes specified
-     * @param habit the habit class
+     * @param habit the habit class that this event belongs to
      * @param comment on the Habit event
      * @param image on the Habit event
      * @param date on the Habit event
@@ -27,60 +27,60 @@ public class HabitEvent {
      */
     HabitEvent(Habit habit, String comment, Bitmap image, LocalDate date, Location location){
         this.habit = habit;
-        this.setComment(comment);
-        this.setImageBmap(image);
-        this.setDate(date);
-        this.location = location;
+        setComment(comment);
+        setImageBmap(image);
+        setDate(date);
+        setLocation(location);
     }
 
     /**
      * Constructor without comment specified
-     * @param habit the habit class
+     * @param habit the habit class that this event belongs to
      * @param image on the Habit event
      * @param date on the Habit event
      * @param location of the Habit event
      */
     HabitEvent(Habit habit, Bitmap image, LocalDate date, Location location){
         this.habit = habit;
-        this.setImageBmap(image);
-        this.setDate(date);
-        this.location = location;
+        setImageBmap(image);
+        setDate(date);
+        setLocation(location);
     }
 
 
     /**
      * Constructor without image specified
-     * @param habit the habit class
+     * @param habit the habit class that this event belongs to
      * @param comment on the Habit event
      * @param date on the Habit event
      * @param location of the Habit event
      */
     HabitEvent(Habit habit, String comment, LocalDate date, Location location){
         this.habit = habit;
-        this.setComment(comment);
-        this.setDate(date);
-        this.location = location;
+        setComment(comment);
+        setDate(date);
+        setLocation(location);
     }
 
     /**
      * Constructor without comment and image specified
-     * @param habit the habit class
+     * @param habit the habit class that this event belongs to
      * @param date on the Habit event
      * @param location of the Habit event
      */
     HabitEvent(Habit habit, LocalDate date, Location location){
         this.habit = habit;
-        this.setDate(date);
-        this.location = location;
+        setDate(date);
+        setLocation(location);
     }
 
 
     /**
      * Getter for Habit
-     * @return Habit class object
+     * @return the Habit class object that this event belongs to
      */
     public Habit getHabit(){
-        return this.habit;
+        return habit;
     }
 
     /**
@@ -88,7 +88,7 @@ public class HabitEvent {
      * @return comment of the Habit event
      */
     public String getComment(){
-        return this.comment;
+        return comment;
     }
 
     /**
@@ -96,7 +96,7 @@ public class HabitEvent {
      * @return image of the Habit event
      */
     public Bitmap getImageBmap(){
-        return this.image;
+        return image;
     }
 
     /**
@@ -104,7 +104,23 @@ public class HabitEvent {
      * @return date of Habit event
      */
     public LocalDate getDate(){
-        return this.date;
+        return date;
+    }
+
+    /**
+     * Getter for location
+     * @return location of Habit event
+     */
+    public Location getLocation() {
+        return location;
+    }
+
+    /**
+     * Setter for habit
+     * @param habit the Habit object this event belongs to
+     */
+    public void setHabit(Habit habit) {
+        this.habit = habit;
     }
 
     /**
@@ -129,6 +145,14 @@ public class HabitEvent {
      */
     public void setDate(LocalDate Date){
         this.date = date;
+    }
+
+    /**
+     * Setter for location
+     * @param location where this habit event occurred
+     */
+    public void setLocation(Location location) {
+        this.location = location;
     }
 
     /**

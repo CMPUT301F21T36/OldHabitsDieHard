@@ -11,11 +11,12 @@ import java.util.ArrayList;
  * This class represents a habit.
  */
 public class Habit {
-    private String title;
-    private String reason;
-    private LocalDate startDate;
-    private boolean[] weekdays;
-    private ArrayList<HabitEvent> events;
+    private String title; // required
+    private String reason; // required
+    private LocalDate startDate; // default today
+    private boolean[] weekdays; // default all false
+    private ArrayList<HabitEvent> events; // default empty
+    private boolean isPublic; // default true
 
     /**
      * Habit constructor specifying all fields.
@@ -23,12 +24,30 @@ public class Habit {
      * @param reason the reason for the habit
      * @param startDate the date to start the habit
      * @param weekdays which days of the week the habit should be performed
+     * @param isPublic whether this habit is viewable by other users or not
+     */
+    Habit(String title, String reason, LocalDate startDate, boolean[] weekdays, boolean isPublic) {
+        setTitle(title);
+        setReason(reason);
+        setStartDate(startDate);
+        setWeekdays(weekdays);
+        setPublic(isPublic);
+        events = new ArrayList<HabitEvent>();
+    }
+
+    /**
+     * Habit constructor specifying all fields except publicity.
+     * @param title the habit name
+     * @param reason the reason for the habit
+     * @param startDate the date to start the habit
+     * @param weekdays which days of the week the habit should be performed
      */
     Habit(String title, String reason, LocalDate startDate, boolean[] weekdays) {
-        this.setTitle(title);
-        this.setReason(reason);
-        this.setStartDate(startDate);
-        this.setWeekdays(weekdays);
+        setTitle(title);
+        setReason(reason);
+        setStartDate(startDate);
+        setWeekdays(weekdays);
+        setPublic(true);
         events = new ArrayList<HabitEvent>();
     }
 
@@ -37,29 +56,56 @@ public class Habit {
      * @param title the habit name
      * @param reason the reason for the habit
      * @param weekdays which days of the week the habit should be performed
+     * @param isPublic whether this habit is viewable by other users or not
+     */
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    Habit(String title, String reason, boolean[] weekdays, boolean isPublic) {
+        // set the default date to today
+        LocalDate defDate = LocalDate.now();
+        setTitle(title);
+        setReason(reason);
+        setStartDate(defDate);
+        setWeekdays(weekdays);
+        setPublic(isPublic);
+        events = new ArrayList<HabitEvent>();
+    }
+
+    /**
+     * Habit constructor without a date or public specification
+     * @param title the habit name
+     * @param reason the reason for the habit
+     * @param weekdays which days of the week the habit should be performed
      */
     @RequiresApi(api = Build.VERSION_CODES.O)
     Habit(String title, String reason, boolean[] weekdays) {
         // set the default date to today
         LocalDate defDate = LocalDate.now();
-        this.setTitle(title);
-        this.setReason(reason);
-        this.setStartDate(defDate);
-        this.setWeekdays(weekdays);
-        events = new ArrayList<HabitEvent>();
-    }
-
-    Habit(String title, String reason, LocalDate startDate) {
-        boolean[] defWeekdays = new boolean[7];
-        this.setTitle(title);
-        this.setReason(reason);
-        this.setStartDate(startDate);
-        this.setWeekdays(defWeekdays);
+        setTitle(title);
+        setReason(reason);
+        setStartDate(defDate);
+        setWeekdays(weekdays);
+        setPublic(true);
         events = new ArrayList<HabitEvent>();
     }
 
     /**
-     * Habit constructor without a date or weekdays specification
+     * Habit constructor specifying title, reason, and startDate
+     * @param title the name of the habit
+     * @param reason the reason for the habit
+     * @param startDate the date to start the habit
+     */
+    Habit(String title, String reason, LocalDate startDate) {
+        boolean[] defWeekdays = new boolean[7]; // initialized to false
+        setTitle(title);
+        setReason(reason);
+        setStartDate(startDate);
+        setWeekdays(defWeekdays);
+        setPublic(true);
+        events = new ArrayList<HabitEvent>();
+    }
+
+    /**
+     * Habit constructor specifying only title and reason
      * @param title the name of the habit
      * @param reason the reason for the habit
      */
@@ -69,10 +115,11 @@ public class Habit {
         LocalDate defDate = LocalDate.now();
         // set default weekdays to false
         boolean[] defWeekdays = new boolean[7];
-        this.setTitle(title);
-        this.setReason(reason);
-        this.setStartDate(defDate);
-        this.setWeekdays(defWeekdays);
+        setTitle(title);
+        setReason(reason);
+        setStartDate(defDate);
+        setWeekdays(defWeekdays);
+        setPublic(true);
         events = new ArrayList<HabitEvent>();
     }
 
@@ -81,7 +128,7 @@ public class Habit {
      * @return the title
      */
     public String getTitle() {
-        return this.title;
+        return title;
     }
 
     /**
@@ -89,7 +136,7 @@ public class Habit {
      * @return the reason
      */
     public String getReason() {
-        return this.reason;
+        return reason;
     }
 
     /**
@@ -97,7 +144,7 @@ public class Habit {
      * @return the start date
      */
     public LocalDate getStartDate() {
-        return this.startDate;
+        return startDate;
     }
 
     /**
@@ -106,20 +153,27 @@ public class Habit {
      * if the habit is performed on that day, false if not
      */
     public boolean[] getWeekdays() {
-        return this.weekdays;
+        return weekdays;
     }
 
     /**
      * Return the events associated with this habit
      * @return HabitEventList object
      */
-    public HabitEventList getHabitEvents() { return (HabitEventList) this.events; }
+    public ArrayList<HabitEvent> getHabitEvents() { return events; }
+
+    public boolean getPublic() {
+        return isPublic;
+    }
 
     /**
      * Sets the title of a habit
      * @param title the title
      */
     public void setTitle(String title) {
+        if (title.length() > 20) {
+            title = title.substring(0,20);
+        }
         this.title = title;
     }
 
@@ -128,6 +182,9 @@ public class Habit {
      * @param reason the reason
      */
     public void setReason(String reason) {
+        if (reason.length() > 30) {
+            reason = reason.substring(0,30);
+        }
         this.reason = reason;
     }
 
@@ -147,6 +204,15 @@ public class Habit {
      */
     public void setWeekdays(boolean[] weekdays) {
         this.weekdays = weekdays;
+    }
+
+    /**
+     * Sets the publicity of the habit to true or false. If public, a habit may
+     * be viewed by other users who follow this user.
+     * @param isPublic
+     */
+    public void setPublic(boolean isPublic) {
+        this.isPublic = isPublic;
     }
 
     /**

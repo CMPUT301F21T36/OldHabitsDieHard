@@ -1,5 +1,10 @@
 package com.example.oldhabitsdiehard;
 
+import android.os.Build;
+
+import androidx.annotation.RequiresApi;
+
+import java.time.LocalDate;
 import java.util.ArrayList;
 
 /**
@@ -11,6 +16,7 @@ public class User {
     private String password;
     private String bio;
     ArrayList<Habit> habits;
+    ArrayList<Habit> todayHabits;
 
 
     /**
@@ -23,6 +29,7 @@ public class User {
         setPassword(password);
         setBio("");
         habits = new ArrayList<Habit>();
+        todayHabits = new ArrayList<Habit>();
     }
     public User() {}
 
@@ -84,5 +91,39 @@ public class User {
      */
     public void setBio(String bio) {
         this.bio = bio;
+    }
+
+    /**
+     * Method to add a habit to this user's habit list.
+     * @param habit
+     */
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    public void addHabit(Habit habit) {
+        habits.add(habit);
+    }
+
+    /**
+     * Method to get the habits to be done today from this user's habit list.
+     * The list is recalculated every time this method is called so that it is
+     * always updated with the correct date. Use this method to create the
+     * Today page.
+     * @return an ArrayList of the habits to be done tdoay
+     */
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    public ArrayList<Habit> getTodayHabits() {
+        // 1 is Monday, 7 is Sunday
+        int today = LocalDate.now().getDayOfWeek().getValue();
+        if (today == 7) {
+            // it's sunday, switch to 0 to match our notation
+            today = 0;
+        }
+        for (int i = 0; i < habits.size(); i++) {
+            // iterate through habits in list for this user
+            if (habits.get(i).getWeekdays()[today]) {
+                // habit i is performed on this day
+                todayHabits.add(habits.get(i));
+            }
+        }
+        return todayHabits;
     }
 }

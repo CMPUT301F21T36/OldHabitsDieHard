@@ -20,7 +20,7 @@ import java.util.ArrayList;
 public class HabitEventListActivity extends AppCompatActivity {
     private ListView habiteventlistview;
     private HabitEventAdapter habiteventAdapter;
-    private HabitEventList habiteventlist;
+    private ArrayList<HabitEvent> habiteventlist;
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override

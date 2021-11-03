@@ -6,6 +6,9 @@ import org.junit.jupiter.api.Test;
 
 import java.time.LocalDate;
 
+/**
+ * Tests for the Habit class
+ */
 public class HabitTest {
     private Habit mockHabit() {
         LocalDate myDate = LocalDate.of(2021,1,1);
@@ -71,6 +74,10 @@ public class HabitTest {
         Habit myHabit = mockHabit();
         myHabit.setTitle("Yoga");
         assertEquals("Yoga", myHabit.getTitle());
+
+        // test title longer than 20
+        myHabit.setTitle("this is longer than 20 characters");
+        assertEquals("this is longer than ", myHabit.getTitle());
     }
 
     @Test
@@ -78,6 +85,10 @@ public class HabitTest {
         Habit myHabit = mockHabit();
         myHabit.setReason("Exercise");
         assertEquals("Exercise", myHabit.getReason());
+
+        // test reason longer than 30
+        myHabit.setReason("this reason is much much longer than 30 characters");
+        assertEquals("this reason is much much longe", myHabit.getReason());
     }
 
     @Test

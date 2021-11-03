@@ -17,7 +17,7 @@ import java.util.ArrayList;
 public class HabitListActivity extends AppCompatActivity {
     private ListView habitListView;
     private HabitAdapter habitAdapter;
-    private HabitList habitList;
+    private ArrayList<Habit> habitList;
 
     /**
      * Called upon creation of the activity
@@ -32,7 +32,7 @@ public class HabitListActivity extends AppCompatActivity {
 
         // create the habit list and set its adapter
         habitListView = findViewById(R.id.habit_list);
-        habitList = new HabitList();
+        habitList = new ArrayList<Habit>();
         habitAdapter = new HabitAdapter(this, habitList);
         habitListView.setAdapter(habitAdapter);
 
