@@ -1,6 +1,8 @@
 package com.example.oldhabitsdiehard;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.Test;
 
@@ -70,6 +72,12 @@ public class HabitTest {
     }
 
     @Test
+    void testGetPublic() {
+        Habit myHabit = mockHabit();
+        assertTrue(myHabit.getPublic());
+    }
+
+    @Test
     void testSetTitle() {
         Habit myHabit = mockHabit();
         myHabit.setTitle("Yoga");
@@ -106,5 +114,12 @@ public class HabitTest {
         for (int i = 0; i < 7; i++) {
             assertEquals(testDays[i], myHabit.getWeekdays()[i]);
         }
+    }
+
+    @Test
+    void testSetPublic() {
+        Habit myHabit = mockHabit();
+        myHabit.setPublic(false);
+        assertFalse(myHabit.getPublic());
     }
 }
