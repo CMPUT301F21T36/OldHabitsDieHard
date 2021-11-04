@@ -33,8 +33,8 @@
 
         <EditText
             android:id="@+id/habitTitle"
-            android:layout_width="356dp"
-            android:layout_height="41dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:ems="10"
             android:inputType="textPersonName"
             android:hint="Title"
@@ -43,23 +43,15 @@
 
         <EditText
             android:id="@+id/habitReason"
-            android:layout_width="356dp"
-            android:layout_height="45dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:ems="10"
             android:inputType="textPersonName"
             android:hint="Reason"
             tools:layout_editor_absoluteX="31dp"
             tools:layout_editor_absoluteY="142dp" />
 
-        <EditText
-            android:id="@+id/startDate"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:ems="10"
-            android:inputType="date"
-            android:hint="Date to Start"
-            tools:layout_editor_absoluteX="31dp"
-            tools:layout_editor_absoluteY="210dp" />
+
 
 
         <LinearLayout
@@ -70,7 +62,7 @@
             <RadioGroup
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/privatePubliGroup"
+                android:id="@+id/radio_group"
                 android:orientation="horizontal">
 
                 <RadioButton
@@ -91,7 +83,14 @@
 
         </LinearLayout>
 
-
+        <DatePicker
+            android:id="@+id/startDate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:layout_gravity="center"
+            android:calendarViewShown="false"
+            android:datePickerMode="spinner"/>
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -122,6 +121,7 @@
 
 
         </LinearLayout>
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -166,6 +166,7 @@
                 android:layout_weight="1" />
 
         </LinearLayout>
+
 
     </LinearLayout>
 

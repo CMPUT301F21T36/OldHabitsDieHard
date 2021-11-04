@@ -16,18 +16,18 @@ import com.google.android.material.navigation.NavigationBarView;
 import java.util.ArrayList;
 
 public class TodayActivity extends AppCompatActivity {
-
+    private User user;
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         setContentView(R.layout.today_view);
         //instance of currentuser
-        User user = CurrentUser.get();
+        user = CurrentUser.get();
         ListView todaysHabitListView = findViewById(R.id.today_habits_list);
         //retrieving user's today habits
-        ArrayList<Habit> todaysHabitList = user.getTodayHabits();
-        HabitAdapter todaysHabitAdapter = new HabitAdapter(this, todaysHabitList);
+        //ArrayList<Habit> todaysHabitList = user.getTodayHabits();
+        TodayHabitAdapter todaysHabitAdapter = new TodayHabitAdapter(this, user);
         todaysHabitListView.setAdapter(todaysHabitAdapter);
 
         //creating intents for activities

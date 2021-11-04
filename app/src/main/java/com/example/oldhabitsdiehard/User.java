@@ -15,8 +15,7 @@ public class User {
     private String username;
     private String password;
     private String bio;
-    ArrayList<Habit> habits;
-    ArrayList<Habit> todayHabits;
+    private ArrayList<Habit> habits;
 
 
     /**
@@ -29,7 +28,6 @@ public class User {
         setPassword(password);
         setBio("");
         habits = new ArrayList<Habit>();
-        todayHabits = new ArrayList<Habit>();
     }
     public User() {}
 
@@ -111,6 +109,8 @@ public class User {
      */
     @RequiresApi(api = Build.VERSION_CODES.O)
     public ArrayList<Habit> getTodayHabits() {
+
+        ArrayList<Habit> todayHabits = new ArrayList<Habit>();
         // 1 is Monday, 7 is Sunday
         int today = LocalDate.now().getDayOfWeek().getValue();
         if (today == 7) {
@@ -119,7 +119,7 @@ public class User {
         }
         for (int i = 0; i < habits.size(); i++) {
             // iterate through habits in list for this user
-            if (habits.get(i).getWeekdays()[today]) {
+            if (habits.get(i).getWeekdays().get(today)) {
                 // habit i is performed on this day
                 todayHabits.add(habits.get(i));
             }
