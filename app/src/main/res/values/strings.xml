@@ -1,3 +1,15 @@
 <resources>
     <string name="app_name">OldHabitsDieHard</string>
+    <string name="today_s_habits">Today\'s Habits</string>
+    <string name="today">Today</string>
+    <string name="events">Events</string>
+    <string name="profile">Profile</string>
+    <string name="following">Following</string>
+    <string name="username">Username</string>
+    <string name="password">Password</string>
+    <string name="login">Login</string>
+    <string name="old_habits_die_hard">Old Habits Die Hard</string>
+    <string name="account_created">Account Created!</string>
+    <string name="habits">Habits</string>
+    <string name="habit_events">Habit Events</string>
 </resources>

@@ -35,13 +35,15 @@ public class Login extends AppCompatActivity {
                 boolean success = db.addUser(newUser);
 
                 if (success) {
-                    infoBox.setText("Created account");
+                    infoBox.setText("Account Created!");
+                    infoBox.setVisibility(View.VISIBLE);
                     CurrentUser.set(newUser);
-                    Intent intent = new Intent(view.getContext(), HabitEventListActivity.class);
+                    Intent intent = new Intent(view.getContext(), TodayActivity.class);
                     startActivity(intent);
                 }
                 else {
                     infoBox.setText("Username already exists");
+                    infoBox.setVisibility(View.VISIBLE);
                     usernameBox.setText("");
                     passwordBox.setText("");
                 }
@@ -57,13 +59,12 @@ public class Login extends AppCompatActivity {
                 User user = db.checkLogin(username, password);
 
                 if (user != null) {
-                    infoBox.setText("Login success");
                     CurrentUser.set(user);
-                    Intent intent = new Intent(view.getContext(), HabitListActivity.class);
+                    Intent intent = new Intent(view.getContext(), TodayActivity.class);
                     startActivity(intent);
                 }
                 else {
-                    infoBox.setText("Login fail");
+                    infoBox.setText("Incorrect Login");
                     usernameBox.setText("");
                     passwordBox.setText("");
                 }

@@ -1,8 +1,6 @@
 package com.example.oldhabitsdiehard;
 
 import android.content.Intent;
-import android.location.Location;
-import android.location.LocationManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.MenuItem;
@@ -12,52 +10,34 @@ import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
-
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
 
-import java.time.LocalDate;
 import java.util.ArrayList;
 
-/**
- * This class shows Habit event list activity where users can see all their habit events.
- */
-public class HabitEventListActivity extends AppCompatActivity {
-    private ListView habiteventlistview;
-    private HabitEventAdapter habiteventAdapter;
-    private ArrayList<HabitEvent> habiteventlist;
+public class TodayActivity extends AppCompatActivity {
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.habitevent_list);
+        setContentView(R.layout.today_view);
+        //instance of currentuser
+        User user = CurrentUser.get();
+        ListView todaysHabitListView = findViewById(R.id.today_habits_list);
+        //retrieving user's today habits
+        ArrayList<Habit> todaysHabitList = user.getTodayHabits();
+        HabitAdapter todaysHabitAdapter = new HabitAdapter(this, todaysHabitList);
+        todaysHabitListView.setAdapter(todaysHabitAdapter);
 
-        // Initialization
-        habiteventlistview = findViewById(R.id.habitevent_list);
-        habiteventlistview.setAdapter(habiteventAdapter);
-
-        // Create test habit
-        boolean myweekdays[] = {true, true, true, true, true, true, true};
-        Habit habit = new Habit("Exercise","Fat", myweekdays);
-
-        // Get event list from habit and set adapter
-        habiteventlist = habit.getHabitEvents(); // should be empty
-        habiteventAdapter = new HabitEventAdapter(this, habiteventlist);
-        habiteventlistview.setAdapter(habiteventAdapter);
-
-        // Add test habit event to habiteventlist
-        Location location_test = new Location(LocationManager.PASSIVE_PROVIDER);
-        HabitEvent habitevent = new HabitEvent(habit, " at the gym ", LocalDate.now(), location_test);
-        habiteventlist.add(habitevent);
-
-        //creating intents for the different activities
-        Intent intentToday = new Intent(this, TodayActivity.class);
-        Intent intentProfile = new Intent(this, ProfileActivity.class);
+        //creating intents for activities
         Intent intentHabits = new Intent(this, HabitListActivity.class);
+        Intent intentEvents = new Intent(this, HabitEventListActivity.class);
+        Intent intentProfile = new Intent(this, ProfileActivity.class);
         Intent intentFollowing = new Intent(this, FollowingActivity.class);
 
-        //setting up the navigation bar in the activity
+
+        //initializing navigation
         BottomNavigationView bottomNavigationView = (BottomNavigationView)
                 findViewById(R.id.bottom_navigation);
         bottomNavigationView.setLabelVisibilityMode(NavigationBarView.LABEL_VISIBILITY_LABELED);
@@ -66,13 +46,13 @@ public class HabitEventListActivity extends AppCompatActivity {
                 new BottomNavigationView.OnNavigationItemSelectedListener() {
                     @Override
                     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                        //switching between the different actions
+                        //switching between activities
                         switch (item.getItemId()) {
-                            case R.id.action_today:
-                                startActivity(intentToday);
-                                break;
                             case R.id.action_habits:
                                 startActivity(intentHabits);
+                                break;
+                            case R.id.action_events:
+                                startActivity(intentEvents);
                                 break;
                             case R.id.action_profile:
                                 startActivity(intentProfile);
@@ -84,6 +64,6 @@ public class HabitEventListActivity extends AppCompatActivity {
                         return false;
                     }
                 });
-
     }
+
 }

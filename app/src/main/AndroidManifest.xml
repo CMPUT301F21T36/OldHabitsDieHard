@@ -11,22 +11,32 @@
         android:theme="@style/Theme.OldHabitsDieHard">
         <activity
             android:name=".Login"
-            android:exported="true" />
-        <activity
-            android:name=".HabitListActivity"
-            android:exported="true" />
-        <activity
-            android:name=".HabitEventListActivity"
-            android:exported="true" />
-        <activity
-            android:name=".MainActivity"
-            android:exported="true">
+            android:exported="true" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".HabitListActivity"
+            android:exported="true"
+            android:theme="@style/noAnimTheme"/>
+        <activity
+            android:name=".HabitEventListActivity"
+            android:exported="true"
+            android:theme="@style/noAnimTheme"/>
+        <activity
+            android:name=".TodayActivity"
+            android:exported="true"
+            android:theme="@style/noAnimTheme"/>
+        <activity android:name=".ProfileActivity"
+            android:exported="true"
+            android:theme="@style/noAnimTheme"/>
+        <activity android:name=".FollowingActivity"
+            android:exported="true"
+            android:theme="@style/noAnimTheme"/>
+
     </application>
 
 </manifest>
