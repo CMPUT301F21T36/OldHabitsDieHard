@@ -53,7 +53,7 @@ public class HabitEvent {
      * @param habit the habit class that this event belongs to
      * @param comment on the Habit event
      * @param date on the Habit event
-     * @param location of the Habit event
+     * //@param location of the Habit event
      */
     HabitEvent(Habit habit, String comment, LocalDate date, Location location){
         this.habit = habit;

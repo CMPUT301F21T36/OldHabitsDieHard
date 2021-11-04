@@ -59,7 +59,7 @@ public class Login extends AppCompatActivity {
                 if (user != null) {
                     infoBox.setText("Login success");
                     CurrentUser.set(user);
-                    Intent intent = new Intent(view.getContext(), HabitListActivity.class);
+                    Intent intent = new Intent(view.getContext(), HabitEventListActivity.class);
                     startActivity(intent);
                 }
                 else {
