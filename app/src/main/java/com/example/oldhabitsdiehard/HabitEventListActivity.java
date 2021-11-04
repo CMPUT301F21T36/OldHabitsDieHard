@@ -4,12 +4,15 @@ import android.location.Location;
 import android.location.LocationManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
+
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -45,5 +48,7 @@ public class HabitEventListActivity extends AppCompatActivity {
         Location location_test = new Location(LocationManager.PASSIVE_PROVIDER);
         HabitEvent habitevent = new HabitEvent(habit, " at the gym ", LocalDate.now(), location_test);
         habiteventlist.add(habitevent);
+
+
     }
 }
