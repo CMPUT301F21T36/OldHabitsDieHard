@@ -1,18 +1,21 @@
 package com.example.oldhabitsdiehard;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.navigation.NavigationBarView;
 
-import java.time.LocalDate;
 import java.util.ArrayList;
 
 /**
@@ -35,25 +38,15 @@ public class HabitListActivity extends AppCompatActivity implements AddHabitFrag
         super.onCreate(savedInstanceState);
         setContentView(R.layout.habit_list);
 
+        //Fetching current user from firebase
+        User user = CurrentUser.get();
+
         // create the habit list and set its adapter
         habitListView = findViewById(R.id.habit_list);
-        habitList = new ArrayList<Habit>();
+        habitList = user.getHabits();
 
         habitAdapter = new HabitAdapter(this, habitList);
         habitListView.setAdapter(habitAdapter);
-
-        // added some test habits to list to ensure it displays properly
-        Habit habit = new Habit("Eat Breakfast", "Hungry");
-        Habit habit2 = new Habit("Yoga", "Exercise");
-        habitList.add(habit);
-        habitList.add(habit2);
-        Habit habit3 = new Habit("Eat Breakfast", "Hungry");
-        boolean[] b = {true,true,false,false,false,false,false};
-        LocalDate d= LocalDate.parse("2021-02-03");
-        Habit habit4 = new Habit("YogaFull", "Exercise",d,b,false);
-        habitList.add(habit3);
-        habitList.add(habit4);
-
 
         final FloatingActionButton addCityButton = findViewById(R.id.addHabitButton);
         addCityButton.setOnClickListener(new View.OnClickListener() {
@@ -74,7 +67,39 @@ public class HabitListActivity extends AppCompatActivity implements AddHabitFrag
             }
         });
 
+        //creating intents for the different activities
+        Intent intentToday = new Intent(this, TodayActivity.class);
+        Intent intentProfile = new Intent(this, ProfileActivity.class);
+        Intent intentEvents = new Intent(this, HabitEventListActivity.class);
+        Intent intentFollowing = new Intent(this, FollowingActivity.class);
 
+        //initializing navigation in the activity
+        BottomNavigationView bottomNavigationView = (BottomNavigationView)
+                findViewById(R.id.bottom_navigation);
+        bottomNavigationView.setLabelVisibilityMode(NavigationBarView.LABEL_VISIBILITY_LABELED);
+
+        bottomNavigationView.setOnNavigationItemSelectedListener(
+                new BottomNavigationView.OnNavigationItemSelectedListener() {
+                    @Override
+                    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                        //switching through activities
+                        switch (item.getItemId()) {
+                            case R.id.action_today:
+                                startActivity(intentToday);
+                                break;
+                            case R.id.action_events:
+                                startActivity(intentEvents);
+                                break;
+                            case R.id.action_profile:
+                                startActivity(intentProfile);
+                                break;
+                            case R.id.action_following:
+                                startActivity(intentFollowing);
+                                break;
+                        }
+                        return false;
+                    }
+                });
 
     }
 
