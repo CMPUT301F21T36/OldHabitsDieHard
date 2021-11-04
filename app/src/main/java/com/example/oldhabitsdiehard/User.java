@@ -16,6 +16,7 @@ public class User {
     private String password;
     private String bio;
     private ArrayList<Habit> habits;
+    private ArrayList<HabitEvent> habitEvents;
 
 
     /**
@@ -28,6 +29,7 @@ public class User {
         setPassword(password);
         setBio("");
         habits = new ArrayList<Habit>();
+        habitEvents = new ArrayList<HabitEvent>();
     }
     public User() {}
 
@@ -49,6 +51,9 @@ public class User {
      */
     public ArrayList<Habit> getHabits() { return habits; }
 
+    public ArrayList<HabitEvent> getHabitEvents() {
+        return habitEvents;
+    }
     /**
      * Bio getter
      * @return User's bio
@@ -98,6 +103,27 @@ public class User {
     @RequiresApi(api = Build.VERSION_CODES.O)
     public void addHabit(Habit habit) {
         habits.add(habit);
+    }
+
+    public void addHabitEvent(HabitEvent event) {
+        String habitName = event.getHabit();
+        for (int i = 0; i < habits.size(); i++) {
+            Habit curr = habits.get(i);
+            if (curr.getTitle().equals(habitName)) {
+                // found the habit
+                curr.addHabitEvent(event);
+                habitEvents.add(event);
+            }
+        }
+    }
+
+    public void deleteHabit(Habit habit) {
+        habits.remove(habit);
+        for (int i = 0; i < habitEvents.size(); i++) {
+            if (habitEvents.get(i).getHabit().equals(habit.getTitle())) {
+                habitEvents.remove(i);
+            }
+        }
     }
 
     /**

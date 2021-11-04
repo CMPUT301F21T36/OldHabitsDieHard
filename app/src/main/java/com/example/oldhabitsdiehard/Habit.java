@@ -17,7 +17,7 @@ import java.util.List;
 public class Habit implements Serializable {
     private String title; // required
     private String reason; // required
-    private LocalDate startDate; // default today
+    //private LocalDate startDate; // default today
     private int day;
     private int month;
     private int year;
