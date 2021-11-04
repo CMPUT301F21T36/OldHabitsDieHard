@@ -10,7 +10,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 public class Login extends AppCompatActivity {
-
+    private User user;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -30,14 +30,14 @@ public class Login extends AppCompatActivity {
                 String username = usernameBox.getText().toString();
                 String password = passwordBox.getText().toString();
 
-                User newUser = new User(username, password);
+                user = new User(username, password);
 
-                boolean success = db.addUser(newUser);
+                boolean success = db.addUser(user);
 
                 if (success) {
                     infoBox.setText("Account Created!");
                     infoBox.setVisibility(View.VISIBLE);
-                    CurrentUser.set(newUser);
+                    CurrentUser.set(user);
                     Intent intent = new Intent(view.getContext(), TodayActivity.class);
                     startActivity(intent);
                 }
@@ -56,7 +56,7 @@ public class Login extends AppCompatActivity {
                 String username = usernameBox.getText().toString();
                 String password = passwordBox.getText().toString();
 
-                User user = db.checkLogin(username, password);
+                user = db.checkLogin(username, password);
 
                 if (user != null) {
                     CurrentUser.set(user);

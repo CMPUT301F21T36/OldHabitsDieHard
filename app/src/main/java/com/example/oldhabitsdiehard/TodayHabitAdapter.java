@@ -12,12 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 
-import java.util.ArrayList;
-
-/**
- * Custom adapter for Habits
- */
-public class HabitAdapter extends ArrayAdapter<Habit> {
+public class TodayHabitAdapter extends ArrayAdapter<Habit> {
     private Context context;
     private User user;
 
@@ -27,11 +22,12 @@ public class HabitAdapter extends ArrayAdapter<Habit> {
      * @param user
      */
     @RequiresApi(api = Build.VERSION_CODES.O)
-    public HabitAdapter(Context context, User user) {
-        super(context, 0, user.getHabits());
+    public TodayHabitAdapter(Context context, User user) {
+        super(context, 0, user.getTodayHabits());
         this.user = user;
         this.context = context;
     }
+
 
     /**
      * Gets a view for this habit list so that it can be displayed
@@ -50,7 +46,7 @@ public class HabitAdapter extends ArrayAdapter<Habit> {
             view = LayoutInflater.from(context).inflate(R.layout.habit_list_content, parent, false);
         }
 
-        Habit habit = user.getHabits().get(position);
+        Habit habit = user.getTodayHabits().get(position);
 
         TextView habitTitle = view.findViewById(R.id.habit_title);
         habitTitle.setText(habit.getTitle());

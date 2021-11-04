@@ -18,6 +18,9 @@ import com.google.android.material.navigation.NavigationBarView;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * This class shows Habit event list activity where users can see all their habit events.
@@ -38,8 +41,9 @@ public class HabitEventListActivity extends AppCompatActivity {
         habiteventlistview.setAdapter(habiteventAdapter);
 
         // Create test habit
-        boolean myweekdays[] = {true, true, true, true, true, true, true};
-        Habit habit = new Habit("Exercise","Fat", myweekdays);
+        List<Boolean> weekdays = new ArrayList<Boolean>(Arrays.asList(new Boolean[7])); // initialized to false
+        Collections.fill(weekdays, Boolean.FALSE);
+        Habit habit = new Habit("Exercise","Fat", weekdays);
 
         // Get event list from habit and set adapter
         habiteventlist = habit.getHabitEvents(); // should be empty

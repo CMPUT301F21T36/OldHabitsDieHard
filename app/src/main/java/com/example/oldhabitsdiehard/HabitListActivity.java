@@ -26,6 +26,8 @@ public class HabitListActivity extends AppCompatActivity implements AddHabitFrag
     private ListView habitListView;
     private HabitAdapter habitAdapter;
     private ArrayList<Habit> habitList;
+    private User user;
+    private UserDatabase db;
 
     /**
      * Called upon creation of the activity
@@ -39,17 +41,20 @@ public class HabitListActivity extends AppCompatActivity implements AddHabitFrag
         setContentView(R.layout.habit_list);
 
         //Fetching current user from firebase
-        User user = CurrentUser.get();
+        user = CurrentUser.get();
+        db = UserDatabase.getInstance();
+        db.updateUser(user);
+
 
         // create the habit list and set its adapter
         habitListView = findViewById(R.id.habit_list);
         habitList = user.getHabits();
 
-        habitAdapter = new HabitAdapter(this, habitList);
+        habitAdapter = new HabitAdapter(this, user);
         habitListView.setAdapter(habitAdapter);
 
-        final FloatingActionButton addCityButton = findViewById(R.id.addHabitButton);
-        addCityButton.setOnClickListener(new View.OnClickListener() {
+        final FloatingActionButton addHabitButton = findViewById(R.id.addHabitButton);
+        addHabitButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 new AddHabitFragment().show(getSupportFragmentManager(), "ADD_HABIT");
@@ -58,12 +63,10 @@ public class HabitListActivity extends AppCompatActivity implements AddHabitFrag
 
         habitListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> parent, android.view.View view, int position, long id) {
-
-                AddHabitFragment fragment = AddHabitFragment.newInstance(habitList.get(position));
-                fragment.show(getSupportFragmentManager(), "ADD_HABIT");
-
-                habitList.remove(position);
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                final Habit habit = habitList.get(position);
+                AddHabitFragment newFragment = AddHabitFragment.newInstance(habit);
+                newFragment.show(getSupportFragmentManager(), "EDIT_HABIT");
             }
         });
 
@@ -103,9 +106,25 @@ public class HabitListActivity extends AppCompatActivity implements AddHabitFrag
 
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
-    public void onOkPressed(Habit newHabit){habitAdapter.add(newHabit);}
+    public void addHabit(Habit newHabit) {
+        habitAdapter.add(newHabit);
+        //db = UserDatabase.getInstance();
+        db.updateUser(user);
+    }
 
     @Override
-    public void onDeletePressed(){habitAdapter.notifyDataSetChanged();}
+    public void editHabit(Habit habit) {
+        habitAdapter.notifyDataSetChanged();
+        db = UserDatabase.getInstance();
+        db.updateUser(user);
+    }
+
+    @Override
+    public void deleteHabit(Habit habit) {
+        habitAdapter.remove(habit);
+        db = UserDatabase.getInstance();
+        db.updateUser(user);
+    }
 }

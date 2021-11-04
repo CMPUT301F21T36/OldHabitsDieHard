@@ -4,19 +4,28 @@ import android.os.Build;
 
 import androidx.annotation.RequiresApi;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * This class represents a habit.
  */
-public class Habit {
+public class Habit implements Serializable {
     private String title; // required
     private String reason; // required
     private LocalDate startDate; // default today
-    private boolean[] weekdays; // default all false
+    private int day;
+    private int month;
+    private int year;
+    private List<Boolean> weekdays; // default all false
     private ArrayList<HabitEvent> events; // default empty
     private boolean isPublic; // default true
+
+    public Habit() {}
 
     /**
      * Habit constructor specifying all fields.
@@ -26,7 +35,9 @@ public class Habit {
      * @param weekdays which days of the week the habit should be performed
      * @param isPublic whether this habit is viewable by other users or not
      */
-    Habit(String title, String reason, LocalDate startDate, boolean[] weekdays, boolean isPublic) {
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    Habit(String title, String reason, LocalDate startDate, List<Boolean> weekdays, boolean isPublic) {
+        this.weekdays = new ArrayList<Boolean>();
         setTitle(title);
         setReason(reason);
         setStartDate(startDate);
@@ -42,7 +53,9 @@ public class Habit {
      * @param startDate the date to start the habit
      * @param weekdays which days of the week the habit should be performed
      */
-    Habit(String title, String reason, LocalDate startDate, boolean[] weekdays) {
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    Habit(String title, String reason, LocalDate startDate, List<Boolean> weekdays) {
+        this.weekdays = new ArrayList<Boolean>();
         setTitle(title);
         setReason(reason);
         setStartDate(startDate);
@@ -59,8 +72,9 @@ public class Habit {
      * @param isPublic whether this habit is viewable by other users or not
      */
     @RequiresApi(api = Build.VERSION_CODES.O)
-    Habit(String title, String reason, boolean[] weekdays, boolean isPublic) {
+    Habit(String title, String reason, List<Boolean> weekdays, boolean isPublic) {
         // set the default date to today
+        this.weekdays = new ArrayList<Boolean>();
         LocalDate defDate = LocalDate.now();
         setTitle(title);
         setReason(reason);
@@ -77,8 +91,9 @@ public class Habit {
      * @param weekdays which days of the week the habit should be performed
      */
     @RequiresApi(api = Build.VERSION_CODES.O)
-    Habit(String title, String reason, boolean[] weekdays) {
+    Habit(String title, String reason, List<Boolean> weekdays) {
         // set the default date to today
+        this.weekdays = new ArrayList<Boolean>();
         LocalDate defDate = LocalDate.now();
         setTitle(title);
         setReason(reason);
@@ -94,8 +109,10 @@ public class Habit {
      * @param reason the reason for the habit
      * @param startDate the date to start the habit
      */
+    @RequiresApi(api = Build.VERSION_CODES.O)
     Habit(String title, String reason, LocalDate startDate) {
-        boolean[] defWeekdays = new boolean[7]; // initialized to false
+        List<Boolean> defWeekdays = new ArrayList<Boolean>(Arrays.asList(new Boolean[7])); // initialized to false
+        Collections.fill(weekdays, Boolean.FALSE);
         setTitle(title);
         setReason(reason);
         setStartDate(startDate);
@@ -114,7 +131,9 @@ public class Habit {
         // set default date to today
         LocalDate defDate = LocalDate.now();
         // set default weekdays to false
-        boolean[] defWeekdays = new boolean[7];
+        List<Boolean> defWeekdays = new ArrayList<Boolean>(Arrays.asList(new Boolean[7])); // initialized to false
+        Collections.fill(weekdays, Boolean.FALSE);
+
         setTitle(title);
         setReason(reason);
         setStartDate(defDate);
@@ -143,16 +162,29 @@ public class Habit {
      * Returns the start date for a habit
      * @return the start date
      */
-    public LocalDate getStartDate() {
-        return startDate;
+    //public LocalDate getStartDate() {
+        //return LocalDate.of(year, month, day);
+    //}
+
+    public int getDay() {
+        return day;
     }
+
+    public int getMonth() {
+        return month;
+    }
+
+    public int getYear() {
+        return year;
+    }
+
 
     /**
      * Returns the weekdays on which a habit should be performed
      * @return a boolean array of length 7 starting at Sunday, with value true
      * if the habit is performed on that day, false if not
      */
-    public boolean[] getWeekdays() {
+    public List<Boolean> getWeekdays() {
         return weekdays;
     }
 
@@ -200,8 +232,23 @@ public class Habit {
      * Sets the start date of a habit
      * @param startDate the start date
      */
+    @RequiresApi(api = Build.VERSION_CODES.O)
     public void setStartDate(LocalDate startDate) {
-        this.startDate = startDate;
+        setDay(startDate.getDayOfMonth());
+        setMonth(startDate.getMonthValue());
+        setYear(startDate.getYear());
+    }
+
+    public void setDay(int day) {
+        this.day = day;
+    }
+
+    public void setMonth(int month) {
+        this.month = month;
+    }
+
+    public void setYear(int year) {
+        this.year = year;
     }
 
     /**
@@ -210,7 +257,7 @@ public class Habit {
      *                 habit should be performed on that weekday, false if not;
      *                 weekdays[0] represents Sunday
      */
-    public void setWeekdays(boolean[] weekdays) {
+    public void setWeekdays(List<Boolean> weekdays) {
         this.weekdays = weekdays;
     }
 

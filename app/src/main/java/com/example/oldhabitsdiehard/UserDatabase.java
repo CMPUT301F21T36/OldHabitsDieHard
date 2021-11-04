@@ -76,7 +76,7 @@ public class UserDatabase {
      */
     public boolean updateUser(User user) {
         User check = getUser(user.getUsername());
-        if (user == null) {
+        if (check == null) {
             return false;
         }
         else {
