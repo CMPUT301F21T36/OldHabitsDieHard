@@ -86,6 +86,22 @@ public class UserDatabase {
     }
 
     /**
+     * Attempt to delete user from database
+     * @param user User to delete
+     * @return true if deletion successful, false if unsuccessful (i.e. User doesn't exist)
+     */
+    public boolean deleteUser(User user) {
+        User check = getUser(user.getUsername());
+        if (user == null) {
+            return false;
+        }
+        else {
+            userCollection.document(user.getUsername()).delete();
+            return true;
+        }
+    }
+
+    /**
      * Attempt to verify login information
      * @param username
      * @param password
