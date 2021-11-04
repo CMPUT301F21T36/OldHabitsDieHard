@@ -162,6 +162,14 @@ public class Habit {
      */
     public ArrayList<HabitEvent> getHabitEvents() { return events; }
 
+    /**
+     * Adds a habitEvent to the events list
+     * @param habitEvent
+     */
+    public void addHabitEvent(HabitEvent habitEvent){
+        events.add(habitEvent);
+    }
+
     public boolean getPublic() {
         return isPublic;
     }
