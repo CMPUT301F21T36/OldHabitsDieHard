@@ -1,3 +1,26 @@
+/*
+ *  TodayHabitAdapter
+ *
+ *  Version 1.0
+ *
+ *  November 4, 2021
+ *
+ *  Copyright 2021 Rowan Tilroe, Claire Martin, Filippo Ciandy,
+ *  Gurbani Baweja, Chanpreet Singh, and Paige Lekach
+ *
+ *  Licensed under the Apache License, Version 2.0 (the "License");
+ *  you may not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" BASIS,
+ *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  See the License for the specific language governing permissions and
+ *  limitations under the License.
+ */
+
 package com.example.oldhabitsdiehard;
 
 import android.content.Context;
@@ -12,6 +35,11 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 
+/**
+ * Adapter class for the today view activity.
+ *
+ * @author Claire Martin
+ */
 public class TodayHabitAdapter extends ArrayAdapter<Habit> {
     private Context context;
     private User user;
@@ -30,11 +58,11 @@ public class TodayHabitAdapter extends ArrayAdapter<Habit> {
 
 
     /**
-     * Gets a view for this habit list so that it can be displayed
+     * Gets a view for the list of today's habits so that it can be displayed
      * @param position the position in the list
      * @param convertView
      * @param parent
-     * @return the view for the HabitList
+     * @return the view for the list of today's habits
      */
     @RequiresApi(api = Build.VERSION_CODES.O)
     @NonNull
