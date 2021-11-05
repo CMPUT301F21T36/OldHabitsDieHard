@@ -117,14 +117,16 @@ public class HabitListActivity extends AppCompatActivity implements AddHabitFrag
     @Override
     public void editHabit(Habit habit) {
         habitAdapter.notifyDataSetChanged();
-        db = UserDatabase.getInstance();
+        //db = UserDatabase.getInstance();
         db.updateUser(user);
     }
 
     @Override
     public void deleteHabit(Habit habit) {
-        habitAdapter.remove(habit);
-        db = UserDatabase.getInstance();
+        //habitAdapter.remove(habit);
+        user.deleteHabit(habit);
+        habitAdapter.notifyDataSetChanged();
+        //db = UserDatabase.getInstance();
         db.updateUser(user);
     }
 }
