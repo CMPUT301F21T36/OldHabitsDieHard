@@ -47,7 +47,7 @@ public class Habit implements Serializable {
     private int year;
     private List<Boolean> weekdays; // default all false
     private boolean isPublic; // default true
-    private ArrayList<HabitEvent> events; // default empty
+    private ArrayList<HabitEvent> habitEvents; // default empty
 
     /**
      * Empty habit constructor for Firestore compatibility.
@@ -70,7 +70,7 @@ public class Habit implements Serializable {
         setStartDate(startDate);
         setWeekdays(weekdays);
         setPublic(isPublic);
-        events = new ArrayList<HabitEvent>();
+        habitEvents = new ArrayList<HabitEvent>();
     }
 
     /**
@@ -88,7 +88,7 @@ public class Habit implements Serializable {
         setStartDate(startDate);
         setWeekdays(weekdays);
         setPublic(true);
-        events = new ArrayList<HabitEvent>();
+        habitEvents = new ArrayList<HabitEvent>();
     }
 
     /**
@@ -107,7 +107,7 @@ public class Habit implements Serializable {
         setStartDate(defDate);
         setWeekdays(weekdays);
         setPublic(isPublic);
-        events = new ArrayList<HabitEvent>();
+        habitEvents = new ArrayList<HabitEvent>();
     }
 
     /**
@@ -125,7 +125,7 @@ public class Habit implements Serializable {
         setStartDate(defDate);
         setWeekdays(weekdays);
         setPublic(true);
-        events = new ArrayList<HabitEvent>();
+        habitEvents = new ArrayList<HabitEvent>();
     }
 
     /**
@@ -144,7 +144,7 @@ public class Habit implements Serializable {
         setStartDate(startDate);
         setWeekdays(defWeekdays);
         setPublic(true);
-        events = new ArrayList<HabitEvent>();
+        habitEvents = new ArrayList<HabitEvent>();
     }
 
     /**
@@ -164,7 +164,7 @@ public class Habit implements Serializable {
         setStartDate(defDate);
         setWeekdays(defWeekdays);
         setPublic(true);
-        events = new ArrayList<HabitEvent>();
+        habitEvents = new ArrayList<HabitEvent>();
     }
 
     /**
@@ -225,10 +225,10 @@ public class Habit implements Serializable {
     }
 
     /**
-     * Return the events associated with this habit.
-     * @return a list of habit events associated with this habit
+     * Return the habitEvents associated with this habit.
+     * @return a list of habit habitEvents associated with this habit
      */
-    public ArrayList<HabitEvent> getHabitEvents() { return events; }
+    public ArrayList<HabitEvent> getHabitEvents() { return habitEvents; }
 
     /**
      * Sets the title of a habit.
@@ -309,11 +309,11 @@ public class Habit implements Serializable {
     }
 
     /**
-     * Adds a habitEvent to the events list.
+     * Adds a habitEvent to the habitEvents list.
      * @param habitEvent the event to add
      */
     public void addHabitEvent(HabitEvent habitEvent){
-        events.add(habitEvent);
+        habitEvents.add(habitEvent);
     }
 
     /**

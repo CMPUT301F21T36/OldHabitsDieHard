@@ -21,11 +21,8 @@
  *  limitations under the License.
  */
 
-package com.example.oldhabitsdiehard;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.RequiresApi;
-import androidx.appcompat.app.AppCompatActivity;
+package com.example.oldhabitsdiehard;
 
 import android.content.Intent;
 import android.os.Build;
@@ -34,6 +31,10 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -80,7 +81,9 @@ public class HabitListActivity extends AppCompatActivity implements HabitFragmen
         habitListView.setAdapter(habitAdapter);
 
         // define habit add button
-        final FloatingActionButton addHabitButton = findViewById(R.id.addHabitButton);
+
+        final FloatingActionButton addHabitButton = findViewById(R.id.add_habit_button);
+      
         addHabitButton.setOnClickListener(new View.OnClickListener() {
             /**
              * Defines action to take when the add button is clicked.
