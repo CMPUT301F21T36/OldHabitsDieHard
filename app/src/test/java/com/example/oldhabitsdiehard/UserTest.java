@@ -7,6 +7,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.Test;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 
 import java.util.Arrays;
@@ -115,7 +116,7 @@ public class UserTest {
         user.addHabit(habit);
 
         // Adding
-        HabitEvent event = new HabitEvent("title","comment",LocalDate.of(2021, 11, 4));
+        HabitEvent event = new HabitEvent("title","comment", LocalDate.of(2021, 11, 4));
         user.addHabitEvent(event);
 
         // Getting
