@@ -138,7 +138,7 @@ public class Habit implements Serializable {
     Habit(String title, String reason, LocalDate startDate) {
         // set default weekdays to false
         List<Boolean> defWeekdays = new ArrayList<Boolean>(Arrays.asList(new Boolean[7])); // initialized to false
-        Collections.fill(weekdays, Boolean.FALSE);
+        Collections.fill(defWeekdays, Boolean.FALSE);
         setTitle(title);
         setReason(reason);
         setStartDate(startDate);
@@ -158,7 +158,7 @@ public class Habit implements Serializable {
         LocalDate defDate = LocalDate.now();
         // set default weekdays to false
         List<Boolean> defWeekdays = new ArrayList<Boolean>(Arrays.asList(new Boolean[7])); // initialized to false
-        Collections.fill(weekdays, Boolean.FALSE);
+        Collections.fill(defWeekdays, Boolean.FALSE);
         setTitle(title);
         setReason(reason);
         setStartDate(defDate);

@@ -7,6 +7,10 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * Tests for the Habit class
@@ -14,11 +18,12 @@ import java.time.LocalDate;
 public class HabitTest {
     private Habit mockHabit() {
         LocalDate myDate = LocalDate.of(2021,1,1);
-        boolean[] myWeekdays = new boolean[7];
-        myWeekdays[0] = true;
-        myWeekdays[2] = true;
-        myWeekdays[4] = true;
-        myWeekdays[6] = true;
+        List<Boolean> myWeekdays = new ArrayList<Boolean>(Arrays.asList(new Boolean[7])); // initialized to false
+        Collections.fill(myWeekdays, Boolean.FALSE);
+        myWeekdays.set(0, Boolean.TRUE);
+        myWeekdays.set(2, Boolean.TRUE);
+        myWeekdays.set(4, Boolean.TRUE);
+        myWeekdays.set(6, Boolean.TRUE);
         Habit habit = new Habit("Eat breakfast", "Hungry", myDate, myWeekdays);
         return habit;
     }
@@ -26,21 +31,37 @@ public class HabitTest {
     @Test
     void testConstructor() {
         LocalDate myDate = LocalDate.of(2021,10,26);
-        boolean[] myWeekdays = new boolean[7];
-        myWeekdays[0] = true;
-        myWeekdays[2] = true;
-        myWeekdays[6] = true;
+        List<Boolean> myWeekdays = new ArrayList<Boolean>(Arrays.asList(new Boolean[7])); // initialized to false
+        Collections.fill(myWeekdays, Boolean.FALSE);
+        myWeekdays.set(0, Boolean.TRUE);
+        myWeekdays.set(2, Boolean.TRUE);
+        myWeekdays.set(6, Boolean.TRUE);
         Habit habit = new Habit("", "", myDate, myWeekdays);
         Habit habit2 = new Habit("", "", myDate);
         Habit habit3 = new Habit("", "", myWeekdays);
         assertEquals("", habit.getTitle());
         assertEquals("", habit.getReason());
-        assertEquals(LocalDate.of(2021,10,26), habit.getStartDate());
-        assertEquals(LocalDate.now(), habit3.getStartDate());
-        boolean testDays[] = {true, false, true, false, false, false, true};
+
+        int day = habit.getDay();
+        int month = habit.getMonth();
+        int year = habit.getYear();
+        LocalDate startDate = LocalDate.of(year, month, day);
+        assertEquals(LocalDate.of(2021,10,26), startDate);
+
+        day = habit3.getDay();
+        month = habit3.getMonth();
+        year = habit3.getYear();
+        LocalDate startDate3 = LocalDate.of(year, month, day);
+        assertEquals(LocalDate.now(), startDate3);
+
+        List<Boolean> testDays = new ArrayList<Boolean>(Arrays.asList(new Boolean[7]));
+        Collections.fill(testDays, Boolean.FALSE);
+        testDays.set(0, Boolean.TRUE);
+        testDays.set(2, Boolean.TRUE);
+        testDays.set(6, Boolean.TRUE);
         for (int i = 0; i < 7; i++) {
-            assertEquals(testDays[i], habit.getWeekdays()[i]);
-            assertEquals(false, habit2.getWeekdays()[i]);
+            assertEquals(testDays.get(i), habit.getWeekdays().get(i));
+            assertEquals(false, habit2.getWeekdays().get(i));
         }
     }
 
@@ -59,15 +80,22 @@ public class HabitTest {
     @Test
     void testGetStartDate() {
         Habit myHabit = mockHabit();
-        assertEquals(LocalDate.of(2021, 1,1), myHabit.getStartDate());
+        assertEquals(2021, myHabit.getYear());
+        assertEquals(1, myHabit.getMonth());
+        assertEquals(1, myHabit.getDay());
     }
 
     @Test
     void testGetWeekdays() {
         Habit myHabit = mockHabit();
-        boolean testDays[] = {true, false, true, false, true, false, true};
+        List<Boolean> testDays = new ArrayList<Boolean>(Arrays.asList(new Boolean[7])); // initialized to false
+        Collections.fill(testDays, Boolean.FALSE);
+        testDays.set(0, Boolean.TRUE);
+        testDays.set(2, Boolean.TRUE);
+        testDays.set(4, Boolean.TRUE);
+        testDays.set(6, Boolean.TRUE);
         for (int i = 0; i < 7; i++) {
-            assertEquals(testDays[i], myHabit.getWeekdays()[i]);
+            assertEquals(testDays.get(i), myHabit.getWeekdays().get(i));
         }
     }
 
@@ -75,6 +103,19 @@ public class HabitTest {
     void testGetPublic() {
         Habit myHabit = mockHabit();
         assertTrue(myHabit.getPublic());
+        List<Boolean> testDays = new ArrayList<Boolean>(Arrays.asList(new Boolean[7])); // initialized to false
+        Collections.fill(testDays, Boolean.FALSE);
+
+        myHabit = new Habit("test", "test", testDays, false);
+        assertFalse(myHabit.getPublic());
+    }
+
+    @Test
+    void testHabitEvents() {
+        Habit myHabit = mockHabit();
+        HabitEvent myEvent = new HabitEvent(myHabit.getTitle(), "testComment", LocalDate.now());
+        myHabit.addHabitEvent(myEvent);
+        assertTrue(myHabit.getHabitEvents().contains(myEvent));
     }
 
     @Test
@@ -103,16 +144,20 @@ public class HabitTest {
     void testSetDate() {
         Habit myHabit = mockHabit();
         myHabit.setStartDate(LocalDate.of(2021,10,26));
-        assertEquals(LocalDate.of(2021,10,26), myHabit.getStartDate());
+        assertEquals(2021, myHabit.getYear());
+        assertEquals(10, myHabit.getMonth());
+        assertEquals(26, myHabit.getDay());
     }
 
     @Test
     void testSetWeekdays() {
         Habit myHabit = mockHabit();
-        myHabit.setWeekdays(new boolean[]{true, true, true, true, true, true, true});
-        boolean testDays[] = {true, true, true, true, true, true, true};
+        List<Boolean> weekdays = new ArrayList<Boolean>(Arrays.asList(new Boolean[7])); // initialized to false
+        Collections.fill(weekdays, Boolean.TRUE);
+
+        myHabit.setWeekdays(weekdays);
         for (int i = 0; i < 7; i++) {
-            assertEquals(testDays[i], myHabit.getWeekdays()[i]);
+            assertTrue(myHabit.getWeekdays().get(i));
         }
     }
 
@@ -122,4 +167,5 @@ public class HabitTest {
         myHabit.setPublic(false);
         assertFalse(myHabit.getPublic());
     }
+
 }
