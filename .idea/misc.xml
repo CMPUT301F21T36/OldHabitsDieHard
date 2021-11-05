@@ -3,9 +3,12 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
-        <entry key="..\:/Users/fil/AndroidStudioProjects/OldHabitsDieHard/app/src/main/res/layout/habit_event_fragment.xml" value="0.20520833333333333" />
-        <entry key="..\:/Users/fil/AndroidStudioProjects/OldHabitsDieHard/app/src/main/res/layout/habit_fragment.xml" value="0.20520833333333333" />
-        <entry key="..\:/Users/fil/AndroidStudioProjects/OldHabitsDieHard/app/src/main/res/layout/habit_list.xml" value="0.20520833333333333" />
+        <entry key="..\:/Users/clair/Documents/Year4/CMPUT301/Project/OldHabitsDieHard/app/src/main/res/layout/activity_login.xml" value="0.36666666666666664" />
+        <entry key="..\:/Users/clair/Documents/Year4/CMPUT301/Project/OldHabitsDieHard/app/src/main/res/layout/habit_event_fragment.xml" value="0.264" />
+        <entry key="..\:/Users/clair/Documents/Year4/CMPUT301/Project/OldHabitsDieHard/app/src/main/res/layout/habit_fragment.xml" value="0.176" />
+        <entry key="..\:/Users/clair/Documents/Year4/CMPUT301/Project/OldHabitsDieHard/app/src/main/res/layout/habit_list.xml" value="0.25025641025641027" />
+        <entry key="..\:/Users/clair/Documents/Year4/CMPUT301/Project/OldHabitsDieHard/app/src/main/res/layout/habit_list_content.xml" value="0.25025641025641027" />
+        <entry key="..\:/Users/clair/Documents/Year4/CMPUT301/Project/OldHabitsDieHard/app/src/main/res/layout/habitevent_list.xml" value="0.1" />
         <entry key="..\:/Users/fil/AndroidStudioProjects/OldHabitsDieHard/app/src/main/res/layout/habitevent_content.xml" value="0.2957427536231884" />
         <entry key="..\:/Users/fil/AndroidStudioProjects/OldHabitsDieHard/app/src/main/res/layout/habitevent_list.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/rowan/School/CMPUT301/OldHabitsDieHard/app/src/main/res/layout/habit_list.xml" value="0.5" />

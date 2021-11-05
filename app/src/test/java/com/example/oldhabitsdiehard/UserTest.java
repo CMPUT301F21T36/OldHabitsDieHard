@@ -5,8 +5,10 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.Test;
 
-import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * Tests for the User class
@@ -78,12 +80,13 @@ public class UserTest {
 
     @Test
     void testTodayHabits() {
-        boolean[] weekdays = {true, true, true, true, true, true, true};
-//        Habit habit = new Habit("", "", weekdays);
+        List<Boolean> myWeekdays = new ArrayList<Boolean>(Arrays.asList(new Boolean[7])); // initialized to false
+        Collections.fill(myWeekdays, Boolean.TRUE);
+        Habit habit = new Habit("", "", myWeekdays);
         User user = mockUser();
-//        user.addHabit(habit);
+        user.addHabit(habit);
         ArrayList<Habit> todayHabits = user.getTodayHabits();
-//        assertTrue(todayHabits.contains(habit));
+        assertTrue(todayHabits.contains(habit));
     }
 
 }
