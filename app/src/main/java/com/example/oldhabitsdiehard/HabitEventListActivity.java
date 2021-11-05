@@ -6,6 +6,8 @@ import android.location.LocationManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
 
 import androidx.annotation.NonNull;
@@ -14,6 +16,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationBarView;
 
 import java.time.LocalDate;
@@ -25,10 +28,12 @@ import java.util.List;
 /**
  * This class shows Habit event list activity where users can see all their habit events.
  */
-public class HabitEventListActivity extends AppCompatActivity {
-    private ListView habiteventlistview;
-    private HabitEventAdapter habiteventAdapter;
-    private ArrayList<HabitEvent> habiteventlist;
+public class HabitEventListActivity extends AppCompatActivity implements HabitEventFragment.onFragmentInteractionListener {
+    private ListView habitEventListView;
+    private HabitEventAdapter habitEventAdapter;
+    private ArrayList<HabitEvent> habitEventList;
+    private User user;
+    private UserDatabase db;
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
@@ -36,24 +41,33 @@ public class HabitEventListActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.habitevent_list);
 
+        user = CurrentUser.get();
+        db = UserDatabase.getInstance();
+        db.updateUser(user);
+
         // Initialization
-        habiteventlistview = findViewById(R.id.habitevent_list);
-        habiteventlistview.setAdapter(habiteventAdapter);
+        habitEventListView = findViewById(R.id.habitevent_list);
+        habitEventList = user.getHabitEvents();
 
-        // Create test habit
-        List<Boolean> weekdays = new ArrayList<Boolean>(Arrays.asList(new Boolean[7])); // initialized to false
-        Collections.fill(weekdays, Boolean.FALSE);
-        Habit habit = new Habit("Exercise","Fat", weekdays);
+        habitEventAdapter = new HabitEventAdapter(this, user);
+        habitEventListView.setAdapter(habitEventAdapter);
 
-        // Get event list from habit and set adapter
-        habiteventlist = habit.getHabitEvents(); // should be empty
-        habiteventAdapter = new HabitEventAdapter(this, habiteventlist);
-        habiteventlistview.setAdapter(habiteventAdapter);
+        final FloatingActionButton addHabitEventButton = findViewById(R.id.addHabitEventButton);
+        addHabitEventButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                new HabitEventFragment().show(getSupportFragmentManager(), "ADD_HABIT_EVENT");
+            }
+        });
 
-        // Add test habit event to habiteventlist
-        Location location_test = new Location(LocationManager.PASSIVE_PROVIDER);
-        HabitEvent habitevent = new HabitEvent(habit, " at the gym ", LocalDate.now(), location_test);
-        habiteventlist.add(habitevent);
+        habitEventListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                final HabitEvent habitEvent = habitEventList.get(position);
+                HabitEventFragment newFragment = HabitEventFragment.newInstance(habitEvent);
+                newFragment.show(getSupportFragmentManager(), "EDIT_HABIT_EVENT");
+            }
+        });
 
         //creating intents for the different activities
         Intent intentToday = new Intent(this, TodayActivity.class);
@@ -88,6 +102,25 @@ public class HabitEventListActivity extends AppCompatActivity {
                         return false;
                     }
                 });
+    }
 
+    @Override
+    public void addHabitEvent(HabitEvent newEvent) {
+        user.addHabitEvent(newEvent);
+        //habitEventAdapter.add(newEvent);
+        habitEventAdapter.notifyDataSetChanged();
+        db.updateUser(user);
+    }
+
+    @Override
+    public void editHabitEvent(HabitEvent event) {
+        habitEventAdapter.notifyDataSetChanged();
+        db.updateUser(user);
+    }
+
+    @Override
+    public void deleteHabitEvent(HabitEvent event) {
+        habitEventAdapter.remove(event);
+        db.updateUser(user);
     }
 }

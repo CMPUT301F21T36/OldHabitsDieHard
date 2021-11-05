@@ -32,7 +32,7 @@ public class AddHabitFragment  extends DialogFragment {
     private RadioButton publicButton;
     private CheckBox sunday,monday,tuesday,wednesday, thursday, friday,saturday;
     private Boolean rdb;
-    private onFragmentInteractionListener listener;
+    private AddHabitFragment.onFragmentInteractionListener listener;
 
     public interface onFragmentInteractionListener {
         void addHabit(Habit habit);
@@ -56,8 +56,8 @@ public class AddHabitFragment  extends DialogFragment {
     @Override
     public void onAttach(Context context){
         super.onAttach(context);
-        if(context instanceof onFragmentInteractionListener){
-            listener = (onFragmentInteractionListener) context;
+        if(context instanceof AddHabitFragment.onFragmentInteractionListener){
+            listener = (AddHabitFragment.onFragmentInteractionListener) context;
         }else {
             throw new RuntimeException(context.toString()+"must implement OnFragmentInteractionListner");
         }
