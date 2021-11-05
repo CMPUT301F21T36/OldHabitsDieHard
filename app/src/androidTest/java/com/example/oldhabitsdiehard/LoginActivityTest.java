@@ -19,8 +19,8 @@ public class LoginActivityTest {
     private UserDatabase db;
 
     @Rule
-    public ActivityTestRule<LoginActivity> rule =
-            new ActivityTestRule<>(LoginActivity.class);
+    public ActivityTestRule<Login> rule =
+            new ActivityTestRule<>(Login.class);
 
     /**
      * Runs before all tests and creates solo instance
@@ -39,7 +39,7 @@ public class LoginActivityTest {
     @Test
     public void checkCreateClicked(){
         // Asserts that the current activity is LoginActivity
-        solo.assertCurrentActivity("Wrong Activity", LoginActivity.class);
+        solo.assertCurrentActivity("Wrong Activity", Login.class);
         // Setting TextEdits to test values
         onView(withId(R.id.username_box)).perform(typeText("test_login"));
         onView(withId(R.id.password_box)).perform(typeText("test_login_password"));
@@ -59,7 +59,7 @@ public class LoginActivityTest {
     @Test
     public void checkAlreadyCreatedUser(){
         // Asserts that the current activity is LoginActivity
-        solo.assertCurrentActivity("Wrong Activity", LoginActivity.class);
+        solo.assertCurrentActivity("Wrong Activity", Login.class);
         // Setting TextEdits to test values
         onView(withId(R.id.username_box)).perform(typeText("test_login"));
         onView(withId(R.id.password_box)).perform(typeText("test_login_password"));
@@ -68,7 +68,7 @@ public class LoginActivityTest {
         // clicking on create button
         solo.clickOnButton("Create");
         // Stay on LoginActivity
-        solo.assertCurrentActivity("Wrong Activity", LoginActivity.class);
+        solo.assertCurrentActivity("Wrong Activity", Login.class);
         db.deleteUser(new User("test_login", "test_login_password"));
     }
 
@@ -79,7 +79,7 @@ public class LoginActivityTest {
     @Test
     public void checkLoginClicked(){
         // Asserts that the current activity is LoginActivity
-        solo.assertCurrentActivity("Wrong Activity", LoginActivity.class);
+        solo.assertCurrentActivity("Wrong Activity", Login.class);
         //Adding user to database
         db.addUser(new User("test_login", "test_login_password"));
         // Setting TextEdits to test values
@@ -100,13 +100,13 @@ public class LoginActivityTest {
     @Test
     public void checkNotCreatedUserLoginClicked(){
         // Asserts that the current activity is LoginActivity
-        solo.assertCurrentActivity("Wrong Activity", LoginActivity.class);
+        solo.assertCurrentActivity("Wrong Activity", Login.class);
         // Setting TextEdits to test values
         onView(withId(R.id.username_box)).perform(typeText("test_login"));
         onView(withId(R.id.password_box)).perform(typeText("test_login_password"));
         // Clicking login button
         solo.clickOnButton("Login");
         // Should stay in LoginActivity
-        solo.assertCurrentActivity("Wrong Activity", LoginActivity.class);
+        solo.assertCurrentActivity("Wrong Activity", Login.class);
     }
 }

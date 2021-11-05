@@ -10,7 +10,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.OldHabitsDieHard">
         <activity
-            android:name=".LoginActivity"
+            android:name=".Login"
             android:exported="true" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

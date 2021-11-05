@@ -9,7 +9,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
-public class LoginActivity extends AppCompatActivity {
+public class Login extends AppCompatActivity {
     private User user;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
