@@ -67,7 +67,6 @@ public class HabitEventAdapter extends ArrayAdapter<HabitEvent> {
     @NonNull
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
-        //return super.getView(position, convertView, parent);
         View view = convertView;
         if(view == null){
             view = LayoutInflater.from(context).inflate(R.layout.habitevent_content, parent,false);

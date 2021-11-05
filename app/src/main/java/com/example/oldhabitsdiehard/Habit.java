@@ -100,7 +100,6 @@ public class Habit implements Serializable {
      */
     @RequiresApi(api = Build.VERSION_CODES.O)
     Habit(String title, String reason, List<Boolean> weekdays, boolean isPublic) {
-        // set the default date to today
         this.weekdays = new ArrayList<Boolean>();
         LocalDate defDate = LocalDate.now();
         setTitle(title);
@@ -119,7 +118,6 @@ public class Habit implements Serializable {
      */
     @RequiresApi(api = Build.VERSION_CODES.O)
     Habit(String title, String reason, List<Boolean> weekdays) {
-        // set the default date to today
         this.weekdays = new ArrayList<Boolean>();
         LocalDate defDate = LocalDate.now();
         setTitle(title);
