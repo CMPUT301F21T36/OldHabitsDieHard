@@ -196,6 +196,9 @@ public class HabitEvent implements Serializable {
      * @param comment for Habit event
      */
     public void setComment(String comment){
+        if (comment.length()>20){
+            comment = comment.substring(0,20);
+        }
         this.comment = comment;
     }
 
@@ -214,9 +217,16 @@ public class HabitEvent implements Serializable {
      */
     @RequiresApi(api = Build.VERSION_CODES.O)
     public void setDate(LocalDate date){
-        setDay(date.getDayOfMonth());
-        setMonth(date.getMonthValue());
-        setYear(date.getYear());
+        if (date == null){
+            setDay(LocalDate.now().getDayOfMonth());
+            setMonth(LocalDate.now().getMonthValue());
+            setYear(LocalDate.now().getYear());
+        }
+        else {
+            setDay(date.getDayOfMonth());
+            setMonth(date.getMonthValue());
+            setYear(date.getYear());
+        }
     }
 
     /**
