@@ -71,6 +71,11 @@ public class Login extends AppCompatActivity {
                 String username = usernameBox.getText().toString();
                 String password = passwordBox.getText().toString();
 
+                // empty box check
+                if (username.length() < 1 || password.length() < 1) {
+                    return;
+                }
+
                 // create new user
                 user = new User(username, password);
 
@@ -107,6 +112,11 @@ public class Login extends AppCompatActivity {
                 // get entered username and password
                 String username = usernameBox.getText().toString();
                 String password = passwordBox.getText().toString();
+
+                // empty box check
+                if (username.length() < 1 || password.length() < 1) {
+                    return;
+                }
 
                 // check whether the user info is correct
                 user = db.checkLogin(username, password);
