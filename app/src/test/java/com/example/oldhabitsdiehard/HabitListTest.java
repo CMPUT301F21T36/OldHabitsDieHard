@@ -13,9 +13,7 @@ public class HabitListTest {
     void testTodayList() {
         //Context context;
         boolean[] weekdays = {true, true, true, true, true, true, true};
-        Habit habit = new Habit("", "", weekdays);
         ArrayList<Habit> habitList = new ArrayList<Habit>();
-        habitList.add(habit);
         //HabitList habitAdapter = new HabitList(null, habitList);
         //assertEquals(habitList, habitAdapter.todayHabits());
     }
