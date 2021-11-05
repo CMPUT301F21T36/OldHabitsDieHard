@@ -78,7 +78,9 @@ public class HabitEventListActivity extends AppCompatActivity implements HabitEv
         habitEventListView.setAdapter(habitEventAdapter);
 
         // define the add button
+
         final FloatingActionButton addHabitEventButton = findViewById(R.id.add_habit_event_button);
+   
         addHabitEventButton.setOnClickListener(new View.OnClickListener() {
             /**
              * Defines action to take when add button is clicked.

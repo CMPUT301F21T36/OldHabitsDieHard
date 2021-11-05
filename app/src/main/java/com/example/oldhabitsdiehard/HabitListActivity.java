@@ -21,6 +21,7 @@
  *  limitations under the License.
  */
 
+
 package com.example.oldhabitsdiehard;
 
 import android.content.Intent;
@@ -80,7 +81,9 @@ public class HabitListActivity extends AppCompatActivity implements HabitFragmen
         habitListView.setAdapter(habitAdapter);
 
         // define habit add button
+
         final FloatingActionButton addHabitButton = findViewById(R.id.add_habit_button);
+      
         addHabitButton.setOnClickListener(new View.OnClickListener() {
             /**
              * Defines action to take when the add button is clicked.
