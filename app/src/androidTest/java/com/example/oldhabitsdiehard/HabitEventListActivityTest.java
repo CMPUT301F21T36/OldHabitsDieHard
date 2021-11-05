@@ -17,6 +17,10 @@ import org.junit.BeforeClass;
 import org.junit.Rule;
 import org.junit.Test;
 
+/**
+ * Test class for HabitEventListActivity. UI tests are written here and robotium test framework is used
+ */
+
 public class HabitEventListActivityTest {
     private Solo solo;
 
