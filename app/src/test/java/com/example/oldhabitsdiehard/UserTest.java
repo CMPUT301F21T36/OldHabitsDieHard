@@ -1,13 +1,17 @@
 package com.example.oldhabitsdiehard;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
+
 import java.util.Arrays;
 import java.util.Collections;
+
 import java.util.List;
 
 /**
@@ -48,11 +52,17 @@ public class UserTest {
     }
 
     @Test
-    void testGetHabits() {
+    void testHabitsHandling() {
         User user = mockUser();
         Habit habit = new Habit("title", "reason");
+
+        // Adding and getting
         user.addHabit(habit);
         assertTrue(user.getHabits().contains(habit));
+
+        // Deleting and getting
+        user.deleteHabit(habit);
+        assertFalse(user.getHabits().contains(habit));
     }
 
     @Test
@@ -83,10 +93,32 @@ public class UserTest {
         List<Boolean> myWeekdays = new ArrayList<Boolean>(Arrays.asList(new Boolean[7])); // initialized to false
         Collections.fill(myWeekdays, Boolean.TRUE);
         Habit habit = new Habit("", "", myWeekdays);
+
         User user = mockUser();
         user.addHabit(habit);
+
         ArrayList<Habit> todayHabits = user.getTodayHabits();
         assertTrue(todayHabits.contains(habit));
     }
 
+    @Test
+    void testIllegalArguments() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            new User("", "");
+        });
+    }
+
+    @Test
+    void testHabitEventHandling() {
+        User user = mockUser();
+        Habit habit = new Habit("title", "reason");
+        user.addHabit(habit);
+
+        // Adding
+        HabitEvent event = new HabitEvent("title","comment",LocalDate.of(2021, 11, 4));
+        user.addHabitEvent(event);
+
+        // Getting
+        assertTrue(user.getHabitEvents().contains(event));
+    }
 }
