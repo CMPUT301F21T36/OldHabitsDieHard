@@ -1,8 +1,6 @@
 package com.example.oldhabitsdiehard;
 
 import android.content.Intent;
-import android.location.Location;
-import android.location.LocationManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.MenuItem;
@@ -14,16 +12,11 @@ import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
-
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationBarView;
 
-import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
 
 /**
  * This class shows Habit event list activity where users can see all their habit events.
@@ -52,7 +45,7 @@ public class HabitEventListActivity extends AppCompatActivity implements HabitEv
         habitEventAdapter = new HabitEventAdapter(this, user);
         habitEventListView.setAdapter(habitEventAdapter);
 
-        final FloatingActionButton addHabitEventButton = findViewById(R.id.addHabitEventButton);
+        final FloatingActionButton addHabitEventButton = findViewById(R.id.add_habit_event_button);
         addHabitEventButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

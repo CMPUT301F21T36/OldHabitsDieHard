@@ -1,9 +1,5 @@
 package com.example.oldhabitsdiehard;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.RequiresApi;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
@@ -11,6 +7,10 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -53,7 +53,7 @@ public class HabitListActivity extends AppCompatActivity implements AddHabitFrag
         habitAdapter = new HabitAdapter(this, user);
         habitListView.setAdapter(habitAdapter);
 
-        final FloatingActionButton addHabitButton = findViewById(R.id.addHabitButton);
+        final FloatingActionButton addHabitButton = findViewById(R.id.add_habit_button);
         addHabitButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
