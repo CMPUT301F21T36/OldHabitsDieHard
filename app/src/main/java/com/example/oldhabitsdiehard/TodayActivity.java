@@ -36,11 +36,11 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
 
-import java.util.ArrayList;
-
 /**
  * This class creates an activity where the user can view all the habits that
  * should be done today.
+ *
+ * @author Paige Lekach
  */
 public class TodayActivity extends AppCompatActivity {
     private User user;
