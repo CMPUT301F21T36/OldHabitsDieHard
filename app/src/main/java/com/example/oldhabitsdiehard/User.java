@@ -175,6 +175,24 @@ public class User {
     }
 
     /**
+     * Method to delete a habit event from this user.
+     * @param event the event to be deleted
+     */
+    public void deleteHabitEvent(HabitEvent event) {
+        // get the habit this event belongs to
+        String habitName = event.getHabit();
+        for (int i = 0; i < habits.size(); i++) {
+            if (habits.get(i).getTitle().equals(habitName)) {
+                // remove the event from the habit too
+                habits.get(i).removeHabitEvent(event);
+            }
+        }
+        // remove habit event from list
+        habitEvents.remove(event);
+
+    }
+
+    /**
      * Method to get the habits to be done today from this user's habit list.
      * The list is recalculated every time this method is called so that it is
      * always updated with the correct date. Use this method to create the
