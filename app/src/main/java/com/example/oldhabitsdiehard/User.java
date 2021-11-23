@@ -57,6 +57,9 @@ public class User {
         setBio("");
         habits = new ArrayList<Habit>();
         habitEvents = new ArrayList<HabitEvent>();
+        following = new ArrayList<String>();
+        followers = new ArrayList<String>();
+        followRequests = new ArrayList<FollowRequest>();
     }
 
     /**
@@ -226,8 +229,22 @@ public class User {
      * @param user user to follow
      */
     public void requestToFollow(User user) {
+        // Not allowed to follow self
+        if (user == this) {
+            return;
+        }
+
         // Generate follow request
-        user.getFollowRequests().add(new FollowRequest(this.getUsername(), user.getUsername()));
+        FollowRequest followRequest = new FollowRequest(this.getUsername(), user.getUsername());
+
+        // Check if either already following, or request already created
+        ArrayList<FollowRequest> theirFollowRequests = user.getFollowRequests();
+        if (theirFollowRequests.contains(followRequest) || following.contains(user.getUsername())) {
+            return;
+        }
+
+        // Add follow request
+        theirFollowRequests.add(new FollowRequest(this.getUsername(), user.getUsername()));
 
         // Update database with new follow request
         UserDatabase db = UserDatabase.getInstance();

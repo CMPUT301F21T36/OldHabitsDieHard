@@ -76,4 +76,27 @@ public class FollowRequest {
         delete();
     }
 
+    /**
+     * Overriding equals method
+     * @param o object to compare to
+     * @return true if equals, false if not
+     */
+    @Override
+    public boolean equals(Object o) {
+        // Object is itself
+        if (o == this) {
+            return true;
+        }
+
+        // Object is not instance of followRequest
+        if (!(o instanceof FollowRequest)) {
+            return false;
+        }
+
+        // Cast object
+        FollowRequest fr = (FollowRequest) o;
+
+        // Compare follower & followee
+        return fr.getFollowee().equals(followee) && fr.getFollower().equals(follower);
+    }
 }
