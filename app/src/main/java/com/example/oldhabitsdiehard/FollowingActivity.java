@@ -27,6 +27,7 @@ import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.widget.ListView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
@@ -54,6 +55,23 @@ public class FollowingActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.following_view);
+
+        //---------------------------- EXAMPLE --------------------------------
+        // get the current logged in user
+        User user = CurrentUser.get();
+        UserDatabase db = UserDatabase.getInstance();
+        db.updateUser(user);
+
+        // make "follower" user try send follow request to this user
+        User follower = db.getUser("follower");
+        follower.requestToFollow(user);
+
+        // Set up list
+        ListView followRequestList = findViewById(R.id.followrequest_list);
+        FollowRequestAdapter adapter = new FollowRequestAdapter(this, user);
+        followRequestList.setAdapter(adapter);
+        //---------------------------- END EXAMPLE ----------------------------
+
 
         //creating intents for different activities
         Intent intentHabits = new Intent(this, HabitListActivity.class);
