@@ -42,6 +42,9 @@ public class User {
     private String bio;
     private ArrayList<Habit> habits;
     private ArrayList<HabitEvent> habitEvents;
+    private ArrayList<String> following;
+    private ArrayList<String> followers;
+    private ArrayList<FollowRequest> followRequests;
 
     /**
      * User constructor
@@ -54,6 +57,9 @@ public class User {
         setBio("");
         habits = new ArrayList<Habit>();
         habitEvents = new ArrayList<HabitEvent>();
+        following = new ArrayList<String>();
+        followers = new ArrayList<String>();
+        followRequests = new ArrayList<FollowRequest>();
     }
 
     /**
@@ -92,6 +98,24 @@ public class User {
      * @return User's bio
      */
     public String getBio() { return bio; }
+
+    /**
+     * Following getter
+     * @return Users that this user is following
+     */
+    public ArrayList<String> getFollowing() { return following; }
+
+    /**
+     * Followers getter
+     * @return Users that are following this user
+     */
+    public ArrayList<String> getFollowers() { return followers; }
+
+    /**
+     * FollowRequests getter
+     * @return Incoming follow requests
+     */
+    public ArrayList<FollowRequest> getFollowRequests() { return followRequests; }
 
     /**
      * Username setter
@@ -198,5 +222,50 @@ public class User {
             }
         }
         return todayHabits;
+    }
+
+    /**
+     * Generates a follow request to follow another user
+     * @param user user to follow
+     */
+    public void requestToFollow(User user) {
+        // Not allowed to follow self
+        if (user == this) {
+            return;
+        }
+
+        // Generate follow request
+        FollowRequest followRequest = new FollowRequest(this.getUsername(), user.getUsername());
+
+        // Check if either already following, or request already created
+        ArrayList<FollowRequest> theirFollowRequests = user.getFollowRequests();
+        if (theirFollowRequests.contains(followRequest) || following.contains(user.getUsername())) {
+            return;
+        }
+
+        // Add follow request
+        theirFollowRequests.add(new FollowRequest(this.getUsername(), user.getUsername()));
+
+        // Update database with new follow request
+        UserDatabase db = UserDatabase.getInstance();
+        db.updateUser(user);
+        db.updateUser(this);
+    }
+
+    /**
+     * Unfollow the given user
+     * @param user user to unfollow
+     */
+    public void unfollow(User user) {
+        // Remove given user from this user's following array
+        following.remove(user.getUsername());
+
+        // Remove this user from given user's followers array
+        user.getFollowers().remove(this.username);
+
+        // Update both users in database
+        UserDatabase db = UserDatabase.getInstance();
+        db.updateUser(user);
+        db.updateUser(this);
     }
 }
