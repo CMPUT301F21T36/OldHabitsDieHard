@@ -77,13 +77,8 @@ public class HabitListActivity extends AppCompatActivity implements HabitFragmen
         db = UserDatabase.getInstance();
         db.updateUser(user);
 
-
         // create the habit list and set its adapter
-        //habitListView = findViewById(R.id.habit_list);
         habitList = user.getHabits();
-
-        //habitAdapter = new HabitAdapter(this, user);
-        //habitListView.setAdapter(habitAdapter);
         recyclerView = findViewById(R.id.habit_list);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
@@ -95,11 +90,12 @@ public class HabitListActivity extends AppCompatActivity implements HabitFragmen
                 newFragment.show(getSupportFragmentManager(), "EDIT_HABIT");
             }
         });
+        // set the adapter
         recyclerView.setAdapter(recyclerAdapter);
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(simpleCallback);
         itemTouchHelper.attachToRecyclerView(recyclerView);
 
-
+        // define habit add button
         final FloatingActionButton addHabitButton = findViewById(R.id.add_habit_button);
         addHabitButton.setOnClickListener(new View.OnClickListener() {
             /**
@@ -147,12 +143,17 @@ public class HabitListActivity extends AppCompatActivity implements HabitFragmen
                 });
 
     }
+
+    /**
+     * ItemTouchHelper handles callbacks when a drag or swipe action is done.
+     */
     ItemTouchHelper.SimpleCallback simpleCallback = new ItemTouchHelper.SimpleCallback(ItemTouchHelper.UP | ItemTouchHelper.DOWN | ItemTouchHelper.START | ItemTouchHelper.END, 0) {
         @Override
         public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
             int fromPosition = viewHolder.getAdapterPosition();
             int toPosition = target.getAdapterPosition();
             Collections.swap(habitList, fromPosition, toPosition);
+            db.updateUser(user);
             recyclerView.getAdapter().notifyItemMoved(fromPosition, toPosition);
             return false;
         }

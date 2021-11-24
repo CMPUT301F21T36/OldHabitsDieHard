@@ -14,6 +14,12 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 
+/**
+ * Custom adapter for Habits.
+ *
+ * @author Filippo Ciandy
+ */
+
 public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHolder>{
 
     private String TAG = "RecyclerAdapter";
@@ -22,17 +28,24 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
     private User user;
     private AdapterView.OnItemClickListener ItemClickListener;
 
+
+    /**
+     * Constructor
+     * @param HabitList
+     * @param ItemClickListener
+     */
     @RequiresApi(api = Build.VERSION_CODES.O)
     public RecyclerAdapter(ArrayList<Habit> HabitList,AdapterView.OnItemClickListener ItemClickListener) {
-        //super(context, 0, user.getHabits());
         this.HabitList = HabitList;
-        //this.user = user;
-        //this.context = context;
-        //this.HabitList = user.getHabits();
         this.ItemClickListener = ItemClickListener;
     }
 
-
+    /**
+     * Inflates row layout from habit_list_content
+     * @param parent
+     * @param viewType
+     * @return
+     */
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -44,6 +57,11 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
 
     }
 
+    /**
+     * Binds Habit title in dedicated position to TextView in each row.
+     * @param holder
+     * @param _
+     */
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int _) {
         int position = holder.getAdapterPosition();
@@ -56,15 +74,23 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
         });
     }
 
+    /**
+     * Get total number of rows
+     * @return total number of rows
+     */
+
     @Override
     public int getItemCount() {
         return HabitList.size();
     }
 
+    /**
+     * Recycles and stores view when list is scrolled out of the screen
+     */
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
 
-        TextView textView, rowCountTextView;
+        TextView textView;
 
 
         public ViewHolder(@NonNull View itemView) {
