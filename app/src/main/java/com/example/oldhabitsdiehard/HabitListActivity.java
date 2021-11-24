@@ -3,6 +3,8 @@ package com.example.oldhabitsdiehard;
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.ItemTouchHelper;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Build;
@@ -17,6 +19,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationBarView;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 /**
  * This class represents the Habit List Activity in which the user can view
@@ -28,6 +31,8 @@ public class HabitListActivity extends AppCompatActivity implements AddHabitFrag
     private ArrayList<Habit> habitList;
     private User user;
     private UserDatabase db;
+    private RecyclerAdapter recyclerAdapter;
+    private RecyclerView recyclerView;
 
     /**
      * Called upon creation of the activity
@@ -47,13 +52,19 @@ public class HabitListActivity extends AppCompatActivity implements AddHabitFrag
 
 
         // create the habit list and set its adapter
-        habitListView = findViewById(R.id.habit_list);
+        //habitListView = findViewById(R.id.habit_list);
         habitList = user.getHabits();
 
-        habitAdapter = new HabitAdapter(this, user);
-        habitListView.setAdapter(habitAdapter);
+        //habitAdapter = new HabitAdapter(this, user);
+        //habitListView.setAdapter(habitAdapter);
+        recyclerView = findViewById(R.id.habit_list);
+        recyclerAdapter = new RecyclerAdapter(habitList);
+        recyclerView.setAdapter(recyclerAdapter);
+        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(simpleCallback);
+        itemTouchHelper.attachToRecyclerView(recyclerView);
 
-        final FloatingActionButton addHabitButton = findViewById(R.id.addHabitButton);
+
+            final FloatingActionButton addHabitButton = findViewById(R.id.addHabitButton);
         addHabitButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -105,6 +116,21 @@ public class HabitListActivity extends AppCompatActivity implements AddHabitFrag
                 });
 
     }
+    ItemTouchHelper.SimpleCallback simpleCallback = new ItemTouchHelper.SimpleCallback(ItemTouchHelper.UP | ItemTouchHelper.DOWN | ItemTouchHelper.START | ItemTouchHelper.END,0) {
+        @Override
+        public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
+            int fromPosition = viewHolder.getAdapterPosition();
+            int toPosition = target.getAdapterPosition();
+            Collections.swap(habitList, fromPosition, toPosition);
+            recyclerView.getAdapter().notifyItemMoved(fromPosition, toPosition);
+            return false;
+        }
+
+        @Override
+        public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
+
+        }
+    };
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override

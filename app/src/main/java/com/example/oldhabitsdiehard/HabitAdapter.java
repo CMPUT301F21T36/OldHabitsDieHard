@@ -57,4 +57,5 @@ public class HabitAdapter extends ArrayAdapter<Habit> {
 
         return view;
     }
+
 }
