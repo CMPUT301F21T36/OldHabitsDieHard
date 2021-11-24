@@ -1,3 +1,26 @@
+/*
+ *  User
+ *
+ *  Version 1.0
+ *
+ *  November 4, 2021
+ *
+ *  Copyright 2021 Rowan Tilroe, Claire Martin, Filippo Ciandy,
+ *  Gurbani Baweja, Chanpreet Singh, and Paige Lekach
+ *
+ *  Licensed under the Apache License, Version 2.0 (the "License");
+ *  you may not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" BASIS,
+ *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  See the License for the specific language governing permissions and
+ *  limitations under the License.
+ */
+
 package com.example.oldhabitsdiehard;
 
 import android.os.Build;
@@ -8,8 +31,10 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 
 /**
- * This class represents a user
+ * This class represents a user.
+ *
  * @author Rowan Tilroe
+ * @author Claire Martin
  */
 public class User {
     private String username;
@@ -17,7 +42,6 @@ public class User {
     private String bio;
     private ArrayList<Habit> habits;
     private ArrayList<HabitEvent> habitEvents;
-
 
     /**
      * User constructor
@@ -31,6 +55,10 @@ public class User {
         habits = new ArrayList<Habit>();
         habitEvents = new ArrayList<HabitEvent>();
     }
+
+    /**
+     * Empty constructor for firestore compatibility
+     */
     public User() {}
 
     /**
@@ -47,13 +75,18 @@ public class User {
 
     /**
      * Habits getter
-     * @return User's HabitList
+     * @return the list of habits belonging to this user
      */
     public ArrayList<Habit> getHabits() { return habits; }
 
+    /**
+     * HabitEvents getter
+     * @return the list of habits events belonging to this user
+     */
     public ArrayList<HabitEvent> getHabitEvents() {
         return habitEvents;
     }
+
     /**
      * Bio getter
      * @return User's bio
@@ -62,10 +95,11 @@ public class User {
 
     /**
      * Username setter
-     * @param username
+     * @param username the user's username
      * @throws IllegalArgumentException
      */
     public void setUsername(String username) throws IllegalArgumentException {
+        // make sure length is at least 1
         if (username.length() < 1) {
             throw new IllegalArgumentException();
         }
@@ -76,10 +110,11 @@ public class User {
 
     /**
      * Password setter
-     * @param password
+     * @param password the user's password
      * @throws IllegalArgumentException
      */
     public void setPassword(String password) throws IllegalArgumentException {
+        // make sure lenght is at least 1
         if (password.length() < 1) {
             throw new IllegalArgumentException();
         }
@@ -90,7 +125,7 @@ public class User {
 
     /**
      * Bio setter
-     * @param bio
+     * @param bio the user's bio
      */
     public void setBio(String bio) {
         this.bio = bio;
@@ -98,29 +133,42 @@ public class User {
 
     /**
      * Method to add a habit to this user's habit list.
-     * @param habit
+     * @param habit the habit to be added
      */
     @RequiresApi(api = Build.VERSION_CODES.O)
     public void addHabit(Habit habit) {
         habits.add(habit);
     }
 
+    /**
+     * Method to add a habit event to this user's habit event list
+     * @param event the event to be added
+     */
     public void addHabitEvent(HabitEvent event) {
+        // find the name of the habit this event belongs to
         String habitName = event.getHabit();
         for (int i = 0; i < habits.size(); i++) {
             Habit curr = habits.get(i);
             if (curr.getTitle().equals(habitName)) {
                 // found the habit
+                // add this event to the habit object
                 curr.addHabitEvent(event);
+                // add this event to the list of habit events for this user
                 habitEvents.add(event);
             }
         }
     }
 
+    /**
+     * Method to delete a habit from this user.
+     * @param habit the habit to be deleted
+     */
     public void deleteHabit(Habit habit) {
+        // remove the habit from the list
         habits.remove(habit);
         for (int i = 0; i < habitEvents.size(); i++) {
             if (habitEvents.get(i).getHabit().equals(habit.getTitle())) {
+                // remove any events associated with it
                 habitEvents.remove(i);
             }
         }
@@ -131,11 +179,10 @@ public class User {
      * The list is recalculated every time this method is called so that it is
      * always updated with the correct date. Use this method to create the
      * Today page.
-     * @return an ArrayList of the habits to be done tdoay
+     * @return an ArrayList of the habits to be done today
      */
     @RequiresApi(api = Build.VERSION_CODES.O)
     public ArrayList<Habit> getTodayHabits() {
-
         ArrayList<Habit> todayHabits = new ArrayList<Habit>();
         // 1 is Monday, 7 is Sunday
         int today = LocalDate.now().getDayOfWeek().getValue();
