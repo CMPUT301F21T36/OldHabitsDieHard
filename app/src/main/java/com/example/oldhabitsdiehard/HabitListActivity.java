@@ -23,13 +23,6 @@
 
 package com.example.oldhabitsdiehard;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.RequiresApi;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.ItemTouchHelper;
-import androidx.recyclerview.widget.RecyclerView;
-
-
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
@@ -41,6 +34,9 @@ import android.widget.ListView;
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.ItemTouchHelper;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -65,7 +61,8 @@ public class HabitListActivity extends AppCompatActivity implements HabitFragmen
     private RecyclerView recyclerView;
 
     /**
-     * Called upon creation of the activity.
+     * Called upon creation of the activity
+     *
      * @param savedInstanceState the saved state
      */
     @RequiresApi(api = Build.VERSION_CODES.O)
@@ -88,13 +85,22 @@ public class HabitListActivity extends AppCompatActivity implements HabitFragmen
         //habitAdapter = new HabitAdapter(this, user);
         //habitListView.setAdapter(habitAdapter);
         recyclerView = findViewById(R.id.habit_list);
-        recyclerAdapter = new RecyclerAdapter(habitList);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+
+        recyclerAdapter = new RecyclerAdapter(habitList, new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                final Habit habit = habitList.get(position);
+                HabitFragment newFragment = HabitFragment.newInstance(habit);
+                newFragment.show(getSupportFragmentManager(), "EDIT_HABIT");
+            }
+        });
         recyclerView.setAdapter(recyclerAdapter);
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(simpleCallback);
         itemTouchHelper.attachToRecyclerView(recyclerView);
 
 
-            final FloatingActionButton addHabitButton = findViewById(R.id.add_habit_button);
+        final FloatingActionButton addHabitButton = findViewById(R.id.add_habit_button);
         addHabitButton.setOnClickListener(new View.OnClickListener() {
             /**
              * Defines action to take when the add button is clicked.
@@ -103,23 +109,6 @@ public class HabitListActivity extends AppCompatActivity implements HabitFragmen
             @Override
             public void onClick(View view) {
                 new HabitFragment().show(getSupportFragmentManager(), "ADD_HABIT");
-            }
-        });
-
-        // functionality for when a habit is clicked
-        habitListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            /**
-             * Defines action to take when a habit is clicked.
-             * @param parent
-             * @param view
-             * @param position the position of the selected habit in the list
-             * @param id
-             */
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                final Habit habit = habitList.get(position);
-                HabitFragment newFragment = HabitFragment.newInstance(habit);
-                newFragment.show(getSupportFragmentManager(), "EDIT_HABIT");
             }
         });
 
@@ -158,7 +147,7 @@ public class HabitListActivity extends AppCompatActivity implements HabitFragmen
                 });
 
     }
-    ItemTouchHelper.SimpleCallback simpleCallback = new ItemTouchHelper.SimpleCallback(ItemTouchHelper.UP | ItemTouchHelper.DOWN | ItemTouchHelper.START | ItemTouchHelper.END,0) {
+    ItemTouchHelper.SimpleCallback simpleCallback = new ItemTouchHelper.SimpleCallback(ItemTouchHelper.UP | ItemTouchHelper.DOWN | ItemTouchHelper.START | ItemTouchHelper.END, 0) {
         @Override
         public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
             int fromPosition = viewHolder.getAdapterPosition();
@@ -181,9 +170,9 @@ public class HabitListActivity extends AppCompatActivity implements HabitFragmen
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     public void addHabit(Habit newHabit) {
-        // add the habit
-        habitAdapter.add(newHabit);
-        // update the user in firestore
+        habitList.add(newHabit);
+        recyclerAdapter.notifyItemInserted(habitList.size()-1);
+        //db = UserDatabase.getInstance();
         db.updateUser(user);
     }
 
@@ -193,9 +182,8 @@ public class HabitListActivity extends AppCompatActivity implements HabitFragmen
      */
     @Override
     public void editHabit(Habit habit) {
-        // notify the adapter that the list has changed
-        habitAdapter.notifyDataSetChanged();
-        // udpate the user in firestore
+        recyclerAdapter.notifyDataSetChanged();
+        //db = UserDatabase.getInstance();
         db.updateUser(user);
     }
 
@@ -208,9 +196,8 @@ public class HabitListActivity extends AppCompatActivity implements HabitFragmen
         // delete the habit from the user
         // did not delete from adapter in order to ensure events are deleted too
         user.deleteHabit(habit);
-        // notify the adapter
-        habitAdapter.notifyDataSetChanged();
-        // update user in firestore
+        recyclerAdapter.notifyDataSetChanged();
+        //db = UserDatabase.getInstance();
         db.updateUser(user);
     }
 }

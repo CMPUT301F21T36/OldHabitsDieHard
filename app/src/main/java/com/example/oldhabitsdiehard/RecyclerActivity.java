@@ -23,7 +23,7 @@ public class RecyclerActivity extends AppCompatActivity {
         user = CurrentUser.get();
         HabitList  = user.getHabits();
         HabitListView = findViewById(R.id.habitevent_list);
-        recyclerAdapter = new RecyclerAdapter(HabitList);
+        //recyclerAdapter = new RecyclerAdapter(HabitList);
         recyclerView.setAdapter(recyclerAdapter);
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(simpleCallback);
         itemTouchHelper.attachToRecyclerView(recyclerView);
