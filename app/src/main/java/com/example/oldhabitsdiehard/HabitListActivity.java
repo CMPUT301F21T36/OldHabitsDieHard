@@ -52,12 +52,11 @@ import java.util.Collections;
  * @author Claire Martin
  */
 public class HabitListActivity extends AppCompatActivity implements HabitFragment.onFragmentInteractionListener {
-    private ListView habitListView;
-    private HabitAdapter habitAdapter;
+
     private ArrayList<Habit> habitList;
     private User user;
     private UserDatabase db;
-    private RecyclerAdapter recyclerAdapter;
+    private HabitAdapter recyclerAdapter;
     private RecyclerView recyclerView;
 
     /**
@@ -82,7 +81,7 @@ public class HabitListActivity extends AppCompatActivity implements HabitFragmen
         recyclerView = findViewById(R.id.habit_list);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        recyclerAdapter = new RecyclerAdapter(habitList, new AdapterView.OnItemClickListener() {
+        recyclerAdapter = new HabitAdapter(habitList, new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 final Habit habit = habitList.get(position);
