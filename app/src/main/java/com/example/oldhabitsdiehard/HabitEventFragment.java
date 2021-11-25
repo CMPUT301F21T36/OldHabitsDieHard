@@ -23,18 +23,31 @@
 
 package com.example.oldhabitsdiehard;
 
+import static android.app.Activity.RESULT_OK;
+
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.ImageDecoder;
+import android.graphics.drawable.BitmapDrawable;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.provider.MediaStore;
+import android.util.Base64;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.Spinner;
 
@@ -43,8 +56,16 @@ import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.fragment.app.DialogFragment;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
+
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.UUID;
 
 /**
  * A class for the fragment allowing the user to add, edit, view or delete
@@ -52,12 +73,17 @@ import java.util.ArrayList;
  * @author Gurbani Baweja
  * @author Claire Martin
  */
-public class HabitEventFragment extends DialogFragment {
+public class HabitEventFragment extends DialogFragment implements View.OnClickListener {
     private User user;
+    private UserDatabase db;
     private Spinner habitEventType;
     private EditText habitEventComment;
     private DatePicker habitEventDate;
     private HabitEventFragment.onFragmentInteractionListener listener;
+    private Button uploadButton;
+    private Button cameraButton;
+    private ImageView img;
+    static final int REQUEST_IMAGE_GET = 1;
 
     /**
      * A listener interface for this fragment to interact with the calling activity.
@@ -90,7 +116,11 @@ public class HabitEventFragment extends DialogFragment {
      */
     @Override
     public void onAttach(Context context){
+
         super.onAttach(context);
+        user = CurrentUser.get();
+        db = UserDatabase.getInstance();
+        db.updateUser(user);
         if(context instanceof HabitEventFragment.onFragmentInteractionListener){
             listener = (HabitEventFragment.onFragmentInteractionListener) context;
         }else {
@@ -107,7 +137,11 @@ public class HabitEventFragment extends DialogFragment {
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
         // get the current user
-        user = CurrentUser.get();
+        //user = CurrentUser.get();
+        //db = UserDatabase.getInstance();
+        db.updateUser(user);
+        // get storage reference
+        StorageReference storageRef = db.getStorageRef();
 
         // set the view
         View view = LayoutInflater.from(getActivity()).inflate(R.layout.habit_event_fragment, null);
@@ -116,7 +150,11 @@ public class HabitEventFragment extends DialogFragment {
         habitEventType = view.findViewById(R.id.habitEventType);
         habitEventComment = view.findViewById(R.id.habitEventComment);
         habitEventDate = view.findViewById(R.id.habitEventDate);
-        Spinner dropdown = view.findViewById(R.id.habitEventType);
+        //Spinner dropdown = view.findViewById(R.id.habitEventType);
+        uploadButton = view.findViewById(R.id.UploadBtn);
+        cameraButton = view.findViewById(R.id.TakePhotoButton);
+        img = view.findViewById(R.id.habitEventImage);
+
 
         // create a list of habits to populate the spinner
         // the user can only select habits which are already part of the current user
@@ -127,7 +165,9 @@ public class HabitEventFragment extends DialogFragment {
         }
         // create an adapter to describe how the habitNames are displayed
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_dropdown_item, habitNames);
-        dropdown.setAdapter(adapter);
+        habitEventType.setAdapter(adapter);
+
+        uploadButton.setOnClickListener(this);
 
         // build the dialog
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
@@ -147,6 +187,25 @@ public class HabitEventFragment extends DialogFragment {
             int month = myEvent.getMonth();
             int day = myEvent.getDay();
             habitEventDate.updateDate(year, month, day);
+
+            String imgString = myEvent.getImage();
+            if (imgString != null) {
+                StorageReference imgRef = storageRef.child(imgString);
+                final long ONE_MEGABYTE = 1024 * 1024;
+                imgRef.getBytes(ONE_MEGABYTE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
+                    @Override
+                    public void onSuccess(byte[] bytes) {
+                        Bitmap imgBitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+                        img.setImageBitmap(imgBitmap);
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        //not sure what to do here lol
+                    }
+                });
+
+            }
             return builder
                     .setView(view)
                     .setNegativeButton("Cancel", null)
@@ -195,10 +254,70 @@ public class HabitEventFragment extends DialogFragment {
                             int year = habitEventDate.getYear();
                             LocalDate date = LocalDate.of(year, month, day);
 
-                            // add the habit event to the listener
-                            listener.addHabitEvent(new HabitEvent(habitName, comment, date));
+                            if (img.getDrawable() != null) {
+                                // get img if there is one
+                                Bitmap imgBitmap = ((BitmapDrawable) img.getDrawable()).getBitmap();
+                                // get reference to storage bucket
+                                //StorageReference storageRef = db.getStorageRef();
+                                // generate random uuid to reference image
+                                UUID uuid = UUID.randomUUID();
+                                String uuidStr = uuid.toString();
+                                // create reference for this image
+                                String refString = user.getUsername() + "/" + uuidStr + ".jpg";
+                                StorageReference imgRef = storageRef.child(refString);
+                                // convert image to byte array
+                                ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                                imgBitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+                                byte[] data = baos.toByteArray();
+
+                                // upload image to storage
+                                UploadTask uploadTask = imgRef.putBytes(data);
+                                uploadTask.addOnFailureListener(new OnFailureListener() {
+                                    @Override
+                                    public void onFailure(@NonNull Exception e) {
+                                        // add habit event without the image
+                                        listener.addHabitEvent(new HabitEvent(habitName, comment, date));
+                                    }
+                                }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                                    @Override
+                                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                                        // add the habit event
+                                        listener.addHabitEvent(new HabitEvent(habitName, comment, date, refString));
+                                    }
+                                });
+                            } else {
+                                // add the habit event to the listener
+                                listener.addHabitEvent(new HabitEvent(habitName, comment, date));
+                            }
                         }
                     }).create();
+        }
+    }
+
+    /**
+     * Defines action to take when upload button is clicked.
+     * @param view
+     */
+    @Override
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.UploadBtn:
+                Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+                intent.setType("image/*");
+                startActivityForResult(intent, REQUEST_IMAGE_GET);
+        }
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.P)
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == REQUEST_IMAGE_GET && resultCode == RESULT_OK) {
+            Uri imgUri = data.getData();
+            try {
+                img.setImageBitmap(ImageDecoder.decodeBitmap(ImageDecoder.createSource(getContext().getContentResolver(), imgUri)));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
     }
 }

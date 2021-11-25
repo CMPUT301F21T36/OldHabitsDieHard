@@ -38,5 +38,11 @@
             android:theme="@style/noAnimTheme"/>
 
     </application>
+    <queries>
+        <intent>
+            <action android:name="android.intent.action.GET_CONTENT" />
+            <category android:name="android.intent.category.OPENABLE" />
+        </intent>
+    </queries>
 
 </manifest>

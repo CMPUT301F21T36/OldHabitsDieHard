@@ -189,6 +189,7 @@ public class HabitEventListActivity extends AppCompatActivity implements HabitEv
     public void deleteHabitEvent(HabitEvent event) {
         // remove event from adapter
         habitEventAdapter.remove(event);
+        // delete image from storage
         // udpate the user in firestore
         db.updateUser(user);
     }

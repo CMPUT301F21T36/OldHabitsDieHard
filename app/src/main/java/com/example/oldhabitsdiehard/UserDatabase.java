@@ -29,7 +29,10 @@ import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
 /**
  * Database for user data. Connects to Firestore.
@@ -43,6 +46,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 public class UserDatabase {
     private static final UserDatabase instance = new UserDatabase();
     private FirebaseFirestore database;
+    private FirebaseStorage storage;
     private CollectionReference userCollection;
 
     /**
@@ -51,6 +55,8 @@ public class UserDatabase {
     private UserDatabase() {
         database = FirebaseFirestore.getInstance();
         userCollection = database.collection("Users");
+        // create storage instance for storing images
+        storage = FirebaseStorage.getInstance();
     }
 
     /**
@@ -58,6 +64,15 @@ public class UserDatabase {
      * @return handle to UserDatabase
      */
     public static UserDatabase getInstance() { return instance; }
+
+    /**
+     * Gets a reference to the Firebase Storage bucket.
+     * @return storage reference
+     */
+    public StorageReference getStorageRef() {
+        // get reference to storage bucket
+        return storage.getReference();
+    }
 
     /**
      * Attempt to add user to database
