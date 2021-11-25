@@ -25,6 +25,7 @@ package com.example.oldhabitsdiehard;
 
 import static android.app.Activity.RESULT_OK;
 
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.ActivityNotFoundException;
@@ -52,16 +53,23 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.fragment.app.DialogFragment;
 
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.MapView;
+import com.google.android.gms.maps.MapsInitializer;
+import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+import com.google.type.LatLng;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -87,6 +95,11 @@ public class HabitEventFragment extends DialogFragment implements View.OnClickLi
     private Button uploadButton;
     private Button cameraButton;
     private ImageView img;
+    private Button addLocationButton;
+    private Button removeLocationButton;
+    private TextView locationText;
+    private MapView mapView;
+    private GoogleMap myGoogleMap;
     static final int REQUEST_IMAGE_GET = 1;
     static final int REQUEST_IMAGE_CAPTURE = 2;
 
@@ -121,11 +134,10 @@ public class HabitEventFragment extends DialogFragment implements View.OnClickLi
      */
     @Override
     public void onAttach(Context context){
-
-        super.onAttach(context);
         user = CurrentUser.get();
         db = UserDatabase.getInstance();
         db.updateUser(user);
+        super.onAttach(context);
         if(context instanceof HabitEventFragment.onFragmentInteractionListener){
             listener = (HabitEventFragment.onFragmentInteractionListener) context;
         }else {
@@ -142,8 +154,8 @@ public class HabitEventFragment extends DialogFragment implements View.OnClickLi
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
         // get the current user
-        //user = CurrentUser.get();
-        //db = UserDatabase.getInstance();
+        user = CurrentUser.get();
+        db = UserDatabase.getInstance();
         db.updateUser(user);
         // get storage reference
         StorageReference storageRef = db.getStorageRef();
@@ -159,11 +171,31 @@ public class HabitEventFragment extends DialogFragment implements View.OnClickLi
         uploadButton = view.findViewById(R.id.UploadBtn);
         cameraButton = view.findViewById(R.id.TakePhotoButton);
         img = view.findViewById(R.id.habitEventImage);
+        addLocationButton = view.findViewById(R.id.addLocationButton);
+        removeLocationButton = view.findViewById(R.id.removeLocationButton);
+        locationText = view.findViewById(R.id.locationText);
+        mapView = view.findViewById(R.id.mapView);
+        mapView.onCreate(savedInstanceState);
 
+        try {
+            MapsInitializer.initialize(getActivity());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        mapView.getMapAsync(new OnMapReadyCallback() {
+            @SuppressLint("MissingPermission")
+            @Override
+            public void onMapReady(@NonNull GoogleMap googleMap) {
+                myGoogleMap = googleMap;
+                myGoogleMap.getUiSettings().setZoomControlsEnabled(true);
+                myGoogleMap.setMyLocationEnabled(true);
+            }
+        });
 
         // create a list of habits to populate the spinner
         // the user can only select habits which are already part of the current user
-        ArrayList<Habit> habits = user.getHabits();
+        ArrayList < Habit > habits = user.getHabits();
         ArrayList<String> habitNames = new ArrayList<String>();
         for (int i = 0; i < habits.size(); i++) {
             habitNames.add(habits.get(i).getTitle());
