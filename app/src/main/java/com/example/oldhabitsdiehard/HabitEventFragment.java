@@ -27,6 +27,7 @@ import static android.app.Activity.RESULT_OK;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -37,6 +38,7 @@ import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.provider.MediaStore;
 import android.util.Base64;
 import android.util.Log;
@@ -62,6 +64,7 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -76,6 +79,7 @@ import java.util.UUID;
 public class HabitEventFragment extends DialogFragment implements View.OnClickListener {
     private User user;
     private UserDatabase db;
+    private String currentPhotoPath;
     private Spinner habitEventType;
     private EditText habitEventComment;
     private DatePicker habitEventDate;
@@ -84,6 +88,7 @@ public class HabitEventFragment extends DialogFragment implements View.OnClickLi
     private Button cameraButton;
     private ImageView img;
     static final int REQUEST_IMAGE_GET = 1;
+    static final int REQUEST_IMAGE_CAPTURE = 2;
 
     /**
      * A listener interface for this fragment to interact with the calling activity.
@@ -168,6 +173,7 @@ public class HabitEventFragment extends DialogFragment implements View.OnClickLi
         habitEventType.setAdapter(adapter);
 
         uploadButton.setOnClickListener(this);
+        cameraButton.setOnClickListener(this);
 
         // build the dialog
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
@@ -300,11 +306,21 @@ public class HabitEventFragment extends DialogFragment implements View.OnClickLi
      */
     @Override
     public void onClick(View view) {
+        Intent intent;
         switch (view.getId()) {
             case R.id.UploadBtn:
-                Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+                // we are uploading a photo
+                intent = new Intent(Intent.ACTION_GET_CONTENT);
                 intent.setType("image/*");
                 startActivityForResult(intent, REQUEST_IMAGE_GET);
+            case R.id.TakePhotoButton:
+                // we are taking a photo
+                intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                try {
+                    startActivityForResult(intent, REQUEST_IMAGE_CAPTURE);
+                } catch (ActivityNotFoundException e) {
+                    // error
+                }
         }
     }
 
@@ -318,6 +334,10 @@ public class HabitEventFragment extends DialogFragment implements View.OnClickLi
             } catch (IOException e) {
                 e.printStackTrace();
             }
+        } else if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
+            Bundle extras = data.getExtras();
+            Bitmap imageBitmap = (Bitmap) extras.get("data");
+            img.setImageBitmap(imageBitmap);
         }
     }
 }
