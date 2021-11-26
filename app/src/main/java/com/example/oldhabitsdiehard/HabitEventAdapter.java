@@ -24,6 +24,8 @@
 package com.example.oldhabitsdiehard;
 
 import android.content.Context;
+import android.os.Build;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -32,6 +34,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 
 import java.util.ArrayList;
 
@@ -64,6 +67,7 @@ public class HabitEventAdapter extends ArrayAdapter<HabitEvent> {
      * @param parent
      * @return the view
      */
+    @RequiresApi(api = Build.VERSION_CODES.O)
     @NonNull
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
@@ -72,6 +76,11 @@ public class HabitEventAdapter extends ArrayAdapter<HabitEvent> {
             view = LayoutInflater.from(context).inflate(R.layout.habitevent_content, parent,false);
         }
         HabitEvent habitEvent = user.getHabitEvents().get(position);
+        ArrayList<Habit> user_habit = user.getHabits();
+        for (Habit ha : user_habit){
+            ha.followScore();
+            Log.d("HabitEventAdapter Call", "yo");
+        }
 
         TextView habitEventTitle = view.findViewById(R.id.habitevent_title);
         habitEventTitle.setText(habitEvent.getComment());

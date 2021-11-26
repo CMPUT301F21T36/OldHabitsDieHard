@@ -65,7 +65,7 @@ public class HabitFragment extends DialogFragment {
      * A listener interface for this fragment to interact with the calling activity.
      */
     public interface onFragmentInteractionListener {
-        // abstract methods to be implemented in the activity classes
+        // abstract methods to listenerbe implemented in the activity classes
         void addHabit(Habit habit);
         void editHabit(Habit habit);
         void deleteHabit(Habit habit);

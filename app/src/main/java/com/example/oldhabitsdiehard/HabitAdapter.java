@@ -77,7 +77,6 @@ public class HabitAdapter extends ArrayAdapter<Habit> {
         }
 
         Habit habit = user.getHabits().get(position);
-
         TextView habitTitle = view.findViewById(R.id.habit_title);
         habitTitle.setText(habit.getTitle());
 

@@ -24,15 +24,20 @@
 package com.example.oldhabitsdiehard;
 
 import android.os.Build;
+import android.util.Log;
+import android.view.ViewDebug;
 
 import androidx.annotation.RequiresApi;
 
 import java.io.Serializable;
+import java.time.DayOfWeek;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.function.Predicate;
 
 /**
  * This class represents a habit.
@@ -317,13 +322,54 @@ public class Habit implements Serializable {
     }
 
     /**
-     * **NOT IMPLEMENTED**
-     * Returns a score representing how well a user is following this habit.
-     * @return the score
+     ** NOT IMPLEMENTED**
+     *  Returns a score representing how well a user is following this habit.
+     *  Score starts at 3 (good) and is subtracted by 1 for every previous habit event missed, down to 0 (bad).
+     *  Only check previous 3 scheduled habit event dates to see if user did the habit.
+     *  @return the score
      */
+
+    @RequiresApi(api = Build.VERSION_CODES.O)
     public int followScore() {
-        // calculate the score based on how many days it has been followed
-        return 0;
+        int score = 3;
+        int countChecker = 3;
+
+        LocalDate current = LocalDate.now();
+        DayOfWeek currentDOW = current.getDayOfWeek();
+        LocalDate start = LocalDate.of(2021, 11, 15);
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd LLLL yyyy");
+        String formattedString = current.format(formatter);
+        Log.d("Current",formattedString );
+        String formattedString1 = start.format(formatter);
+        Log.d("Start",formattedString1 );
+
+        while ((score>0) && (countChecker>0) && (current.isAfter(start))) {
+            // Habit needs to be done this day?
+            if (weekdays.get(currentDOW.getValue()-1)) {
+                // Habit needed to be done on this day
+                countChecker--;
+                // Was habit done on this day?
+                boolean flag = false;
+                for (HabitEvent he : habitEvents) {
+
+                    if (current.equals(LocalDate.of(he.getYear(), he.getMonth(), he.getDay()))) {
+
+                        flag = true;
+                        break;
+                    }
+                }
+                if (!flag) {
+                    score--;
+                }
+            }
+
+            // Decrement current day
+            current = current.minusDays(1);
+            currentDOW = current.getDayOfWeek();
+        }
+        Log.d("Score", Integer.toString(score));
+        return score;
     }
 
 }
