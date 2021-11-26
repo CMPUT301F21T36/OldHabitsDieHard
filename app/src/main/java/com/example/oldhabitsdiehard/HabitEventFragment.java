@@ -226,7 +226,7 @@ public class HabitEventFragment extends DialogFragment implements View.OnClickLi
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
 
         if (getArguments() != null) {
-            // we are viewing a habitEvent
+            // we are editing a habitEvent
             HabitEvent myEvent = (HabitEvent) getArguments().getSerializable("HabitEvent");
             habitEventComment.setText(myEvent.getComment());
 
@@ -267,23 +267,45 @@ public class HabitEventFragment extends DialogFragment implements View.OnClickLi
             }
             return builder
                     .setView(view)
-                    .setNegativeButton("Cancel", null)
-                    .create();
-                    // the following has not been implemented yet and will be ready for Part 4
-                    //.setNeutralButton("Delete", new DialogInterface.OnClickListener() {     //For future coding purpose
-                        //@RequiresApi(api = Build.VERSION_CODES.O)
-                        //@Override
-                        //public void onClick(DialogInterface dialogInterface, int i) {
-                            // to be implemented later
-                        //}
-                    //})
-                    //.setPositiveButton("Edit", new DialogInterface.OnClickListener() {     //For future coding purpose
-                        //@RequiresApi(api = Build.VERSION_CODES.O)
-                        //@Override
-                        //public void onClick(DialogInterface dialogInterface, int i) {
-                            // to be implemented later
-                        //}
+                    .setTitle("Edit Habit")
+                    .setNegativeButton("Delete", new DialogInterface.OnClickListener() {
+                        /**
+                         * Defines action to take when delete button is pressed
+                         * @param dialogInterface the dialog interface
+                         * @param i
+                         */
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            listener.deleteHabitEvent(myEvent);
+                        }
+                    })
+                    .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                        @RequiresApi(api = Build.VERSION_CODES.O)
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            // get the habit name
+                            int pos = habitEventType.getSelectedItemPosition();
+                            Habit habit = habits.get(pos);
+                            String habitName = habit.getTitle();
 
+                            // get the comment for the habit event
+                            String comment = habitEventComment.getText().toString();
+
+                            // get the date info for the habit event
+                            int day = habitEventDate.getDayOfMonth();
+                            int month = habitEventDate.getMonth();
+                            int year = habitEventDate.getYear();
+                            LocalDate date = LocalDate.of(year, month, day);
+
+                            // update event with new info
+                            myEvent.setHabit(habitName);
+                            myEvent.setComment(comment);
+                            myEvent.setDate(date);
+
+                            // add the habit event to the listener
+                            listener.editHabitEvent(myEvent);
+                        }
+                    }).create();
         } else {
             // we are adding a habit event
             return builder
