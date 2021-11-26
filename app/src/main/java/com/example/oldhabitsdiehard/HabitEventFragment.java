@@ -267,7 +267,6 @@ public class HabitEventFragment extends DialogFragment implements View.OnClickLi
             }
             return builder
                     .setView(view)
-                    .setTitle("Edit Habit")
                     .setNegativeButton("Delete", new DialogInterface.OnClickListener() {
                         /**
                          * Defines action to take when delete button is pressed
@@ -276,6 +275,10 @@ public class HabitEventFragment extends DialogFragment implements View.OnClickLi
                          */
                         @Override
                         public void onClick(DialogInterface dialogInterface, int i) {
+                            // create reference for this image
+                            String refString = myEvent.getImage();
+                            StorageReference imgRef = storageRef.child(refString);
+                            imgRef.delete();
                             listener.deleteHabitEvent(myEvent);
                         }
                     })
@@ -297,7 +300,48 @@ public class HabitEventFragment extends DialogFragment implements View.OnClickLi
                             int year = habitEventDate.getYear();
                             LocalDate date = LocalDate.of(year, month, day);
 
+                            // get image if it exists
+                            if (chosenLocation != null && isLocationSaved) {
+                                // we have chosen a location and saved it
+                                LatLng eventLoc = chosenLocation.getPosition();
+                                myEvent.setLocation(eventLoc);
+                            }
+                            if (img.getDrawable() != null) {
+                                // get img if there is one
+                                Bitmap imgBitmap = ((BitmapDrawable) img.getDrawable()).getBitmap();
+                                // get reference to storage bucket
+                                //StorageReference storageRef = db.getStorageRef();
+                                // generate random uuid to reference image
+                                UUID uuid = UUID.randomUUID();
+                                String uuidStr = uuid.toString();
+                                // create reference for this image
+                                String refString = user.getUsername() + "/" + uuidStr + ".jpg";
+                                StorageReference imgRef = storageRef.child(refString);
+                                // convert image to byte array
+                                ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                                imgBitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+                                byte[] data = baos.toByteArray();
+
+                                // upload image to storage
+                                UploadTask uploadTask = imgRef.putBytes(data);
+                                uploadTask.addOnFailureListener(new OnFailureListener() {
+                                    @Override
+                                    public void onFailure(@NonNull Exception e) {
+                                        // add habit event without the image
+                                        //listener.addHabitEvent(new HabitEvent(habitName, comment, date));
+                                    }
+                                }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                                    @Override
+                                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                                        // add the habit event
+                                        myEvent.setImage(refString);
+                                        //listener.addHabitEvent(new HabitEvent(habitName, comment, date, refString));
+                                    }
+                                });
+                            }
+
                             // update event with new info
+
                             myEvent.setHabit(habitName);
                             myEvent.setComment(comment);
                             myEvent.setDate(date);
@@ -310,7 +354,6 @@ public class HabitEventFragment extends DialogFragment implements View.OnClickLi
             // we are adding a habit event
             return builder
                     .setView(view)
-                    .setTitle("Add Habit")
                     .setNegativeButton("Cancel", null)
                     .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                         /**
@@ -375,6 +418,7 @@ public class HabitEventFragment extends DialogFragment implements View.OnClickLi
                                     }
                                 });
                             }
+
                             listener.addHabitEvent(newEvent);
                         }
                     }).create();
