@@ -31,6 +31,7 @@ import android.util.Base64;
 
 import androidx.annotation.RequiresApi;
 
+import com.google.android.gms.maps.model.LatLng;
 import com.google.common.primitives.Bytes;
 
 import java.io.ByteArrayOutputStream;
@@ -51,7 +52,10 @@ public class HabitEvent implements Serializable {
     private int day;
     private int month;
     private int year;
-    private Location location; /* NOT IMPLEMENTED */
+    private double lat;
+    private double lon;
+    private boolean hasLocation;
+    //private Location location; /* NOT IMPLEMENTED */
 
     /**
      * Empty constructor for Firestore Compatibility.
@@ -67,7 +71,7 @@ public class HabitEvent implements Serializable {
      * @param location the location where the event occurred
      */
     @RequiresApi(api = Build.VERSION_CODES.O)
-    HabitEvent(String habit, String comment, String image, LocalDate date, Location location){
+    HabitEvent(String habit, String comment, String image, LocalDate date, LatLng location){
         setHabit(habit);
         setComment(comment);
         setImage(image);
@@ -83,7 +87,7 @@ public class HabitEvent implements Serializable {
      * @param location the location where the event occurred
      */
     @RequiresApi(api = Build.VERSION_CODES.O)
-    HabitEvent(String habit, String image, LocalDate date, Location location){
+    HabitEvent(String habit, String image, LocalDate date, LatLng location){
         setHabit(habit);
         setImage(image);
         setDate(date);
@@ -104,6 +108,7 @@ public class HabitEvent implements Serializable {
         setComment(comment);
         setDate(date);
         setImage(img);
+        hasLocation = false;
     }
 
     /**
@@ -113,7 +118,7 @@ public class HabitEvent implements Serializable {
      * @param location the location where the event occurred
      */
     @RequiresApi(api = Build.VERSION_CODES.O)
-    HabitEvent(String habit, LocalDate date, Location location){
+    HabitEvent(String habit, LocalDate date, LatLng location){
         setHabit(habit);
         setDate(date);
         setLocation(location);
@@ -130,6 +135,7 @@ public class HabitEvent implements Serializable {
         setHabit(habit);
         setDate(date);
         setComment(comment);
+        hasLocation = false;
     }
 
     /**
@@ -188,8 +194,16 @@ public class HabitEvent implements Serializable {
      * Getter for location.
      * @return location of Habit event
      */
-    public Location getLocation() {
-        return location;
+    public double getLat() {
+        return lat;
+    }
+
+    public double getLon() {
+        return lon;
+    }
+
+    public boolean getHasLocation() {
+        return hasLocation;
     }
 
     /**
@@ -280,8 +294,14 @@ public class HabitEvent implements Serializable {
      * Setter for location
      * @param location where this habit event occurred
      */
-    public void setLocation(Location location) {
-        this.location = location;
+    public void setLocation(LatLng location) {
+        this.lat = location.latitude;
+        this.lon = location.longitude;
+        hasLocation = true;
+    }
+
+    public void setHasLocation(boolean b) {
+        hasLocation = b;
     }
 
     /**

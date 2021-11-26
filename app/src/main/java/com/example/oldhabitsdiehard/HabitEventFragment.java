@@ -24,7 +24,11 @@
 package com.example.oldhabitsdiehard;
 
 import static android.app.Activity.RESULT_OK;
+import static android.content.Context.LOCATION_SERVICE;
 
+import static androidx.core.content.ContextCompat.getSystemService;
+
+import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -32,10 +36,13 @@ import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.ImageDecoder;
 import android.graphics.drawable.BitmapDrawable;
+import android.location.Location;
+import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -44,6 +51,7 @@ import android.provider.MediaStore;
 import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -58,18 +66,25 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+import androidx.core.content.PermissionChecker;
+import androidx.core.content.pm.PermissionInfoCompat;
 import androidx.fragment.app.DialogFragment;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.GoogleMapOptions;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.MapsInitializer;
 import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
+import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
-import com.google.type.LatLng;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -84,7 +99,7 @@ import java.util.UUID;
  * @author Gurbani Baweja
  * @author Claire Martin
  */
-public class HabitEventFragment extends DialogFragment implements View.OnClickListener {
+public class HabitEventFragment extends DialogFragment implements View.OnClickListener, OnMapReadyCallback, GoogleMap.OnMyLocationButtonClickListener, GoogleMap.OnMapClickListener {
     private User user;
     private UserDatabase db;
     private String currentPhotoPath;
@@ -98,8 +113,13 @@ public class HabitEventFragment extends DialogFragment implements View.OnClickLi
     private Button addLocationButton;
     private Button removeLocationButton;
     private TextView locationText;
-    private MapView mapView;
+    private MyMapView mapView;
+    private Marker chosenLocation;
+    private boolean isLocationSaved;
+    private static final String MAPVIEW_BUNDLE_KEY = "MapViewBundleKey";
+    private static final int LOCATION_PERMISSION_REQUEST_CODE = 1;
     private GoogleMap myGoogleMap;
+    public LatLng markerLatLng;
     static final int REQUEST_IMAGE_GET = 1;
     static final int REQUEST_IMAGE_CAPTURE = 2;
 
@@ -150,12 +170,11 @@ public class HabitEventFragment extends DialogFragment implements View.OnClickLi
      * @param savedInstanceState
      * @return the dialog
      */
+    @SuppressLint("ClickableViewAccessibility")
     @NonNull
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
         // get the current user
-        user = CurrentUser.get();
-        db = UserDatabase.getInstance();
         db.updateUser(user);
         // get storage reference
         StorageReference storageRef = db.getStorageRef();
@@ -174,24 +193,18 @@ public class HabitEventFragment extends DialogFragment implements View.OnClickLi
         addLocationButton = view.findViewById(R.id.addLocationButton);
         removeLocationButton = view.findViewById(R.id.removeLocationButton);
         locationText = view.findViewById(R.id.locationText);
-        mapView = view.findViewById(R.id.mapView);
-        mapView.onCreate(savedInstanceState);
 
-        try {
-            MapsInitializer.initialize(getActivity());
-        } catch (Exception e) {
-            e.printStackTrace();
+        // default not saving location
+        isLocationSaved = false;
+        markerLatLng = null;
+
+        Bundle mapViewBundle = null;
+        if (savedInstanceState != null) {
+            mapViewBundle = savedInstanceState.getBundle(MAPVIEW_BUNDLE_KEY);
         }
-
-        mapView.getMapAsync(new OnMapReadyCallback() {
-            @SuppressLint("MissingPermission")
-            @Override
-            public void onMapReady(@NonNull GoogleMap googleMap) {
-                myGoogleMap = googleMap;
-                myGoogleMap.getUiSettings().setZoomControlsEnabled(true);
-                myGoogleMap.setMyLocationEnabled(true);
-            }
-        });
+        mapView = view.findViewById(R.id.mapView);
+        mapView.onCreate(mapViewBundle);
+        mapView.getMapAsync(this);
 
         // create a list of habits to populate the spinner
         // the user can only select habits which are already part of the current user
@@ -206,6 +219,8 @@ public class HabitEventFragment extends DialogFragment implements View.OnClickLi
 
         uploadButton.setOnClickListener(this);
         cameraButton.setOnClickListener(this);
+        addLocationButton.setOnClickListener(this);
+        removeLocationButton.setOnClickListener(this);
 
         // build the dialog
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
@@ -227,6 +242,13 @@ public class HabitEventFragment extends DialogFragment implements View.OnClickLi
             habitEventDate.updateDate(year, month, day);
 
             String imgString = myEvent.getImage();
+            locationText.setText("Location is saved!");
+            if (myEvent.getHasLocation()) {
+                // we have a location
+                double lat = myEvent.getLat();
+                double lon = myEvent.getLon();
+                markerLatLng = new LatLng(lat, lon);
+            }
             if (imgString != null) {
                 StorageReference imgRef = storageRef.child(imgString);
                 final long ONE_MEGABYTE = 1024 * 1024;
@@ -242,7 +264,6 @@ public class HabitEventFragment extends DialogFragment implements View.OnClickLi
                         //not sure what to do here lol
                     }
                 });
-
             }
             return builder
                     .setView(view)
@@ -292,6 +313,13 @@ public class HabitEventFragment extends DialogFragment implements View.OnClickLi
                             int year = habitEventDate.getYear();
                             LocalDate date = LocalDate.of(year, month, day);
 
+                            HabitEvent newEvent = new HabitEvent(habitName, comment, date);
+
+                            if (chosenLocation != null && isLocationSaved) {
+                                // we have chosen a location and saved it
+                                LatLng eventLoc = chosenLocation.getPosition();
+                                newEvent.setLocation(eventLoc);
+                            }
                             if (img.getDrawable() != null) {
                                 // get img if there is one
                                 Bitmap imgBitmap = ((BitmapDrawable) img.getDrawable()).getBitmap();
@@ -314,19 +342,18 @@ public class HabitEventFragment extends DialogFragment implements View.OnClickLi
                                     @Override
                                     public void onFailure(@NonNull Exception e) {
                                         // add habit event without the image
-                                        listener.addHabitEvent(new HabitEvent(habitName, comment, date));
+                                        //listener.addHabitEvent(new HabitEvent(habitName, comment, date));
                                     }
                                 }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                                     @Override
                                     public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                                         // add the habit event
-                                        listener.addHabitEvent(new HabitEvent(habitName, comment, date, refString));
+                                        newEvent.setImage(refString);
+                                        //listener.addHabitEvent(new HabitEvent(habitName, comment, date, refString));
                                     }
                                 });
-                            } else {
-                                // add the habit event to the listener
-                                listener.addHabitEvent(new HabitEvent(habitName, comment, date));
                             }
+                            listener.addHabitEvent(newEvent);
                         }
                     }).create();
         }
@@ -339,20 +366,27 @@ public class HabitEventFragment extends DialogFragment implements View.OnClickLi
     @Override
     public void onClick(View view) {
         Intent intent;
-        switch (view.getId()) {
-            case R.id.UploadBtn:
-                // we are uploading a photo
-                intent = new Intent(Intent.ACTION_GET_CONTENT);
-                intent.setType("image/*");
-                startActivityForResult(intent, REQUEST_IMAGE_GET);
-            case R.id.TakePhotoButton:
-                // we are taking a photo
-                intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                try {
-                    startActivityForResult(intent, REQUEST_IMAGE_CAPTURE);
-                } catch (ActivityNotFoundException e) {
-                    // error
-                }
+        if (view.getId() == R.id.UploadBtn) {
+            // we are uploading a photo
+            intent = new Intent(Intent.ACTION_GET_CONTENT);
+            intent.setType("image/*");
+            startActivityForResult(intent, REQUEST_IMAGE_GET);
+        } else if (view.getId() == R.id.TakePhotoButton) {
+            // we are taking a photo
+            intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+            try {
+                startActivityForResult(intent, REQUEST_IMAGE_CAPTURE);
+            } catch (ActivityNotFoundException e) {
+                // error
+            }
+        } else if (view.getId() == R.id.addLocationButton) {
+            // we want to save our location
+            isLocationSaved = true;
+            locationText.setText("Location is saved!");
+        } else if (view.getId() == R.id.removeLocationButton) {
+                // we don't want to save our location
+                isLocationSaved = false;
+                locationText.setText("Location is not saved!");
         }
     }
 
@@ -371,5 +405,129 @@ public class HabitEventFragment extends DialogFragment implements View.OnClickLi
             Bitmap imageBitmap = (Bitmap) extras.get("data");
             img.setImageBitmap(imageBitmap);
         }
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        Bundle mapViewBundle = outState.getBundle(MAPVIEW_BUNDLE_KEY);
+        if (mapViewBundle == null) {
+            mapViewBundle = new Bundle();
+            outState.putBundle(MAPVIEW_BUNDLE_KEY, mapViewBundle);
+        }
+        mapView.onSaveInstanceState(mapViewBundle);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        mapView.onResume();
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        mapView.onStart();
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        mapView.onStop();
+    }
+
+    @SuppressLint("MissingPermission")
+    @Override
+    public void onMapReady(GoogleMap map) {
+        myGoogleMap = map;
+        myGoogleMap.getUiSettings().setZoomControlsEnabled(true);
+        //myGoogleMap.moveCamera(CameraUpdateFactory.zoomTo(16));
+        if (ContextCompat.checkSelfPermission(this.getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) ==
+                        PackageManager.PERMISSION_GRANTED) {
+            myGoogleMap.setMyLocationEnabled(true);
+            if (markerLatLng != null) {
+                // we have clicked a habit event that already has latlng
+                myGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(markerLatLng, 6));
+                if (chosenLocation != null) {
+                    chosenLocation.remove();
+                    chosenLocation = null;
+                }
+                chosenLocation = myGoogleMap.addMarker(
+                        new MarkerOptions()
+                                .position(markerLatLng)
+                                .title("Marker")
+                                .draggable(false)
+                );
+            }
+            myGoogleMap.setOnMyLocationButtonClickListener(this);
+            myGoogleMap.setOnMapClickListener(this);
+        } else {
+            // get permission
+            ActivityCompat.requestPermissions(this.getActivity(), new String[]{Manifest.permission.ACCESS_COARSE_LOCATION}, LOCATION_PERMISSION_REQUEST_CODE);
+            // try again
+            if (ContextCompat.checkSelfPermission(this.getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) ==
+                    PackageManager.PERMISSION_GRANTED) {
+                myGoogleMap.setMyLocationEnabled(true);
+                if (markerLatLng != null) {
+                    // we have clicked a habit event that already has latlng
+                    myGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(markerLatLng, 6));
+                    if (chosenLocation != null) {
+                        chosenLocation.remove();
+                        chosenLocation = null;
+                    }
+                    chosenLocation = myGoogleMap.addMarker(
+                            new MarkerOptions()
+                                    .position(markerLatLng)
+                                    .title("Marker")
+                                    .draggable(false)
+                    );
+                }
+                myGoogleMap.setOnMyLocationButtonClickListener(this);
+                myGoogleMap.setOnMapClickListener(this);
+            } else {
+                // user denied permission
+            }
+        }
+
+
+        //myGoogleMap.getUiSettings().setScrollGesturesEnabled(false);
+        //myGoogleMap.addMarker(new MarkerOptions().position(new LatLng(0,0)).title("Marker"));
+    }
+
+    @Override
+    public boolean onMyLocationButtonClick() {
+        return false;
+    }
+
+    @Override
+    public void onMapClick(LatLng point) {
+        if (chosenLocation != null) {
+            chosenLocation.remove();
+            chosenLocation = null;
+        }
+        chosenLocation = myGoogleMap.addMarker(
+                new MarkerOptions()
+                        .position(point)
+                        .title("Marker")
+                        .draggable(false)
+        );
+    }
+
+    @Override
+    public void onPause() {
+        mapView.onPause();
+        super.onPause();
+    }
+
+    @Override
+    public void onDestroy() {
+        mapView.onDestroy();
+        super.onDestroy();
+    }
+
+    @Override
+    public void onLowMemory() {
+        super.onLowMemory();
+        mapView.onLowMemory();
     }
 }

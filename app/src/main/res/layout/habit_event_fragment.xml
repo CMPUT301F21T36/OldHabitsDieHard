@@ -92,6 +92,16 @@
 
         </LinearLayout>
 
+        <TextView
+            android:id="@+id/locationInstr"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Click on map below to add location. Click 'Save Location' button to save. If you no longer wish to save a location, click 'Remove Location' button."
+            android:textAppearance="?android:textAppearanceMedium"
+            android:background="@color/white"
+            android:textColor="@color/blue"
+            android:layout_marginTop="15dp"/>
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -105,7 +115,7 @@
                 android:layout_marginRight="15dp"
                 android:layout_weight="1"
                 android:background="@color/blue"
-                android:text="Add Location"
+                android:text="Save Location"
                 android:textAppearance="?android:textAppearanceMedium"
                 android:textColor="@color/white"/>
 
@@ -125,16 +135,18 @@
             android:id="@+id/locationText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="No location saved"
+            android:text="Location is not saved!"
             android:textAppearance="?android:textAppearanceMedium"
             android:background="@color/white"
             android:textColor="@color/blue"
             android:layout_marginTop="15dp"/>
 
-        <com.google.android.gms.maps.MapView
+        <com.example.oldhabitsdiehard.MyMapView
+            android:clickable="true"
+            android:apiKey="${MAPS_API_KEY}"
             android:id="@+id/mapView"
             android:layout_width="match_parent"
-            android:layout_height="206dp"
+            android:layout_height="400dp"
             android:layout_marginTop="15dp"
             android:visibility="visible"/>
 
