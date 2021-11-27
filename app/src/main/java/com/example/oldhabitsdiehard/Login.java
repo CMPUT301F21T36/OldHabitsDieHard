@@ -72,9 +72,51 @@ public class Login extends AppCompatActivity {
                 String password = passwordBox.getText().toString();
 
                 // empty box check
-                if (username.length() < 1 || password.length() < 1) {
+                if (username.length() < 1) {
+                    usernameBox.setError("Username Required");
+                    if(password.length() < 1){
+                        passwordBox.setError("Password Required");
+                        return;
+                    }
                     return;
                 }
+                if(password.length() < 1){
+                    passwordBox.setError("Password Required");
+                    if(username.length() < 1){
+                        usernameBox.setError("username Required");
+                        return;
+                    }
+                    return;
+                }
+
+
+                boolean lower = false;
+                boolean upper = false;
+                boolean number = false;
+                boolean specialCharacter = false;
+                boolean length = false;
+                char passwordChar;
+                for(int i=0; i<password.length();i++){
+                    passwordChar = password.charAt(i);
+                    if(Character.isUpperCase(passwordChar)){
+                        upper = true;
+                    } else if(Character.isLowerCase(passwordChar)){
+                        lower = true;
+                    } else if(Character.isDigit(passwordChar)){
+                        number = true;
+                    } else{
+                        specialCharacter = true;
+                    }
+                }
+                if(password.length() >= 8){
+                    length=true;
+                }
+
+                if(!(length && upper && number && lower && specialCharacter)){
+                    passwordBox.setError("Password must be at least 8 character long with at least one upper letter, lower letter, digit, and special character.");
+                    return;
+                }
+
 
                 // create new user
                 user = new User(username, password);

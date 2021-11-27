@@ -170,7 +170,6 @@ public class HabitEventFragment extends DialogFragment {
             // we are adding a habit event
             builder
                     .setView(view)
-                    .setTitle("Add Habit Event")
                     .setNegativeButton("Cancel", null)
                     .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                         /**

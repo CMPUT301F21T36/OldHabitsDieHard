@@ -159,7 +159,7 @@ public class HabitFragment extends DialogFragment {
             habitDate.updateDate(year, month, day);
 
             // create builder
-            return builder
+            builder
                     .setView(view)
                     .setTitle("Edit Habit")
                     .setNegativeButton("Delete", new DialogInterface.OnClickListener() {
@@ -181,6 +181,18 @@ public class HabitFragment extends DialogFragment {
                          */
                         @Override
                         public void onClick(DialogInterface dialogInterface, int i) {
+
+                        }
+                    });
+
+                    AlertDialog dialog = builder.create();
+                    dialog.show();
+                    //Overriding the handler immediately after show is probably a better approach than OnShowListener as described below
+                    dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener()
+                    {
+                        @Override
+                        public void onClick(View v)
+                        {
                             // determine which privacy setting was selected
                             int selectedPrivacy = group.getCheckedRadioButtonId();
                             radioSelectedButton = view.findViewById(selectedPrivacy);
@@ -218,15 +230,27 @@ public class HabitFragment extends DialogFragment {
                             myHabit.setWeekdays(weekdays);
                             myHabit.setStartDate(date);
 
-                            // update habit in listener
-                            listener.editHabit(myHabit);
+
+                            Boolean wantToCloseDialog = false;
+                            if(habitTitle.length()<=0){
+                                habitTitle.setError("Habit Title Required");
+                            }else{
+                                // update habit in listener
+                                listener.editHabit(myHabit);
+                                wantToCloseDialog = true;
+                            }
+                            if(wantToCloseDialog)
+                                dialog.dismiss();
+
                         }
-                    }).create();
+
+                    });
+                    return dialog;
+
         } else {
             // we are adding a habit
             builder
                     .setView(view)
-                    .setTitle("Add Habit")
                     .setNegativeButton("Cancel", null)
                     .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                         /**
