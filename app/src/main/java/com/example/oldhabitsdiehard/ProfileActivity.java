@@ -27,6 +27,8 @@ import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.widget.ListView;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
@@ -42,6 +44,8 @@ import com.google.android.material.navigation.NavigationBarView;
  * @author Paige Lekach
  */
 public class ProfileActivity extends AppCompatActivity {
+    private User user;
+
     /**
      * Defines action to take when activity is created.
      * @param savedInstanceState
@@ -51,6 +55,17 @@ public class ProfileActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.profile_view);
+
+        user = CurrentUser.get();
+        TextView username = findViewById(R.id.profile_username);
+        TextView bio = findViewById(R.id.bio_profile);
+        ListView followRequestsView = findViewById(R.id.activity_create_content);
+
+        HabitAdapter followRequestAdapter = new HabitAdapter(this, user);
+        followRequestsView.setAdapter(followRequestAdapter);
+
+        username.setText(CurrentUser.get().getUsername());
+        bio.setText(CurrentUser.get().getBio());
 
         // creating intents for different activities
         Intent intentToday = new Intent(this, TodayActivity.class);

@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <Button
+        android:id="@+id/back_login"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10sp"
+        android:backgroundTint="@color/white"
+        android:drawableLeft="@drawable/ic_arrow_back"
+        android:src="@drawable/ic_arrow_back"
+        android:text="@string/back_to_sign_in"
+        android:textSize="15sp"
+        android:layout_marginLeft="5sp"
+        android:textColor="@color/blue"
+        style="?android:attr/borderlessButtonStyle"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center_vertical|center_horizontal"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0">
+
+        <TextView
+            android:id="@+id/createAccount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="0sp"
+            android:paddingHorizontal="10sp"
+            android:text="@string/create_profile"
+            android:textColor="@color/blue"
+            android:textSize="35sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            android:textColorHint="@color/blueLight"
+            app:boxBackgroundColor="@color/white"
+            app:startIconDrawable="@drawable/ic_username"
+            app:startIconTint="@color/pink"
+            >
+        <EditText
+            android:id="@+id/username_create"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="40sp"
+            android:layout_marginEnd="40sp"
+            android:layout_marginBottom="20sp"
+            android:drawableLeft="@drawable/ic_username"
+            android:hint="Enter username"
+            android:inputType="text"
+            android:textColorHint="@color/blueLight"
+            android:textColor="@color/blueLight"
+            android:textSize="20sp"
+            app:layout_constraintBottom_toTopOf="@id/confirm_password"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            android:textColorHint="@color/blueLight"
+            app:passwordToggleEnabled="true"
+            app:passwordToggleTint="@color/pink"
+            app:boxBackgroundColor="@color/white"
+            app:startIconDrawable="@drawable/ic_lock"
+            app:startIconTint="@color/pink"
+            >
+            <EditText
+                android:id="@+id/password_create"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="40sp"
+                android:layout_marginEnd="40sp"
+                android:layout_marginBottom="20sp"
+                android:hint="Enter password"
+                android:inputType="textPassword"
+                android:textColor="@color/blueLight"
+                android:textSize="20sp"
+                app:layout_constraintBottom_toTopOf="@id/confirm_password"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            android:textColorHint="@color/blueLight"
+            app:passwordToggleEnabled="true"
+            app:passwordToggleTint="@color/pink"
+            app:boxBackgroundColor="@color/white"
+            app:startIconDrawable="@drawable/ic_lock"
+            app:startIconTint="@color/pink"
+            >
+            <EditText
+                android:id="@+id/confirm_password"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="40sp"
+                android:layout_marginEnd="40sp"
+                android:layout_marginBottom="20sp"
+                android:drawableLeft="@drawable/ic_lock"
+                android:hint="Confirm password"
+                android:inputType="textPassword"
+                android:textColorHint="@color/blueLight"
+                android:textColor="@color/blueLight"
+                android:textSize="20sp"
+                app:layout_constraintBottom_toTopOf="@id/password_create"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            android:textColorHint="@color/blueLight"
+            app:boxBackgroundColor="@color/white"
+            app:startIconDrawable="@drawable/ic_bio"
+            app:startIconTint="@color/pink"
+            >
+        <EditText
+            android:id="@+id/bio_create"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="40sp"
+            android:layout_marginEnd="40sp"
+            android:layout_marginBottom="20sp"
+            android:gravity="start"
+            android:hint="Enter a short bio"
+            android:inputType="text"
+            android:textSize="20sp"
+            android:textColor="@color/blueLight"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <Button
+            android:id="@+id/create_account_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20sp"
+            android:backgroundTint="@color/pink"
+            android:text="Sign Up"
+            android:textColor="@color/blue"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:theme="@style/MyButtonStyle"
+            app:layout_constraintTop_toBottomOf="@id/bio_create" />
+    </LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

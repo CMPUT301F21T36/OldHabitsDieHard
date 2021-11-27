@@ -4,6 +4,9 @@
     <color name="white">#FFFFFFFF</color>
     <color name="navy">#1E1E24</color>
     <color name="blue">#006A7A</color>
+    <color name="blueLight">#78ADB5</color>
+    <color name="blueSuperLight">#A5EAF3</color>
     <color name="pink">#FBB09D</color>
+    <color name="pinkLight">#F6CBC2</color>
     <color name="beige">#D8CCC0</color>
 </resources>

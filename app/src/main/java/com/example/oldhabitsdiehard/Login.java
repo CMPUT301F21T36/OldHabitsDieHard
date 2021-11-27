@@ -30,7 +30,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
+import android.widget.Toast;
 
 /**
  * This class defines the Login activity which is called when the app starts.
@@ -52,7 +52,6 @@ public class Login extends AppCompatActivity {
         // set up boxes for user to enter login info
         EditText usernameBox = findViewById(R.id.username_box);
         EditText passwordBox = findViewById(R.id.password_box);
-        TextView infoBox = findViewById(R.id.info_box);
         Button createButton = findViewById(R.id.create_button);
         Button loginButton = findViewById(R.id.login_button);
 
@@ -67,37 +66,10 @@ public class Login extends AppCompatActivity {
              */
             @Override
             public void onClick(View view) {
-                // get entered username and password
-                String username = usernameBox.getText().toString();
-                String password = passwordBox.getText().toString();
 
-                // empty box check
-                if (username.length() < 1 || password.length() < 1) {
-                    return;
-                }
+                Intent intent = new Intent(view.getContext(), CreateAccount.class);
+                startActivity(intent);
 
-                // create new user
-                user = new User(username, password);
-
-                // check if we can add it to the database
-                boolean success = db.addUser(user);
-
-                if (success) {
-                    // account was created successfully
-                    infoBox.setText("Account Created!");
-                    infoBox.setVisibility(View.VISIBLE);
-                    CurrentUser.set(user);
-                    // swithc to today view
-                    Intent intent = new Intent(view.getContext(), TodayActivity.class);
-                    startActivity(intent);
-                }
-                else {
-                    // account already exists
-                    infoBox.setText("Username already exists");
-                    infoBox.setVisibility(View.VISIBLE);
-                    usernameBox.setText("");
-                    passwordBox.setText("");
-                }
             }
         });
 
@@ -115,23 +87,23 @@ public class Login extends AppCompatActivity {
 
                 // empty box check
                 if (username.length() < 1 || password.length() < 1) {
-                    return;
-                }
-
-                // check whether the user info is correct
-                user = db.checkLogin(username, password);
-
-                if (user != null) {
-                    // login success
-                    CurrentUser.set(user);
-                    // start today view
-                    Intent intent = new Intent(view.getContext(), TodayActivity.class);
-                    startActivity(intent);
+                    Toast.makeText(getApplicationContext(), "Incorrect username and/or password.\nPlease try again!", Toast.LENGTH_LONG).show();
                 } else {
-                    // login failure
-                    infoBox.setText("Incorrect Login");
-                    usernameBox.setText("");
-                    passwordBox.setText("");
+                    // check whether the user info is correct
+                    user = db.checkLogin(username, password);
+
+                    if (user != null) {
+                        // login success
+                        CurrentUser.set(user);
+                        // start today view
+                        Intent intent = new Intent(view.getContext(), TodayActivity.class);
+                        startActivity(intent);
+                    } else {
+                        // login failure
+                        Toast.makeText(getApplicationContext(), "Incorrect username and/or password.\nPlease try again!", Toast.LENGTH_LONG).show();
+                        usernameBox.setText("");
+                        passwordBox.setText("");
+                    }
                 }
             }
         });

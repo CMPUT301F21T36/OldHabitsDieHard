@@ -57,6 +57,20 @@ public class User {
     }
 
     /**
+     * User constructor
+     * @param username User's username (for login)
+     * @param password User's password (for login)
+     * @param bio User's bio (for profile)
+     */
+    public User(String username, String password, String bio) throws IllegalArgumentException {
+        setUsername(username);
+        setPassword(password);
+        setBio(bio);
+        habits = new ArrayList<Habit>();
+        habitEvents = new ArrayList<HabitEvent>();
+    }
+
+    /**
      * Empty constructor for firestore compatibility
      */
     public User() {}
