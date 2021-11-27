@@ -21,7 +21,6 @@
  *  limitations under the License.
  */
 
-
 package com.example.oldhabitsdiehard;
 
 import android.content.Intent;
@@ -35,12 +34,16 @@ import android.widget.ListView;
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.ItemTouchHelper;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationBarView;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 /**
  * This class represents the Habit List Activity in which the user can view
@@ -49,14 +52,16 @@ import java.util.ArrayList;
  * @author Claire Martin
  */
 public class HabitListActivity extends AppCompatActivity implements HabitFragment.onFragmentInteractionListener {
-    private ListView habitListView;
-    private HabitAdapter habitAdapter;
+
     private ArrayList<Habit> habitList;
     private User user;
     private UserDatabase db;
+    private HabitAdapter recyclerAdapter;
+    private RecyclerView recyclerView;
 
     /**
-     * Called upon creation of the activity.
+     * Called upon creation of the activity
+     *
      * @param savedInstanceState the saved state
      */
     @RequiresApi(api = Build.VERSION_CODES.O)
@@ -71,19 +76,26 @@ public class HabitListActivity extends AppCompatActivity implements HabitFragmen
         db = UserDatabase.getInstance();
         db.updateUser(user);
 
-
         // create the habit list and set its adapter
-        habitListView = findViewById(R.id.habit_list);
         habitList = user.getHabits();
+        recyclerView = findViewById(R.id.habit_list);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
+        recyclerAdapter = new HabitAdapter(habitList, new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                final Habit habit = habitList.get(position);
+                HabitFragment newFragment = HabitFragment.newInstance(habit);
+                newFragment.show(getSupportFragmentManager(), "EDIT_HABIT");
+            }
+        });
         // set the adapter
-        habitAdapter = new HabitAdapter(this, user);
-        habitListView.setAdapter(habitAdapter);
+        recyclerView.setAdapter(recyclerAdapter);
+        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(simpleCallback);
+        itemTouchHelper.attachToRecyclerView(recyclerView);
 
         // define habit add button
-
         final FloatingActionButton addHabitButton = findViewById(R.id.add_habit_button);
-      
         addHabitButton.setOnClickListener(new View.OnClickListener() {
             /**
              * Defines action to take when the add button is clicked.
@@ -92,23 +104,6 @@ public class HabitListActivity extends AppCompatActivity implements HabitFragmen
             @Override
             public void onClick(View view) {
                 new HabitFragment().show(getSupportFragmentManager(), "ADD_HABIT");
-            }
-        });
-
-        // functionality for when a habit is clicked
-        habitListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            /**
-             * Defines action to take when a habit is clicked.
-             * @param parent
-             * @param view
-             * @param position the position of the selected habit in the list
-             * @param id
-             */
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                final Habit habit = habitList.get(position);
-                HabitFragment newFragment = HabitFragment.newInstance(habit);
-                newFragment.show(getSupportFragmentManager(), "EDIT_HABIT");
             }
         });
 
@@ -149,15 +144,35 @@ public class HabitListActivity extends AppCompatActivity implements HabitFragmen
     }
 
     /**
+     * ItemTouchHelper handles callbacks when a drag or swipe action is done.
+     */
+    ItemTouchHelper.SimpleCallback simpleCallback = new ItemTouchHelper.SimpleCallback(ItemTouchHelper.UP | ItemTouchHelper.DOWN | ItemTouchHelper.START | ItemTouchHelper.END, 0) {
+        @Override
+        public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
+            int fromPosition = viewHolder.getAdapterPosition();
+            int toPosition = target.getAdapterPosition();
+            Collections.swap(habitList, fromPosition, toPosition);
+            db.updateUser(user);
+            recyclerView.getAdapter().notifyItemMoved(fromPosition, toPosition);
+            return false;
+        }
+
+        @Override
+        public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
+
+        }
+    };
+
+    /**
      * Method to add a habit to the list using the fragment.
      * @param newHabit the habit to add
      */
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     public void addHabit(Habit newHabit) {
-        // add the habit
-        habitAdapter.add(newHabit);
-        // update the user in firestore
+        habitList.add(newHabit);
+        recyclerAdapter.notifyItemInserted(habitList.size()-1);
+        //db = UserDatabase.getInstance();
         db.updateUser(user);
     }
 
@@ -167,9 +182,8 @@ public class HabitListActivity extends AppCompatActivity implements HabitFragmen
      */
     @Override
     public void editHabit(Habit habit) {
-        // notify the adapter that the list has changed
-        habitAdapter.notifyDataSetChanged();
-        // udpate the user in firestore
+        recyclerAdapter.notifyDataSetChanged();
+        //db = UserDatabase.getInstance();
         db.updateUser(user);
     }
 
@@ -182,9 +196,8 @@ public class HabitListActivity extends AppCompatActivity implements HabitFragmen
         // delete the habit from the user
         // did not delete from adapter in order to ensure events are deleted too
         user.deleteHabit(habit);
-        // notify the adapter
-        habitAdapter.notifyDataSetChanged();
-        // update user in firestore
+        recyclerAdapter.notifyDataSetChanged();
+        //db = UserDatabase.getInstance();
         db.updateUser(user);
     }
 }

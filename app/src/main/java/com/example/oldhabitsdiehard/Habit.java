@@ -317,6 +317,14 @@ public class Habit implements Serializable {
     }
 
     /**
+     * Removes a habitEvent from the habitEvents list.
+     * @param habitEvent the event to remove
+     */
+    public void removeHabitEvent(HabitEvent habitEvent) {
+        habitEvents.remove(habitEvent);
+    }
+
+    /**
      * **NOT IMPLEMENTED**
      * Returns a score representing how well a user is following this habit.
      * @return the score
