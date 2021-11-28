@@ -42,7 +42,10 @@ public class CurrentUser {
      * @return current user
      */
     public static User get() {
-        return currentUser;
+        if (currentUser != null) {
+            return UserDatabase.getInstance().getUser(currentUser.getUsername());
+        }
+        return null;
     }
 
     /**
