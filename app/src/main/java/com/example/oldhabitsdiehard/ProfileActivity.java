@@ -27,11 +27,20 @@ import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.android.gms.auth.api.Auth;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.api.ResultCallback;
+import com.google.android.gms.common.api.Status;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
 
@@ -41,16 +50,57 @@ import com.google.android.material.navigation.NavigationBarView;
  *
  * @author Paige Lekach
  */
-public class ProfileActivity extends AppCompatActivity {
+public class ProfileActivity extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener {
     /**
      * Defines action to take when activity is created.
      * @param savedInstanceState
      */
+
+    Button googleLogOut;
+    private GoogleApiClient googleApiClient;
+    private GoogleSignInOptions gso;
+
+
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.profile_view);
+
+
+
+        googleLogOut = (Button) findViewById(R.id.google_log_out);
+
+        gso =  new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestEmail()
+                .build();
+
+        googleApiClient=new GoogleApiClient.Builder(this)
+                .enableAutoManage(this,this)
+                .addApi(Auth.GOOGLE_SIGN_IN_API,gso)
+                .build();
+
+        googleLogOut.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Auth.GoogleSignInApi.signOut(googleApiClient).setResultCallback(
+                        new ResultCallback<Status>() {
+                            @Override
+                            public void onResult(Status status) {
+                                if (status.isSuccess()){
+                                    gotoMainActivity();
+                                }else{
+                                    Toast.makeText(getApplicationContext(),"Session not close", Toast.LENGTH_LONG).show();
+                                }
+                            }
+                        });
+            }
+        });
+
+
+
+
+
 
         // creating intents for different activities
         Intent intentToday = new Intent(this, TodayActivity.class);
@@ -91,4 +141,15 @@ public class ProfileActivity extends AppCompatActivity {
                     }
                 });
     }
+
+    @Override
+    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
+
+    }
+    private void gotoMainActivity(){
+        Intent intent=new Intent(this,Login.class);
+        startActivity(intent);
+    }
+
+
 }
