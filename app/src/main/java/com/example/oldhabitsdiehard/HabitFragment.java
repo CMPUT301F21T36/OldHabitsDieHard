@@ -154,7 +154,7 @@ public class HabitFragment extends DialogFragment {
 
             // get the date info
             int year = myHabit.getYear();
-            int month = myHabit.getMonth();
+            int month = myHabit.getMonth() - 1;
             int day = myHabit.getDay();
             habitDate.updateDate(year, month, day);
 
@@ -197,7 +197,7 @@ public class HabitFragment extends DialogFragment {
                             String title = habitTitle.getText().toString();
                             String reason = habitReason.getText().toString();
                             int day = habitDate.getDayOfMonth();
-                            int month = habitDate.getMonth();
+                            int month = habitDate.getMonth() + 1;
                             int year = habitDate.getYear();
                             LocalDate date = LocalDate.of(year, month, day);
 
@@ -255,7 +255,7 @@ public class HabitFragment extends DialogFragment {
 
                             // get date info
                             int day = habitDate.getDayOfMonth();
-                            int month = habitDate.getMonth();
+                            int month = habitDate.getMonth() + 1;
                             int year = habitDate.getYear();
                             LocalDate date = LocalDate.of(year, month, day);
 
