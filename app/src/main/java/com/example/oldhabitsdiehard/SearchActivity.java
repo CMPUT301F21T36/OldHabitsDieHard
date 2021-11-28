@@ -39,7 +39,7 @@ public class SearchActivity extends AppCompatActivity {
         TextView searchUsername = findViewById(R.id.search_username);
         Button requestButton = findViewById(R.id.request_search);
         TextView habitsHeader = findViewById(R.id.habits_header_search);
-        ListView userList = findViewById(R.id.user_habits);
+        ListView userHabitList = findViewById(R.id.user_habits);
 
         //creating intents for different activities
         Intent intentHabits = new Intent(this, HabitListActivity.class);
@@ -53,16 +53,16 @@ public class SearchActivity extends AppCompatActivity {
                 UserDatabase db = UserDatabase.getInstance();
                 searchUser = db.getUser(s);
                 SearchAdapter searchAdapter = new SearchAdapter(getApplicationContext(), searchUser);
-                userList.setAdapter(searchAdapter);
+                userHabitList.setAdapter(searchAdapter);
                 if(searchUser != null){
                     if(!searchUser.getUsername().equals(user.getUsername())){
                         searchResultHeader.setVisibility(View.VISIBLE);
                         searchUsername.setVisibility(View.VISIBLE);
                         searchUsername.setText(s);
-                        habitsHeader.setVisibility(View.VISIBLE);
-                        userList.setVisibility(View.VISIBLE);
                         requestButton.setVisibility(View.VISIBLE);
                         if(user.getFollowing().contains(searchUser.getUsername())){
+                            habitsHeader.setVisibility(View.VISIBLE);
+                            userHabitList.setVisibility(View.VISIBLE);
                             requestButton.setText("Following");
                             requestButton.setTextColor(getResources().getColor(R.color.blue));
                             requestButton.setBackgroundColor(getResources().getColor(R.color.pink));
@@ -70,10 +70,14 @@ public class SearchActivity extends AppCompatActivity {
                             requestButton.setText("Requested");
                             requestButton.setTextColor(getResources().getColor(R.color.blueLight)); //lb
                             requestButton.setBackgroundColor(getResources().getColor(R.color.blue) ); //b
+                            habitsHeader.setVisibility(View.INVISIBLE);
+                            userHabitList.setVisibility(View.INVISIBLE);
                         } else{
                             requestButton.setText("Request");
                             requestButton.setTextColor(getResources().getColor(R.color.blue));//b
                             requestButton.setBackgroundColor(getResources().getColor(R.color.blueLight)); //lb
+                            habitsHeader.setVisibility(View.INVISIBLE);
+                            userHabitList.setVisibility(View.INVISIBLE);
                         }
                     }else{
                         Intent intent = new Intent(getApplicationContext(), ProfileActivity.class);
