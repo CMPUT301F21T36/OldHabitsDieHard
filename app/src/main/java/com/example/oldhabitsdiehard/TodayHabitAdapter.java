@@ -74,10 +74,26 @@ public class TodayHabitAdapter extends ArrayAdapter<Habit> {
             view = LayoutInflater.from(context).inflate(R.layout.habit_list_content, parent, false);
         }
 
+        TextView habitTitle = view.findViewById(R.id.habit_title);
         Habit habit = user.getTodayHabits().get(position);
 
-        TextView habitTitle = view.findViewById(R.id.habit_title);
+        // Habit title
         habitTitle.setText(habit.getTitle());
+
+        // Habit score indicator
+        int score = habit.followScore();
+        if (score == 3) {
+            habitTitle.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_score3habit, 0);
+        }
+        else if (score == 2) {
+            habitTitle.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_score2habit, 0);
+        }
+        else if (score == 1) {
+            habitTitle.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_score1habit, 0);
+        }
+        else {
+            habitTitle.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_score0habit, 0);
+        }
 
         return view;
     }
