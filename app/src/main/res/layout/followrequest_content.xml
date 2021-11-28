@@ -1,35 +1,40 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-
     <TextView
-        android:id="@+id/request_text"
+        android:id="@+id/requested_user"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="User"
-        android:padding="15dp"
-        android:textSize="25sp"
+        android:padding="13dp"
+        android:text="follower_username"
+        android:textSize="15sp"
+        android:textStyle="bold|italic"
         android:textColor="@color/blue"
-        android:background="@color/beige"/>
-
-    <ImageButton
-        android:id="@+id/accept_button"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/confirm_request"/>
+    <Button
+        android:id="@+id/confirm_request"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_toEndOf="@+id/request_text"
-        android:layout_toRightOf="@+id/request_text"
-        app:srcCompat="@android:drawable/ic_input_add"
-        android:background="@color/beige"/>
-
-    <ImageButton
-        android:id="@+id/deny_button"
+        android:text="@string/confirm"
+        android:textSize="11sp"
+        android:layout_marginRight="5sp"
+        android:textStyle="bold"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/delete_follower"/>
+    <Button
+        android:id="@+id/delete_follower"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_toEndOf="@+id/accept_button"
-        android:layout_toRightOf="@+id/accept_button"
-        app:srcCompat="@android:drawable/ic_delete"
-        android:background="@color/beige"/>
-
-</RelativeLayout>
+        android:backgroundTint="@color/pink"
+        android:text="@string/delete"
+        android:textSize="11sp"
+        android:textStyle="bold"
+        android:textColor="@color/blue"
+        android:layout_marginRight="5sp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+</androidx.constraintlayout.widget.ConstraintLayout>

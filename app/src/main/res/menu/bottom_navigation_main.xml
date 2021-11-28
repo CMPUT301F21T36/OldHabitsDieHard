@@ -27,10 +27,10 @@
         android:title="@string/profile"
         app:showAsAction="withText" />
     <item
-        android:id="@+id/action_following"
+        android:id="@+id/action_search"
         android:enabled="true"
-        android:icon="@drawable/ic_following"
-        android:title="@string/following"
+        android:icon="@drawable/ic_search"
+        android:title="@string/search"
         app:showAsAction="withText" />
 
 

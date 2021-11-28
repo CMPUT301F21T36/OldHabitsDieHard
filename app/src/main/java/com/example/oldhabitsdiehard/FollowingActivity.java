@@ -23,18 +23,17 @@
 
 package com.example.oldhabitsdiehard;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
-import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
+import android.widget.ListView;
+import android.widget.TextView;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
-
-import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.android.material.navigation.NavigationBarView;
-
 /**
  * **NOT IMPLEMENTED YET**
  * Class that displays the Following page, which shows a list of users that the
@@ -44,6 +43,7 @@ import com.google.android.material.navigation.NavigationBarView;
  * @author Paige Lekach
  */
 public class FollowingActivity extends AppCompatActivity {
+    private User user;
 
     /**
      * Declares action to take when this activity is started.
@@ -54,45 +54,48 @@ public class FollowingActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.following_view);
+        UserDatabase db = UserDatabase.getInstance();
+        user = db.getUser(CurrentUser.get().getUsername());
 
-        //creating intents for different activities
-        Intent intentHabits = new Intent(this, HabitListActivity.class);
-        Intent intentEvents = new Intent(this, HabitEventListActivity.class);
-        Intent intentToday = new Intent(this, TodayActivity.class);
-        Intent intentProfile = new Intent(this, ProfileActivity.class);
+        Button backArrow = findViewById(R.id.back_profile_following);
+        TextView followingHeader = findViewById(R.id.following_header);
+        TextView followersHeader = findViewById(R.id.follower_header);
+        @SuppressLint("WrongViewCast") TextView followerLayout = findViewById(R.id.followers_layout);
 
-        //initializing navigation
-        BottomNavigationView bottomNavigationView = (BottomNavigationView)
-                findViewById(R.id.bottom_navigation);
-        bottomNavigationView.setLabelVisibilityMode(NavigationBarView.LABEL_VISIBILITY_LABELED);
+        ListView followingList = findViewById(R.id.following_list_2);
+        ListView followersList = findViewById(R.id.follower_list_2);
 
-        bottomNavigationView.setOnNavigationItemSelectedListener(
-                new BottomNavigationView.OnNavigationItemSelectedListener() {
-                    /**
-                     * Declares action to take when a navigation item is selected.
-                     * @param item the item that was selected
-                     * @return false if the activity is not started correctly
-                     */
-                    @Override
-                    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                        //switching through actions
-                        switch (item.getItemId()) {
-                            case R.id.action_today:
-                                startActivity(intentToday);
-                                break;
-                            case R.id.action_habits:
-                                startActivity(intentHabits);
-                                break;
-                            case R.id.action_events:
-                                startActivity(intentEvents);
-                                break;
-                            case R.id.action_profile:
-                                startActivity(intentProfile);
-                                break;
+        FollowingAdapter followingAdapter = new FollowingAdapter(this, user);
+        FollowerAdapter followerAdapter = new FollowerAdapter(this, user);
 
-                        }
-                        return false;
-                    }
-                });
+        followingList.setAdapter(followingAdapter);
+        followersList.setAdapter(followerAdapter);
+
+        followersHeader.setOnClickListener(new View.OnClickListener() {
+            /**
+             * Define action to take when login button is clicked.
+             *
+             * @param view
+             */
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(view.getContext(), FollowerActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        backArrow.setOnClickListener(new View.OnClickListener() {
+            /**
+             * Define action to take when login button is clicked.
+             *
+             * @param view
+             */
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(view.getContext(), ProfileActivity.class);
+                startActivity(intent);
+            }
+        });
+
     }
 }

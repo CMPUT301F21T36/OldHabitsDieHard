@@ -29,6 +29,7 @@ import androidx.annotation.RequiresApi;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.stream.Collectors;
 
 /**
  * This class represents a user.
@@ -55,6 +56,23 @@ public class User {
         setUsername(username);
         setPassword(password);
         setBio("");
+        habits = new ArrayList<Habit>();
+        habitEvents = new ArrayList<HabitEvent>();
+        following = new ArrayList<String>();
+        followers = new ArrayList<String>();
+        followRequests = new ArrayList<FollowRequest>();
+    }
+
+    /**
+     * User constructor
+     * @param username User's username (for login)
+     * @param password User's password (for login)
+     * @param bio User's bio (for profile)
+     */
+    public User(String username, String password, String bio) throws IllegalArgumentException {
+        setUsername(username);
+        setPassword(password);
+        setBio(bio);
         habits = new ArrayList<Habit>();
         habitEvents = new ArrayList<HabitEvent>();
         following = new ArrayList<String>();
@@ -183,6 +201,39 @@ public class User {
         }
     }
 
+
+    /**
+     * Method to add a FollowRequest
+     * @param request
+     */
+    public void addFollowRequest(FollowRequest request){
+      this.followRequests.add(request);
+    }
+
+    /**
+     * Method to remove a FollowRequest
+     * @param request
+     */
+    public void removeFollowRequest(FollowRequest request){
+        this.followRequests.remove(request);
+    }
+
+    /**
+     * Method to remove a Following user
+     * @param s
+     */
+    public void removeFollowing(String s){
+        this.following.remove(s);
+    }
+
+    /**
+     * Method to remove a Follower
+     * @param s
+     */
+    public void removeFollower(String s){
+        this.followers.remove(s);
+    }
+
     /**
      * Method to delete a habit from this user.
      * @param habit the habit to be deleted
@@ -286,4 +337,14 @@ public class User {
         db.updateUser(user);
         db.updateUser(this);
     }
+
+    /**
+     * Gets all this user's public habits
+     * @return ArrayList of public habits for this user
+     */
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    public ArrayList<Habit> getPublicHabits() {
+        return (ArrayList<Habit>) habits.stream().filter(habit -> habit.getPublic()).collect(Collectors.toList());
+    }
+
 }

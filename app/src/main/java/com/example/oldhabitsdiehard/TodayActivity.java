@@ -66,7 +66,7 @@ public class TodayActivity extends AppCompatActivity {
         Intent intentHabits = new Intent(this, HabitListActivity.class);
         Intent intentEvents = new Intent(this, HabitEventListActivity.class);
         Intent intentProfile = new Intent(this, ProfileActivity.class);
-        Intent intentFollowing = new Intent(this, FollowingActivity.class);
+        Intent intentSearch = new Intent(this, SearchActivity.class);
 
         //initializing navigation
         BottomNavigationView bottomNavigationView = (BottomNavigationView)
@@ -93,8 +93,8 @@ public class TodayActivity extends AppCompatActivity {
                             case R.id.action_profile:
                                 startActivity(intentProfile);
                                 break;
-                            case R.id.action_following:
-                                startActivity(intentFollowing);
+                            case R.id.action_search:
+                                startActivity(intentSearch);
                                 break;
                         }
                         return false;

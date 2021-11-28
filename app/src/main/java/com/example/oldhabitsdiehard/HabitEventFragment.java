@@ -237,7 +237,7 @@ public class HabitEventFragment extends DialogFragment implements View.OnClickLi
 
             // get the date info
             int year = myEvent.getYear();
-            int month = myEvent.getMonth();
+            int month = myEvent.getMonth() - 1;
             int day = myEvent.getDay();
             habitEventDate.updateDate(year, month, day);
 
@@ -298,7 +298,7 @@ public class HabitEventFragment extends DialogFragment implements View.OnClickLi
 
                             // get the date info for the habit event
                             int day = habitEventDate.getDayOfMonth();
-                            int month = habitEventDate.getMonth();
+                            int month = habitEventDate.getMonth() + 1;
                             int year = habitEventDate.getYear();
                             LocalDate date = LocalDate.of(year, month, day);
 
@@ -376,7 +376,7 @@ public class HabitEventFragment extends DialogFragment implements View.OnClickLi
 
                             // get the date info for the habit event
                             int day = habitEventDate.getDayOfMonth();
-                            int month = habitEventDate.getMonth();
+                            int month = habitEventDate.getMonth() + 1;
                             int year = habitEventDate.getYear();
                             LocalDate date = LocalDate.of(year, month, day);
 
