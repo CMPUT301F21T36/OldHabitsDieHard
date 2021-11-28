@@ -277,8 +277,10 @@ public class HabitEventFragment extends DialogFragment implements View.OnClickLi
                         public void onClick(DialogInterface dialogInterface, int i) {
                             // create reference for this image
                             String refString = myEvent.getImage();
-                            StorageReference imgRef = storageRef.child(refString);
-                            imgRef.delete();
+                            if (refString != null) {
+                                StorageReference imgRef = storageRef.child(refString);
+                                imgRef.delete();
+                            }
                             listener.deleteHabitEvent(myEvent);
                         }
                     })
