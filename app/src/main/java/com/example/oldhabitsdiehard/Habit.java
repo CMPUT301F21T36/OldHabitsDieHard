@@ -318,6 +318,14 @@ public class Habit implements Serializable {
     }
 
     /**
+     * Deletes a habitEvent to the habitEvents list
+     * @param habitEvent
+     */
+    public void deleteHabitEvent(HabitEvent habitEvent){
+        habitEvents.remove(habitEvent);
+    }
+
+    /**
      ** NOT IMPLEMENTED**
      *  Returns a score representing how well a user is following this habit.
      *  Score starts at 3 (good) and is subtracted by 1 for every previous habit event missed, down to 0 (bad).
@@ -348,7 +356,8 @@ public class Habit implements Serializable {
                 // Was habit done on this day?
                 boolean flag = false;
                 for (HabitEvent he : habitEvents) {
-                    if (current.equals(LocalDate.of(he.getYear(), he.getMonth(), he.getDay()))) {
+                    LocalDate habitEventsDate = LocalDate.of(he.getYear(), he.getMonth(), he.getDay());
+                    if (current.equals(habitEventsDate)) {
 
                         flag = true;
                         break;

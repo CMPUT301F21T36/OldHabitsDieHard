@@ -4,6 +4,9 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import android.location.Location;
+import android.location.LocationManager;
+
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDate;
@@ -166,6 +169,29 @@ public class HabitTest {
         Habit myHabit = mockHabit();
         myHabit.setPublic(false);
         assertFalse(myHabit.getPublic());
+    }
+
+    @Test
+    void testfollowScore(){
+        Habit myHabit = mockHabit();
+        LocalDate myDate = LocalDate.of(2021, 11, 28); //Sunday
+        LocalDate myDate1 = LocalDate.of(2021, 11, 23); //Tuesday
+        LocalDate myDate2 = LocalDate.of(2021, 11, 25); //Thursday
+        LocalDate myDate3 = LocalDate.of(2021, 11, 27); //Saturday
+
+        HabitEvent habitevent = new HabitEvent("Eat breakfast","Morning",null, myDate,new Location(LocationManager.PASSIVE_PROVIDER));
+        HabitEvent habitevent1 = new HabitEvent("Eat breakfast","Afternoon",null, myDate1,new Location(LocationManager.PASSIVE_PROVIDER));
+        HabitEvent habitevent2 = new HabitEvent("Eat breakfast","Evening",null, myDate2,new Location(LocationManager.PASSIVE_PROVIDER));
+        HabitEvent habitevent3 = new HabitEvent("Eat breakfast","Night",null, myDate3,new Location(LocationManager.PASSIVE_PROVIDER));
+        myHabit.addHabitEvent(habitevent);
+        myHabit.addHabitEvent(habitevent1);
+        myHabit.addHabitEvent(habitevent2);
+        myHabit.addHabitEvent(habitevent3);
+        assertEquals(3, myHabit.followScore());
+
+        myHabit.deleteHabitEvent(habitevent);
+        assertEquals(2,myHabit.followScore());
+
     }
 
 }
