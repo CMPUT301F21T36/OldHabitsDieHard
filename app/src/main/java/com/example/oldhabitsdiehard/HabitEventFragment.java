@@ -146,7 +146,7 @@ public class HabitEventFragment extends DialogFragment {
             int year = myEvent.getYear();
             int month = myEvent.getMonth();
             int day = myEvent.getDay();
-            habitEventDate.updateDate(year, month, day);
+            habitEventDate.updateDate(year, month + 1, day);
             return builder
                     .setView(view)
                     .setTitle("Edit Habit")
@@ -175,7 +175,7 @@ public class HabitEventFragment extends DialogFragment {
 
                             // get the date info for the habit event
                             int day = habitEventDate.getDayOfMonth();
-                            int month = habitEventDate.getMonth();
+                            int month = habitEventDate.getMonth() + 1;
                             int year = habitEventDate.getYear();
                             LocalDate date = LocalDate.of(year, month, day);
 
@@ -213,7 +213,7 @@ public class HabitEventFragment extends DialogFragment {
 
                             // get the date info for the habit event
                             int day = habitEventDate.getDayOfMonth();
-                            int month = habitEventDate.getMonth();
+                            int month = habitEventDate.getMonth() + 1;
                             int year = habitEventDate.getYear();
                             LocalDate date = LocalDate.of(year, month, day);
 
