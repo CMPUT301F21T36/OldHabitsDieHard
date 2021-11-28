@@ -201,6 +201,39 @@ public class User {
         }
     }
 
+
+    /**
+     * Method to add a FollowRequest
+     * @param request
+     */
+    public void addFollowRequest(FollowRequest request){
+      this.followRequests.add(request);
+    }
+
+    /**
+     * Method to remove a FollowRequest
+     * @param request
+     */
+    public void removeFollowRequest(FollowRequest request){
+        this.followRequests.remove(request);
+    }
+
+    /**
+     * Method to remove a Following user
+     * @param s
+     */
+    public void removeFollowing(String s){
+        this.following.remove(s);
+    }
+
+    /**
+     * Method to remove a Follower
+     * @param s
+     */
+    public void removeFollower(String s){
+        this.followers.remove(s);
+    }
+
     /**
      * Method to delete a habit from this user.
      * @param habit the habit to be deleted

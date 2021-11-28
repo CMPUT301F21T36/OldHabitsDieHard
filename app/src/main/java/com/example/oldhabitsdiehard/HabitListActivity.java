@@ -29,7 +29,6 @@ import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ListView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
@@ -111,7 +110,7 @@ public class HabitListActivity extends AppCompatActivity implements HabitFragmen
         Intent intentToday = new Intent(this, TodayActivity.class);
         Intent intentProfile = new Intent(this, ProfileActivity.class);
         Intent intentEvents = new Intent(this, HabitEventListActivity.class);
-        Intent intentFollowing = new Intent(this, FollowingActivity.class);
+        Intent intentSearch = new Intent(this, SearchActivity.class);
 
         //initializing navigation in the activity
         BottomNavigationView bottomNavigationView = (BottomNavigationView)
@@ -133,8 +132,8 @@ public class HabitListActivity extends AppCompatActivity implements HabitFragmen
                             case R.id.action_profile:
                                 startActivity(intentProfile);
                                 break;
-                            case R.id.action_following:
-                                startActivity(intentFollowing);
+                            case R.id.action_search:
+                                startActivity(intentSearch);
                                 break;
                         }
                         return false;

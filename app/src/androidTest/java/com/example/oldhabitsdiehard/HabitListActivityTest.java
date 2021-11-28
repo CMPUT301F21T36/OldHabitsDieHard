@@ -129,7 +129,7 @@ public class HabitListActivityTest {
         BottomNavigationView nav = rule.getActivity().findViewById(R.id.bottom_navigation);
         // Getting the menu and items so following can be clicked
         Menu menu = nav.getMenu();
-        MenuItem item = menu.findItem(R.id.action_following);
+        MenuItem item = menu.findItem(R.id.action_search);
         boolean clicked = menu.performIdentifierAction(item.getItemId(), 0);
 
         // Checking that button was clicked and in correct activity

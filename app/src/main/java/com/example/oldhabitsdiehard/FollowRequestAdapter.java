@@ -6,7 +6,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.ImageButton;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -43,7 +42,7 @@ public class FollowRequestAdapter extends ArrayAdapter<FollowRequest> {
 
         // Button functionality
         Button confirmButton = view.findViewById(R.id.confirm_request);
-        Button deleteButton = view.findViewById(R.id.delete_request);
+        Button deleteButton = view.findViewById(R.id.delete_follower);
 
         confirmButton.setOnClickListener(new View.OnClickListener() {
             @Override

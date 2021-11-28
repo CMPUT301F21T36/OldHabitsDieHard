@@ -11,6 +11,7 @@
     <string name="old_habits_die_hard">Old Habits Die Hard</string>
     <string name="account_created">Account Created!</string>
     <string name="habits">Habits</string>
+    <string name="habits_u"><u>Habits</u></string>
     <string name="habit_events">Habit Events</string>
     <string name="create_profile">Create Profile</string>
     <string name="enter_username">Enter Username</string>
@@ -21,7 +22,11 @@
     <string name="confirm">Confirm</string>
     <string name="delete">Delete</string>
     <string name="following_u"><u>Following</u></string>
+    <string name="follower_u"><u>Followers</u></string>
     <string name="follow_requests"><u>Follow Requests</u></string>
     <string name="no_follow_requests">No Follow Requests</string>
+    <string name="search_result"><u>Search Result</u></string>
+    <string name="search">Search</string>
+    <string name="public_habits"><u>Public Habits</u></string>
 
 </resources>

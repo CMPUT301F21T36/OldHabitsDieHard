@@ -24,6 +24,7 @@
 package com.example.oldhabitsdiehard;
 
 import android.content.Intent;
+import android.database.DataSetObserver;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.MenuItem;
@@ -48,6 +49,7 @@ import com.google.android.material.navigation.NavigationBarView;
  */
 public class ProfileActivity extends AppCompatActivity {
     private User user;
+    UserDatabase db = UserDatabase.getInstance();
 
     /**
      * Defines action to take when activity is created.
@@ -59,7 +61,7 @@ public class ProfileActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.profile_view);
 
-        user = CurrentUser.get();
+        user = db.getUser(CurrentUser.get().getUsername());
         TextView username = findViewById(R.id.profile_username);
         TextView bio = findViewById(R.id.bio_profile);
         TextView followingTitle = findViewById(R.id.following_title);
@@ -89,7 +91,7 @@ public class ProfileActivity extends AppCompatActivity {
         Intent intentToday = new Intent(this, TodayActivity.class);
         Intent intentHabits = new Intent(this, HabitListActivity.class);
         Intent intentEvents = new Intent(this, HabitEventListActivity.class);
-        Intent intentFollowing = new Intent(this, FollowingActivity.class);
+        Intent intentSearch = new Intent(this, SearchActivity.class);
 
 
         editProfileButton.setOnClickListener(new View.OnClickListener() {
@@ -113,7 +115,7 @@ public class ProfileActivity extends AppCompatActivity {
              */
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(view.getContext(), FollowingActivity.class);
+                Intent intent = new Intent(view.getContext(), FollowerActivity.class);
                 startActivity(intent);
             }
         });
@@ -127,6 +129,13 @@ public class ProfileActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(view.getContext(), FollowingActivity.class);
+                startActivity(intent);
+            }
+        });
+        followRequestAdapter.registerDataSetObserver(new DataSetObserver() {
+            @Override
+            public void onChanged() {
+                Intent intent = new Intent(getApplicationContext(), ProfileActivity.class);
                 startActivity(intent);
             }
         });
@@ -156,8 +165,8 @@ public class ProfileActivity extends AppCompatActivity {
                             case R.id.action_events:
                                 startActivity(intentEvents);
                                 break;
-                            case R.id.action_following:
-                                startActivity(intentFollowing);
+                            case R.id.action_search:
+                                startActivity(intentSearch);
                                 break;
                         }
                         return false;

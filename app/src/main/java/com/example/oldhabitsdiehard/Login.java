@@ -50,8 +50,8 @@ public class Login extends AppCompatActivity {
         setContentView(R.layout.activity_login);
 
         // set up boxes for user to enter login info
-        EditText usernameBox = findViewById(R.id.username_box);
-        EditText passwordBox = findViewById(R.id.password_box);
+        EditText usernameBox = findViewById(R.id.username_login);
+        EditText passwordBox = findViewById(R.id.password_login);
         Button createButton = findViewById(R.id.create_button);
         Button loginButton = findViewById(R.id.login_button);
 

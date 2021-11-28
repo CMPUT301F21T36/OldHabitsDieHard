@@ -117,7 +117,7 @@ public class HabitEventListActivity extends AppCompatActivity implements HabitEv
         Intent intentToday = new Intent(this, TodayActivity.class);
         Intent intentProfile = new Intent(this, ProfileActivity.class);
         Intent intentHabits = new Intent(this, HabitListActivity.class);
-        Intent intentFollowing = new Intent(this, FollowingActivity.class);
+        Intent intentSearch = new Intent(this, SearchActivity.class);
 
         //setting up the navigation bar in the activity
         BottomNavigationView bottomNavigationView = (BottomNavigationView)
@@ -144,8 +144,8 @@ public class HabitEventListActivity extends AppCompatActivity implements HabitEv
                             case R.id.action_profile:
                                 startActivity(intentProfile);
                                 break;
-                            case R.id.action_following:
-                                startActivity(intentFollowing);
+                            case R.id.action_search:
+                                startActivity(intentSearch);
                                 break;
                         }
                         return false;

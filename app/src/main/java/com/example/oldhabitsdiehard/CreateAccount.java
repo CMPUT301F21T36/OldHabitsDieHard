@@ -11,7 +11,7 @@ import android.widget.Toast;
 
 public class CreateAccount extends AppCompatActivity{
     private User user;
-    private Integer minPasswordLength = 2;
+    private final Integer minPasswordLength = 2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
