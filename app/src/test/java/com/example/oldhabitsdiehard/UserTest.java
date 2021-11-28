@@ -122,4 +122,21 @@ public class UserTest {
         // Getting
         assertTrue(user.getHabitEvents().contains(event));
     }
+
+    @Test
+    void testGetPublicHabits() {
+        User user = mockUser();
+
+        Habit publicHabit = new Habit();
+        publicHabit.setPublic(true);
+
+        Habit privateHabit = new Habit();
+        privateHabit.setPublic(false);
+
+        user.addHabit(privateHabit);
+        user.addHabit(publicHabit);
+
+        ArrayList<Habit> publicHabits = user.getPublicHabits();
+        assertTrue(publicHabits.size() == 1);
+    }
 }
