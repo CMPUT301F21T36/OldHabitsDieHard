@@ -187,6 +187,7 @@ public class HabitEventListActivity extends AppCompatActivity implements HabitEv
      */
     @Override
     public void deleteHabitEvent(HabitEvent event) {
+        user.deleteHabitEvent(event);
         // remove event from adapter
         habitEventAdapter.remove(event);
         // udpate the user in firestore

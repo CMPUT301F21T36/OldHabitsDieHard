@@ -24,20 +24,16 @@
 package com.example.oldhabitsdiehard;
 
 import android.os.Build;
-import android.util.Log;
-import android.view.ViewDebug;
 
 import androidx.annotation.RequiresApi;
 
 import java.io.Serializable;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-import java.util.function.Predicate;
 
 /**
  * This class represents a habit.
@@ -336,28 +332,28 @@ public class Habit implements Serializable {
 
         LocalDate current = LocalDate.now();
         DayOfWeek currentDOW = current.getDayOfWeek();
-        LocalDate start = LocalDate.of(2021, 11, 15);
+        LocalDate start = LocalDate.of(year, month, day);
 
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd LLLL yyyy");
-        String formattedString = current.format(formatter);
-        Log.d("Current",formattedString );
-        String formattedString1 = start.format(formatter);
-        Log.d("Start",formattedString1 );
 
         while ((score>0) && (countChecker>0) && (current.isAfter(start))) {
-            // Habit needs to be done this day?
-            if (weekdays.get(currentDOW.getValue()-1)) {
+            // Habit needs to be done this day
+            int getCurrentDOW = currentDOW.getValue();
+            // Set value of sunday to be 0, to be consistent with weekdays list
+            if (getCurrentDOW == 7){
+                getCurrentDOW = 0;
+            }
+            if (weekdays.get(getCurrentDOW)) {
                 // Habit needed to be done on this day
                 countChecker--;
                 // Was habit done on this day?
                 boolean flag = false;
                 for (HabitEvent he : habitEvents) {
-
                     if (current.equals(LocalDate.of(he.getYear(), he.getMonth(), he.getDay()))) {
 
                         flag = true;
                         break;
                     }
+
                 }
                 if (!flag) {
                     score--;
@@ -368,8 +364,10 @@ public class Habit implements Serializable {
             current = current.minusDays(1);
             currentDOW = current.getDayOfWeek();
         }
-        Log.d("Score", Integer.toString(score));
         return score;
     }
 
+    public void removeHabitEvent(HabitEvent habitEvent) {
+        habitEvents.remove(habitEvent);
+    }
 }

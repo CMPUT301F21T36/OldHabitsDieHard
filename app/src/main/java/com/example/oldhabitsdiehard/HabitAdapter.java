@@ -1,26 +1,3 @@
-/*
- *  HabitAdapter
- *
- *  Version 1.0
- *
- *  November 4, 2021
- *
- *  Copyright 2021 Rowan Tilroe, Claire Martin, Filippo Ciandy,
- *  Gurbani Baweja, Chanpreet Singh, and Paige Lekach
- *
- *  Licensed under the Apache License, Version 2.0 (the "License");
- *  you may not use this file except in compliance with the License.
- *  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
- */
-
 package com.example.oldhabitsdiehard;
 
 import android.content.Context;
@@ -28,58 +5,100 @@ import android.os.Build;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
+import android.widget.AdapterView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
+import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 
 /**
  * Custom adapter for Habits.
  *
- * @author Rowan Tilroe
- * @author Claire Martin
+ * @author Filippo Ciandy
  */
-public class HabitAdapter extends ArrayAdapter<Habit> {
-    private Context context;
-    private User user;
+
+public class HabitAdapter extends RecyclerView.Adapter<HabitAdapter.ViewHolder>{
+
+    private ArrayList<Habit> HabitList;
+    private AdapterView.OnItemClickListener ItemClickListener;
+
 
     /**
      * Constructor
-     * @param context
-     * @param user
+     * @param HabitList
+     * @param ItemClickListener
      */
     @RequiresApi(api = Build.VERSION_CODES.O)
-    public HabitAdapter(Context context, User user) {
-        super(context, 0, user.getHabits());
-        this.user = user;
-        this.context = context;
+    public HabitAdapter(ArrayList<Habit> HabitList,AdapterView.OnItemClickListener ItemClickListener) {
+        this.HabitList = HabitList;
+        this.ItemClickListener = ItemClickListener;
     }
 
     /**
-     * Gets a view for this habit list so that it can be displayed.
-     * @param position the position in the list
-     * @param convertView
+     * Inflates row layout from habit_list_content
      * @param parent
-     * @return the view for the HabitList
+     * @param viewType
+     * @return
      */
-    @RequiresApi(api = Build.VERSION_CODES.O)
     @NonNull
     @Override
-    public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
-        View view = convertView;
+    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
+        View view = layoutInflater.inflate(R.layout.habit_list_content,parent,false);
 
-        if (view == null) {
-            view = LayoutInflater.from(context).inflate(R.layout.habit_list_content, parent, false);
+        ViewHolder viewholder = new ViewHolder(view);
+        return viewholder;
+
+    }
+
+    /**
+     * Binds Habit title in dedicated position to TextView in each row.
+     * @param holder
+     * @param _
+     */
+    @Override
+    public void onBindViewHolder(@NonNull ViewHolder holder, int _) {
+        int position = holder.getAdapterPosition();
+        holder.textView.setText(HabitList.get(position).getTitle());
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ItemClickListener.onItemClick(null,null,position,position);
+            }
+        });
+    }
+
+    /**
+     * Get total number of rows
+     * @return total number of rows
+     */
+
+    @Override
+    public int getItemCount() {
+        return HabitList.size();
+    }
+
+    /**
+     * Recycles and stores view when list is scrolled out of the screen
+     */
+    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+
+
+        TextView textView;
+
+
+        public ViewHolder(@NonNull View itemView) {
+            super(itemView);
+            textView = itemView.findViewById(R.id.habit_title);
+            itemView.setOnClickListener(this);
         }
 
-        Habit habit = user.getHabits().get(position);
-        TextView habitTitle = view.findViewById(R.id.habit_title);
-        habitTitle.setText(habit.getTitle());
+        @Override
+        public void onClick(View v) {
 
-        return view;
+        }
     }
 }
