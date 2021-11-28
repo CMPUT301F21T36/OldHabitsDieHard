@@ -29,6 +29,7 @@ import androidx.annotation.RequiresApi;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.stream.Collectors;
 
 /**
  * This class represents a user.
@@ -286,4 +287,14 @@ public class User {
         db.updateUser(user);
         db.updateUser(this);
     }
+
+    /**
+     * Gets all this user's public habits
+     * @return ArrayList of public habits for this user
+     */
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    public ArrayList<Habit> getPublicHabits() {
+        return (ArrayList<Habit>) habits.stream().filter(habit -> habit.getPublic()).collect(Collectors.toList());
+    }
+
 }
