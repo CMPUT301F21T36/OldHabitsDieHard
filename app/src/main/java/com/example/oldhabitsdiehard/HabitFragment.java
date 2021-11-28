@@ -37,6 +37,8 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.Toast;
+
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -60,6 +62,8 @@ public class HabitFragment extends DialogFragment {
     private RadioButton radioSelectedButton;
     private CheckBox sunday,monday,tuesday,wednesday,thursday,friday,saturday;
     private HabitFragment.onFragmentInteractionListener listener;
+    private User user;
+    private UserDatabase db;
 
     /**
      * A listener interface for this fragment to interact with the calling activity.
@@ -93,6 +97,9 @@ public class HabitFragment extends DialogFragment {
      */
     @Override
     public void onAttach(Context context){
+        user = CurrentUser.get();
+        db = UserDatabase.getInstance();
+        db.updateUser(user);
         super.onAttach(context);
         if(context instanceof HabitFragment.onFragmentInteractionListener){
             listener = (HabitFragment.onFragmentInteractionListener) context;
@@ -110,6 +117,7 @@ public class HabitFragment extends DialogFragment {
     @NonNull
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState){
+        db.updateUser(user);
         // get the habit fragment view
         View view = LayoutInflater.from(getActivity()).inflate(R.layout.habit_fragment, null);
         // get info for the habit display items
@@ -211,15 +219,32 @@ public class HabitFragment extends DialogFragment {
                             weekdays.add(friday.isChecked());
                             weekdays.add(saturday.isChecked());
 
-                            // update the habit with new info
-                            myHabit.setTitle(title);
-                            myHabit.setReason(reason);
-                            myHabit.setPublic(isPublic);
-                            myHabit.setWeekdays(weekdays);
-                            myHabit.setStartDate(date);
+                            // get habits that already exist
+                            ArrayList<Habit> currentHabits = user.getHabits();
+                            boolean habitExists = false;
+                            for (int j = 0; j < currentHabits.size(); j++) {
+                                // check if the habit name already exists
+                                if (title.equals(currentHabits.get(j).getTitle())) {
+                                    // user isn't allowed to use this name
+                                    habitExists = true;
+                                }
+                            }
+                            if (habitExists && !myHabit.getTitle().equals(title)) {
+                                Toast.makeText(getActivity(), "Title already in use\nTry again!", Toast.LENGTH_LONG).show();
+                            } else if (title == null){
+                                // we require a habit title
+                                Toast.makeText(getActivity(), "Please enter a habit title", Toast.LENGTH_LONG).show();
+                            } else {
+                                // update the habit with new info
+                                myHabit.setTitle(title);
+                                myHabit.setReason(reason);
+                                myHabit.setPublic(isPublic);
+                                myHabit.setWeekdays(weekdays);
+                                myHabit.setStartDate(date);
 
-                            // update habit in listener
-                            listener.editHabit(myHabit);
+                                // update habit in listener
+                                listener.editHabit(myHabit);
+                            }
                         }
                     }).create();
         } else {
@@ -269,8 +294,22 @@ public class HabitFragment extends DialogFragment {
                             weekdays.add(friday.isChecked());
                             weekdays.add(saturday.isChecked());
 
-                            // add habit to listener
-                            listener.addHabit(new Habit(title, reason, date, weekdays, isPublic));
+                            // get habits that already exist
+                            ArrayList<Habit> currentHabits = user.getHabits();
+                            boolean habitExists = false;
+                            for (int j = 0; j < currentHabits.size(); j++) {
+                                // check if the habit name already exists
+                                if (title.equals(currentHabits.get(j).getTitle())) {
+                                    // user isn't allowed to use this name
+                                    habitExists = true;
+                                }
+                            }
+                            if (habitExists) {
+                                Toast.makeText(getActivity().getApplicationContext(), "This habit already exists\nTry again!", Toast.LENGTH_LONG).show();
+                            } else {
+                                // add habit to listener
+                                listener.addHabit(new Habit(title, reason, date, weekdays, isPublic));
+                            }
                         }
                     }).create();
         }
