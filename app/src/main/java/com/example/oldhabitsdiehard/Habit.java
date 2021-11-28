@@ -28,6 +28,7 @@ import android.os.Build;
 import androidx.annotation.RequiresApi;
 
 import java.io.Serializable;
+import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -325,13 +326,51 @@ public class Habit implements Serializable {
     }
 
     /**
-     * **NOT IMPLEMENTED**
-     * Returns a score representing how well a user is following this habit.
-     * @return the score
+     *  Returns a score representing how well a user is following this habit.
+     *  Score starts at 3 (good) and is subtracted by 1 for every previous habit event missed, down to 0 (bad).
+     *  Only check previous 3 scheduled habit event dates to see if user did the habit.
+     *  @return the score
      */
+    @RequiresApi(api = Build.VERSION_CODES.O)
     public int followScore() {
-        // calculate the score based on how many days it has been followed
-        return 0;
-    }
+        int score = 3;
+        int countChecker = 3;
 
-}
+        LocalDate current = LocalDate.now();
+        DayOfWeek currentDOW = current.getDayOfWeek();
+        LocalDate start = LocalDate.of(year, month, day);
+
+
+        while ((score > 0) && (countChecker > 0) && (current.isAfter(start))) {
+            // Habit needs to be done this day
+            int getCurrentDOW = currentDOW.getValue();
+            // Set value of sunday to be 0, to be consistent with weekdays list
+            if (getCurrentDOW == 7) {
+                getCurrentDOW = 0;
+            }
+            if (weekdays.get(getCurrentDOW)) {
+                // Habit needed to be done on this day
+                countChecker--;
+                // Was habit done on this day?
+                boolean flag = false;
+                for (HabitEvent he : habitEvents) {
+                    LocalDate habitEventsDate = LocalDate.of(he.getYear(), he.getMonth(), he.getDay());
+                    if (current.equals(habitEventsDate)) {
+
+                        flag = true;
+                        break;
+                    }
+
+                }
+                if (!flag) {
+                    score--;
+                }
+            }
+
+            // Decrement current day
+            current = current.minusDays(1);
+            currentDOW = current.getDayOfWeek();
+        }
+        return score;
+    }
+    }
