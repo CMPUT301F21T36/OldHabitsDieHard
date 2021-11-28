@@ -5,6 +5,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.SearchView;
@@ -18,10 +19,12 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
 
+import java.util.ArrayList;
+
 public class SearchActivity extends AppCompatActivity {
     private User user;
     private User searchUser;
-    private UserDatabase db = UserDatabase.getInstance();;
+    private UserDatabase db = UserDatabase.getInstance();
     /**
      * Declares action to take when this activity is started.
      * @param savedInstanceState
@@ -52,9 +55,21 @@ public class SearchActivity extends AppCompatActivity {
             public boolean onQueryTextSubmit(String s) {
                 UserDatabase db = UserDatabase.getInstance();
                 searchUser = db.getUser(s);
-                SearchAdapter searchAdapter = new SearchAdapter(getApplicationContext(), searchUser);
-                userHabitList.setAdapter(searchAdapter);
+
                 if(searchUser != null){
+                    ArrayList<Habit> userPublicHabits = searchUser.getPublicHabits();
+                    SearchAdapter searchAdapter = new SearchAdapter(getApplicationContext(), searchUser);
+                    userHabitList.setAdapter(searchAdapter);
+                    userHabitList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                        @Override
+                        public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
+                            // get clicked habit
+                            final Habit habit = userPublicHabits.get(position);
+                            // create fragment to view habit
+                            FollowingHabitFragment fragment = FollowingHabitFragment.newInstance(habit, s);
+                            fragment.show(getSupportFragmentManager(), "VIEW_HABIT");
+                        }
+                    });
                     if(!searchUser.getUsername().equals(user.getUsername())){
                         searchResultHeader.setVisibility(View.VISIBLE);
                         searchUsername.setVisibility(View.VISIBLE);
@@ -63,6 +78,7 @@ public class SearchActivity extends AppCompatActivity {
                         if(user.getFollowing().contains(searchUser.getUsername())){
                             habitsHeader.setVisibility(View.VISIBLE);
                             userHabitList.setVisibility(View.VISIBLE);
+                            // when a habit is clicked
                             requestButton.setText("Following");
                             requestButton.setTextColor(getResources().getColor(R.color.blue));
                             requestButton.setBackgroundColor(getResources().getColor(R.color.pink));
