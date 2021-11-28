@@ -80,6 +80,12 @@ public class HabitEventListActivity extends AppCompatActivity implements HabitEv
         // define the add button
 
         final FloatingActionButton addHabitEventButton = findViewById(R.id.add_habit_event_button);
+        if (user.getHabits().size() == 0) {
+            // we have no habits, so user is not allowed to add a habit event
+            addHabitEventButton.setVisibility(View.INVISIBLE);
+        } else {
+            addHabitEventButton.setVisibility(View.VISIBLE);
+        }
    
         addHabitEventButton.setOnClickListener(new View.OnClickListener() {
             /**
