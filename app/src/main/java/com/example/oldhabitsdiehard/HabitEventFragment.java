@@ -144,9 +144,9 @@ public class HabitEventFragment extends DialogFragment {
 
             // get the date info
             int year = myEvent.getYear();
-            int month = myEvent.getMonth();
+            int month = myEvent.getMonth() - 1;
             int day = myEvent.getDay();
-            habitEventDate.updateDate(year, month + 1, day);
+            habitEventDate.updateDate(year, month, day);
             return builder
                     .setView(view)
                     .setTitle("Edit Habit")

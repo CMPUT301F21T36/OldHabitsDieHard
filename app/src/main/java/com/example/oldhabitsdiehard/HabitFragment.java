@@ -154,9 +154,9 @@ public class HabitFragment extends DialogFragment {
 
             // get the date info
             int year = myHabit.getYear();
-            int month = myHabit.getMonth();
+            int month = myHabit.getMonth() - 1;
             int day = myHabit.getDay();
-            habitDate.updateDate(year, month - 1, day);
+            habitDate.updateDate(year, month, day);
 
             // create builder
             return builder
