@@ -159,7 +159,7 @@ public class HabitFragment extends DialogFragment {
             habitDate.updateDate(year, month, day);
 
             // create builder
-            return builder
+            builder
                     .setView(view)
                     .setTitle("Edit Habit")
                     .setNegativeButton("Delete", new DialogInterface.OnClickListener() {
@@ -181,6 +181,18 @@ public class HabitFragment extends DialogFragment {
                          */
                         @Override
                         public void onClick(DialogInterface dialogInterface, int i) {
+
+                        }
+                    });
+
+                    AlertDialog dialog = builder.create();
+                    dialog.show();
+                    //Overriding the handler immediately after show is probably a better approach than OnShowListener as described below
+                    dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener()
+                    {
+                        @Override
+                        public void onClick(View v)
+                        {
                             // determine which privacy setting was selected
                             int selectedPrivacy = group.getCheckedRadioButtonId();
                             radioSelectedButton = view.findViewById(selectedPrivacy);
@@ -218,15 +230,27 @@ public class HabitFragment extends DialogFragment {
                             myHabit.setWeekdays(weekdays);
                             myHabit.setStartDate(date);
 
-                            // update habit in listener
-                            listener.editHabit(myHabit);
+
+                            Boolean wantToCloseDialog = false;
+                            if(habitTitle.length()<=0){
+                                habitTitle.setError("Habit Title Required");
+                            }else{
+                                // update habit in listener
+                                listener.editHabit(myHabit);
+                                wantToCloseDialog = true;
+                            }
+                            if(wantToCloseDialog)
+                                dialog.dismiss();
+
                         }
-                    }).create();
+
+                    });
+                    return dialog;
+
         } else {
             // we are adding a habit
-            return builder
+            builder
                     .setView(view)
-                    .setTitle("Add Habit")
                     .setNegativeButton("Cancel", null)
                     .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                         /**
@@ -237,7 +261,19 @@ public class HabitFragment extends DialogFragment {
                         @RequiresApi(api = Build.VERSION_CODES.O)
                         @Override
                         public void onClick(DialogInterface dialogInterface, int i) {
-                            // get info that the user entered
+
+                        }
+                    });
+
+
+                    AlertDialog dialog = builder.create();
+                    dialog.show();
+                    //Overriding the handler immediately after show is probably a better approach than OnShowListener as described below
+                    dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener()
+                    {
+                        @Override
+                        public void onClick(View v)
+                        {
                             String title = habitTitle.getText().toString();
                             String reason = habitReason.getText().toString();
 
@@ -269,10 +305,18 @@ public class HabitFragment extends DialogFragment {
                             weekdays.add(friday.isChecked());
                             weekdays.add(saturday.isChecked());
 
-                            // add habit to listener
-                            listener.addHabit(new Habit(title, reason, date, weekdays, isPublic));
-                        }
-                    }).create();
+                            Boolean wantToCloseDialog = false;
+                            if(habitTitle.length()<=0){
+                                habitTitle.setError("Habit Title Required");
+                            }else{
+                                listener.addHabit(new Habit(title, reason, date, weekdays, isPublic));
+                                wantToCloseDialog = true;
+                            }
+                            if(wantToCloseDialog)
+                                dialog.dismiss();
+                            }
+                    });
+                    return dialog;
         }
     }
 }

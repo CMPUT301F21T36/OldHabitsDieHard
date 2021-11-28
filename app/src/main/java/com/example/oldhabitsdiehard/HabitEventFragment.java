@@ -190,9 +190,8 @@ public class HabitEventFragment extends DialogFragment {
                     }).create();
         } else {
             // we are adding a habit event
-            return builder
+            builder
                     .setView(view)
-                    .setTitle("Add Habit")
                     .setNegativeButton("Cancel", null)
                     .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                         /**
@@ -203,24 +202,46 @@ public class HabitEventFragment extends DialogFragment {
                         @RequiresApi(api = Build.VERSION_CODES.O)
                         @Override
                         public void onClick(DialogInterface dialogInterface, int i) {
-                            // get the selected habit name
-                            int pos = habitEventType.getSelectedItemPosition();
-                            Habit habit = habits.get(pos);
-                            String habitName = habit.getTitle();
 
-                            // get the comment for the habit event
-                            String comment = habitEventComment.getText().toString();
-
-                            // get the date info for the habit event
-                            int day = habitEventDate.getDayOfMonth();
-                            int month = habitEventDate.getMonth();
-                            int year = habitEventDate.getYear();
-                            LocalDate date = LocalDate.of(year, month, day);
-
-                            // add the habit event to the listener
-                            listener.addHabitEvent(new HabitEvent(habitName, comment, date));
                         }
-                    }).create();
+                    });
+
+            AlertDialog dialog = builder.create();
+            dialog.show();
+            //Overriding the handler immediately after show is probably a better approach than OnShowListener as described below
+            dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener() {
+                @RequiresApi(api = Build.VERSION_CODES.O)
+                @Override
+                public void onClick(View v) {
+                    // get the selected habit name
+                    int pos = habitEventType.getSelectedItemPosition();
+                    Habit habit = habits.get(pos);
+                    String habitName = habit.getTitle();
+
+                    // get the comment for the habit event
+                    String comment = habitEventComment.getText().toString();
+
+                    // get the date info for the habit event
+                    int day = habitEventDate.getDayOfMonth();
+                    int month = habitEventDate.getMonth();
+                    int year = habitEventDate.getYear();
+                    LocalDate date = LocalDate.of(year, month, day);
+
+                    // add the habit event to the listener
+                    //listener.addHabitEvent(new HabitEvent(habitName, comment, date));
+
+                    Boolean wantToCloseDialog = false;
+                    if(habitEventComment.length()<=0){
+                        habitEventComment.setError("Habit Event comment required");
+                    }else{
+                        listener.addHabitEvent(new HabitEvent(habitName, comment, date));
+                        wantToCloseDialog = true;
+                    }
+                    if(wantToCloseDialog)
+                        dialog.dismiss();
+                }
+            });
+            return dialog;
         }
     }
 }
