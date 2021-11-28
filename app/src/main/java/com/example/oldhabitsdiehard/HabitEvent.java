@@ -24,13 +24,21 @@
 package com.example.oldhabitsdiehard;
 
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.location.Location;
 import android.os.Build;
+import android.util.Base64;
 
 import androidx.annotation.RequiresApi;
 
+import com.google.android.gms.maps.model.LatLng;
+import com.google.common.primitives.Bytes;
+
+import java.io.ByteArrayOutputStream;
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * This is a class representing a Habit Event.
@@ -40,11 +48,14 @@ import java.time.LocalDate;
 public class HabitEvent implements Serializable {
     private String habit; // the title of the habit this event is for
     private String comment;
-    private Bitmap image; /* NOT IMPLEMENTED */
+    private String image; /* NOT IMPLEMENTED */
     private int day;
     private int month;
     private int year;
-    private Location location; /* NOT IMPLEMENTED */
+    private double lat;
+    private double lon;
+    private boolean hasLocation;
+    //private Location location; /* NOT IMPLEMENTED */
 
     /**
      * Empty constructor for Firestore Compatibility.
@@ -60,10 +71,10 @@ public class HabitEvent implements Serializable {
      * @param location the location where the event occurred
      */
     @RequiresApi(api = Build.VERSION_CODES.O)
-    HabitEvent(String habit, String comment, Bitmap image, LocalDate date, Location location){
+    HabitEvent(String habit, String comment, String image, LocalDate date, LatLng location){
         setHabit(habit);
         setComment(comment);
-        setImageBmap(image);
+        setImage(image);
         setDate(date);
         setLocation(location);
     }
@@ -76,9 +87,9 @@ public class HabitEvent implements Serializable {
      * @param location the location where the event occurred
      */
     @RequiresApi(api = Build.VERSION_CODES.O)
-    HabitEvent(String habit, Bitmap image, LocalDate date, Location location){
+    HabitEvent(String habit, String image, LocalDate date, LatLng location){
         setHabit(habit);
-        setImageBmap(image);
+        setImage(image);
         setDate(date);
         setLocation(location);
     }
@@ -88,15 +99,16 @@ public class HabitEvent implements Serializable {
      * Constructor without image specified
      * @param habit the name of the habit that this event belongs to
      * @param comment a description of the event
-     * @param date the date the event occurred
+     * @param img a string that references the image in Firebase Storage
      * //@param location of the Habit event
      */
     @RequiresApi(api = Build.VERSION_CODES.O)
-    HabitEvent(String habit, String comment, LocalDate date, Location location){
+    HabitEvent(String habit, String comment, LocalDate date, String img){
         setHabit(habit);
         setComment(comment);
         setDate(date);
-        setLocation(location);
+        setImage(img);
+        hasLocation = false;
     }
 
     /**
@@ -106,7 +118,7 @@ public class HabitEvent implements Serializable {
      * @param location the location where the event occurred
      */
     @RequiresApi(api = Build.VERSION_CODES.O)
-    HabitEvent(String habit, LocalDate date, Location location){
+    HabitEvent(String habit, LocalDate date, LatLng location){
         setHabit(habit);
         setDate(date);
         setLocation(location);
@@ -123,6 +135,7 @@ public class HabitEvent implements Serializable {
         setHabit(habit);
         setDate(date);
         setComment(comment);
+        hasLocation = false;
     }
 
     /**
@@ -146,7 +159,9 @@ public class HabitEvent implements Serializable {
      * Getter for image.
      * @return image of the Habit event
      */
-    public Bitmap getImageBmap(){
+    public String getImage(){
+        //byte[] decodedString = Base64.decode(image, Base64.URL_SAFE);
+        //Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
         return image;
     }
 
@@ -179,8 +194,16 @@ public class HabitEvent implements Serializable {
      * Getter for location.
      * @return location of Habit event
      */
-    public Location getLocation() {
-        return location;
+    public double getLat() {
+        return lat;
+    }
+
+    public double getLon() {
+        return lon;
+    }
+
+    public boolean getHasLocation() {
+        return hasLocation;
     }
 
     /**
@@ -205,10 +228,23 @@ public class HabitEvent implements Serializable {
     /**
      * **NOT IMPLEMENTED**
      * Setter for image.
-     * @param image for Habit event
+     * @param bm for Habit event
      */
-    public void setImageBmap(Bitmap image){
-        this.image = image;
+/*    public void setImageBmap(Bitmap bm){
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        bm.compress(Bitmap.CompressFormat.JPEG, 1, baos);
+        byte[] data = baos.toByteArray();
+        *//*List<Byte> list = new ArrayList<>();
+        for (byte b : data) {
+            list.add(b);
+        }
+        this.image = list;*//*
+        String imageB64 = Base64.encodeToString(data, Base64.URL_SAFE);
+        setImage(imageB64);
+    }*/
+
+    public void setImage(String img) {
+        image = img;
     }
 
     /**
@@ -258,8 +294,14 @@ public class HabitEvent implements Serializable {
      * Setter for location
      * @param location where this habit event occurred
      */
-    public void setLocation(Location location) {
-        this.location = location;
+    public void setLocation(LatLng location) {
+        this.lat = location.latitude;
+        this.lon = location.longitude;
+        hasLocation = true;
+    }
+
+    public void setHasLocation(boolean b) {
+        hasLocation = b;
     }
 
     /**
