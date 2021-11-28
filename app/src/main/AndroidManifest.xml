@@ -39,6 +39,9 @@
         <activity android:name=".CreateAccount"
             android:exported="true"
             android:theme="@style/noAnimTheme"/>
+        <activity android:name=".EditProfileActivity"
+            android:exported="true"
+            android:theme="@style/noAnimTheme"/>
 
     </application>
 

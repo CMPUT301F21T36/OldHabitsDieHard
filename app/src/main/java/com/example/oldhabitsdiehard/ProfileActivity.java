@@ -27,6 +27,9 @@ import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -59,9 +62,24 @@ public class ProfileActivity extends AppCompatActivity {
         user = CurrentUser.get();
         TextView username = findViewById(R.id.profile_username);
         TextView bio = findViewById(R.id.bio_profile);
-        ListView followRequestsView = findViewById(R.id.activity_create_content);
+        TextView followingTitle = findViewById(R.id.following_title);
+        TextView noFollowingTitle = findViewById(R.id.no_following_header);
+        TextView followersCount = findViewById(R.id.profile_followers_count);
+        TextView followingCount = findViewById(R.id.profile_following_count);
+        LinearLayout followerLayout = findViewById(R.id.followers_layout);
+        LinearLayout followingLayout = findViewById(R.id.following_layout);
 
-        HabitAdapter followRequestAdapter = new HabitAdapter(this, user);
+        Button editProfileButton = findViewById(R.id.edit_profile);
+
+        followersCount.setText(String.valueOf(user.getFollowers().size()));
+        followingCount.setText(String.valueOf(user.getFollowing().size()));
+
+        if(user.getFollowRequests().size() > 0 ){
+            followingTitle.setVisibility(View.VISIBLE);
+            noFollowingTitle.setVisibility(View.INVISIBLE);
+        }
+        ListView followRequestsView = findViewById(R.id.follow_request_list);
+        FollowRequestAdapter followRequestAdapter = new FollowRequestAdapter(this, user);
         followRequestsView.setAdapter(followRequestAdapter);
 
         username.setText(CurrentUser.get().getUsername());
@@ -72,6 +90,46 @@ public class ProfileActivity extends AppCompatActivity {
         Intent intentHabits = new Intent(this, HabitListActivity.class);
         Intent intentEvents = new Intent(this, HabitEventListActivity.class);
         Intent intentFollowing = new Intent(this, FollowingActivity.class);
+
+
+        editProfileButton.setOnClickListener(new View.OnClickListener() {
+            /**
+             * Defines action to take when the create button is clicked
+             *
+             * @param view
+             */
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(view.getContext(), EditProfileActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        followerLayout.setOnClickListener(new View.OnClickListener() {
+            /**
+             * Defines action to take when the create button is clicked
+             *
+             * @param view
+             */
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(view.getContext(), FollowingActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        followingLayout.setOnClickListener(new View.OnClickListener() {
+            /**
+             * Defines action to take when the create button is clicked
+             *
+             * @param view
+             */
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(view.getContext(), FollowingActivity.class);
+                startActivity(intent);
+            }
+        });
 
         //initializing navigation
         BottomNavigationView bottomNavigationView = (BottomNavigationView)

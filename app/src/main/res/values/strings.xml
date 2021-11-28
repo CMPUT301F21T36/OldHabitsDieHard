@@ -18,4 +18,10 @@
     <string name="followers">Followers</string>
     <string name="my_habits">My Habits</string>
     <string name="my_habit_events">My Habit Events</string>
+    <string name="confirm">Confirm</string>
+    <string name="delete">Delete</string>
+    <string name="following_u"><u>Following</u></string>
+    <string name="follow_requests"><u>Follow Requests</u></string>
+    <string name="no_follow_requests">No Follow Requests</string>
+
 </resources>

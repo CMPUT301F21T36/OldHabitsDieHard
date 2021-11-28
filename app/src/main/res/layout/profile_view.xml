@@ -54,7 +54,7 @@
                 android:backgroundTint="@color/pink"
                 android:text="Edit Profile"
                 android:textColor="@color/blue"
-                android:textSize="10sp"
+                android:textSize="15sp"
                 android:textStyle="bold"
                 android:theme="@style/MyButtonStyle"
                 android:paddingHorizontal="0dp"
@@ -90,11 +90,14 @@
                 android:gravity="center_horizontal|center_vertical"
                 android:paddingHorizontal="2dp">
                 <LinearLayout
+                    android:id="@+id/followers_layout"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
                     android:padding="5sp"
-                    android:layout_marginRight="10sp" >
+                    android:layout_marginRight="10sp"
+                    android:clickable="true"
+                    android:focusable="true">
                     <TextView
                         android:id="@+id/profile_followers_count"
                         android:layout_width="wrap_content"
@@ -103,6 +106,7 @@
                         android:text="100"
                         android:textSize="15sp"
                         android:textColor="@color/blue"
+                        android:focusable="false"
                         app:layout_constraintStart_toEndOf = "@id/profile_icon"/>
                     <TextView
                         android:id="@+id/profile_followers"
@@ -113,14 +117,18 @@
                         android:textStyle="bold"
                         android:textSize="15sp"
                         android:textColor="@color/blue"
+                        android:focusable="false"
                         app:layout_constraintStart_toEndOf = "@id/profile_icon"/>
                 </LinearLayout>
                 <LinearLayout
+                    android:id="@+id/following_layout"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
                     android:padding="5sp"
-                    android:layout_marginRight="10sp" >
+                    android:layout_marginRight="10sp"
+                    android:clickable="true"
+                    android:focusable="true">
                     <TextView
                         android:id="@+id/profile_following_count"
                         android:layout_width="wrap_content"
@@ -129,6 +137,7 @@
                         android:text="100"
                         android:textSize="15sp"
                         android:textColor="@color/blue"
+                        android:focusable="false"
                         app:layout_constraintStart_toEndOf = "@id/profile_icon"/>
                     <TextView
                         android:id="@+id/profile_following"
@@ -139,33 +148,9 @@
                         android:textStyle="bold"
                         android:textSize="15sp"
                         android:textColor="@color/blue"
+                        android:focusable="false"
                         app:layout_constraintStart_toEndOf = "@id/profile_followers"/>
                 </LinearLayout>
-    <!--            <LinearLayout-->
-    <!--                android:layout_width="wrap_content"-->
-    <!--                android:layout_height="wrap_content"-->
-    <!--                android:orientation="vertical"-->
-    <!--                android:layout_marginRight="10sp">-->
-    <!--                <TextView-->
-    <!--                    android:id="@+id/profile_habit_count"-->
-    <!--                    android:layout_width="wrap_content"-->
-    <!--                    android:layout_height="wrap_content"-->
-    <!--                    android:layout_gravity="center"-->
-    <!--                    android:text="100"-->
-    <!--                    android:textSize="15sp"-->
-    <!--                    android:textColor="@color/blue"-->
-    <!--                    app:layout_constraintStart_toEndOf = "@id/profile_icon"/>-->
-    <!--                <TextView-->
-    <!--                    android:id="@+id/profile_habits"-->
-    <!--                    android:layout_width="wrap_content"-->
-    <!--                    android:layout_height="wrap_content"-->
-    <!--                    android:layout_gravity="center"-->
-    <!--                    android:text="@string/habits"-->
-    <!--                    android:textStyle="bold"-->
-    <!--                    android:textSize="15sp"-->
-    <!--                    android:textColor="@color/blue"-->
-    <!--                    app:layout_constraintStart_toEndOf = "@id/profile_following"/>-->
-    <!--            </LinearLayout>-->
             </LinearLayout>
             <TextView
                 android:id="@+id/bio_profile"
@@ -190,36 +175,47 @@
         android:background="@color/pinkLight"
         app:layout_constraintTop_toBottomOf="@id/header"/>
 
-        <LinearLayout
-            android:id="@+id/follow_requests"
+        <TextView
+            android:id="@+id/following_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
+            android:layout_marginLeft="5dp"
+            android:layout_marginTop="10dp"
+            android:text="@string/follow_requests"
+            android:textColor="@color/blue"
+            android:textSize="25sp"
+            android:textStyle="bold"
             android:gravity="center"
+            android:visibility="invisible"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/divider">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Follow Requests"
-                android:textColor="@color/blue"
-                android:textSize="15sp"
-                android:textStyle="bold"/>
-        </LinearLayout>
+            app:layout_constraintTop_toBottomOf="@id/divider"/>
+    <TextView
+        android:id="@+id/no_following_header"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="5dp"
+        android:layout_marginTop="10dp"
+        android:text="@string/no_follow_requests"
+        android:textColor="@color/blue"
+        android:textSize="25sp"
+        android:textStyle="bold|italic"
+        android:gravity="center"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/divider"
+        app:layout_constraintBottom_toTopOf="@id/bottom_navigation"/>
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0sp"
         android:orientation="vertical"
         android:gravity="center"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/follow_requests"
+        app:layout_constraintTop_toBottomOf="@id/following_title"
         app:layout_constraintBottom_toTopOf="@id/bottom_navigation">
 
         <ListView
-            android:id="@+id/activity_create_content"
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
+            android:id="@+id/follow_request_list"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             />
     </LinearLayout>
 

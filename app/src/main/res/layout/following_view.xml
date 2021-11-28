@@ -3,14 +3,34 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-
-    <TextView
+    <SearchView
+        android:id="@+id/search_bar"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="This is Following View"
-        android:textSize="30sp"
+        android:layout_height="wrap_content"
+        android:inputType="text"
+        android:queryHint="Search for a user"
+        android:backgroundTint="@color/blue"
+        android:iconifiedByDefault="false"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+    </SearchView>
+    <TextView
+        android:id="@+id/following_header"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/following_u"
+        android:textSize="20sp"
         android:textColor="@color/blue"
-        />
+        android:textStyle="bold"
+        android:gravity="center"
+
+        android:layout_marginTop="30sp"
+        app:layout_constraintTop_toBottomOf="@id/search_bar"/>
+    <ListView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/following_header"
+        app:layout_constraintStart_toStartOf="parent"/>
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottom_navigation"

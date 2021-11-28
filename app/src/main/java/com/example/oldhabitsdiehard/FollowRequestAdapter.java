@@ -38,14 +38,14 @@ public class FollowRequestAdapter extends ArrayAdapter<FollowRequest> {
         FollowRequest followRequest = user.getFollowRequests().get(position);
 
         // Text
-        TextView requestText = view.findViewById(R.id.request_text);
+        TextView requestText = view.findViewById(R.id.requested_user);
         requestText.setText(followRequest.getFollower());
 
         // Button functionality
-        ImageButton acceptButton = view.findViewById(R.id.accept_button);
-        ImageButton denyButton = view.findViewById(R.id.deny_button);
+        Button confirmButton = view.findViewById(R.id.confirm_request);
+        Button deleteButton = view.findViewById(R.id.delete_request);
 
-        acceptButton.setOnClickListener(new View.OnClickListener() {
+        confirmButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 followRequest.accept();
@@ -54,7 +54,7 @@ public class FollowRequestAdapter extends ArrayAdapter<FollowRequest> {
             }
         });
 
-        denyButton.setOnClickListener(new View.OnClickListener() {
+        deleteButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 followRequest.deny();

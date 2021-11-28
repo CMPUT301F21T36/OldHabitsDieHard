@@ -75,6 +75,9 @@ public class User {
         setBio(bio);
         habits = new ArrayList<Habit>();
         habitEvents = new ArrayList<HabitEvent>();
+        following = new ArrayList<String>();
+        followers = new ArrayList<String>();
+        followRequests = new ArrayList<FollowRequest>();
     }
 
     /**
