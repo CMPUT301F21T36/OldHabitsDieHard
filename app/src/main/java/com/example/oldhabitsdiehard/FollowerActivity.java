@@ -34,6 +34,7 @@ import android.widget.TextView;
 
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
+
 /**
  * **NOT IMPLEMENTED YET**
  * Class that displays the Following page, which shows a list of users that the
@@ -42,7 +43,7 @@ import androidx.appcompat.app.AppCompatActivity;
  *
  * @author Paige Lekach
  */
-public class FollowingActivity extends AppCompatActivity {
+public class FollowerActivity extends AppCompatActivity {
     private User user;
 
     /**
@@ -53,17 +54,16 @@ public class FollowingActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.following_view);
+        setContentView(R.layout.followers_view);
         UserDatabase db = UserDatabase.getInstance();
         user = db.getUser(CurrentUser.get().getUsername());
 
         Button backArrow = findViewById(R.id.back_profile_following);
         TextView followingHeader = findViewById(R.id.following_header);
-        TextView followersHeader = findViewById(R.id.follower_header);
         @SuppressLint("WrongViewCast") TextView followerLayout = findViewById(R.id.followers_layout);
 
-        ListView followingList = findViewById(R.id.following_list_2);
-        ListView followersList = findViewById(R.id.follower_list_2);
+        ListView followingList = findViewById(R.id.following_list_1);
+        ListView followersList = findViewById(R.id.follower_list_1);
 
         FollowingAdapter followingAdapter = new FollowingAdapter(this, user);
         FollowerAdapter followerAdapter = new FollowerAdapter(this, user);
@@ -71,7 +71,7 @@ public class FollowingActivity extends AppCompatActivity {
         followingList.setAdapter(followingAdapter);
         followersList.setAdapter(followerAdapter);
 
-        followersHeader.setOnClickListener(new View.OnClickListener() {
+        followingHeader.setOnClickListener(new View.OnClickListener() {
             /**
              * Define action to take when login button is clicked.
              *
@@ -79,7 +79,7 @@ public class FollowingActivity extends AppCompatActivity {
              */
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(view.getContext(), FollowerActivity.class);
+                Intent intent = new Intent(view.getContext(), FollowingActivity.class);
                 startActivity(intent);
             }
         });

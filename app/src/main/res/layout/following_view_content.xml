@@ -4,33 +4,24 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
     <TextView
-        android:id="@+id/requested_user"
+        android:id="@+id/following_user"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:padding="13dp"
-        android:text="follower_username"
+        android:text="followee_username"
         android:textSize="15sp"
         android:textStyle="bold|italic"
         android:textColor="@color/blue"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintEnd_toStartOf="@id/confirm_request"/>
+        app:layout_constraintEnd_toStartOf="@id/unfollow_button"/>
+
     <Button
-        android:id="@+id/confirm_request"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/confirm"
-        android:textSize="11sp"
-        android:layout_marginRight="5sp"
-        android:textStyle="bold"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintEnd_toStartOf="@id/delete_follower"/>
-    <Button
-        android:id="@+id/delete_follower"
+        android:id="@+id/unfollow_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:backgroundTint="@color/pink"
-        android:text="@string/delete"
+        android:text="Unfollow"
         android:textSize="11sp"
         android:textStyle="bold"
         android:textColor="@color/blue"
