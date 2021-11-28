@@ -70,7 +70,7 @@ public class ProfileActivity extends AppCompatActivity {
         TextView followingCount = findViewById(R.id.profile_following_count);
         LinearLayout followerLayout = findViewById(R.id.followers_layout);
         LinearLayout followingLayout = findViewById(R.id.following_layout);
-
+        Button logoutButton = findViewById(R.id.logout_button);
         Button editProfileButton = findViewById(R.id.edit_profile);
 
         followersCount.setText(String.valueOf(user.getFollowers().size()));
@@ -93,6 +93,18 @@ public class ProfileActivity extends AppCompatActivity {
         Intent intentEvents = new Intent(this, HabitEventListActivity.class);
         Intent intentSearch = new Intent(this, SearchActivity.class);
 
+        logoutButton.setOnClickListener(new View.OnClickListener() {
+            /**
+             * Defines action to take when the create button is clicked
+             *
+             * @param view
+             */
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(view.getContext(), Login.class);
+                startActivity(intent);
+            }
+        });
 
         editProfileButton.setOnClickListener(new View.OnClickListener() {
             /**
