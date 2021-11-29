@@ -309,6 +309,13 @@ public class HabitEventFragment extends DialogFragment implements View.OnClickLi
                                 myEvent.setLocation(eventLoc);
                             }
                             if (img.getDrawable() != null) {
+                                // create reference for existing image if there is one
+                                String refString = myEvent.getImage();
+                                if (refString != null) {
+                                    // delete existing image if there is one
+                                    StorageReference imgRef = storageRef.child(refString);
+                                    imgRef.delete();
+                                }
                                 // get img if there is one
                                 Bitmap imgBitmap = ((BitmapDrawable) img.getDrawable()).getBitmap();
                                 // get reference to storage bucket
@@ -317,8 +324,8 @@ public class HabitEventFragment extends DialogFragment implements View.OnClickLi
                                 UUID uuid = UUID.randomUUID();
                                 String uuidStr = uuid.toString();
                                 // create reference for this image
-                                String refString = user.getUsername() + "/" + uuidStr + ".jpg";
-                                StorageReference imgRef = storageRef.child(refString);
+                                String newString = user.getUsername() + "/" + uuidStr + ".jpg";
+                                StorageReference imgRef = storageRef.child(newString);
                                 // convert image to byte array
                                 ByteArrayOutputStream baos = new ByteArrayOutputStream();
                                 imgBitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
@@ -336,7 +343,7 @@ public class HabitEventFragment extends DialogFragment implements View.OnClickLi
                                     @Override
                                     public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                                         // add the habit event
-                                        myEvent.setImage(refString);
+                                        myEvent.setImage(newString);
                                         //listener.addHabitEvent(new HabitEvent(habitName, comment, date, refString));
                                     }
                                 });
@@ -420,7 +427,6 @@ public class HabitEventFragment extends DialogFragment implements View.OnClickLi
                                     }
                                 });
                             }
-
                             listener.addHabitEvent(newEvent);
                         }
                     }).create();
@@ -556,8 +562,6 @@ public class HabitEventFragment extends DialogFragment implements View.OnClickLi
                 // user denied permission
             }
         }
-
-
         //myGoogleMap.getUiSettings().setScrollGesturesEnabled(false);
         //myGoogleMap.addMarker(new MarkerOptions().position(new LatLng(0,0)).title("Marker"));
     }
