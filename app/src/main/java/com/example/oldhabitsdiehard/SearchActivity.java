@@ -101,12 +101,8 @@ public class SearchActivity extends AppCompatActivity {
                     // the user that was searched for exists
                     // get the searched user's public habits
                     ArrayList<Habit> userPublicHabits = searchUser.getPublicHabits();
-
-                    // create adapter
-                    SearchAdapter searchAdapter = new SearchAdapter(getApplicationContext(), searchUser);
-                    userHabitList.setAdapter(searchAdapter);
-
-                    // listener for habit list
+                    StaticHabitAdapter staticHabitAdapter = new StaticHabitAdapter(getApplicationContext(), userPublicHabits);
+                    userHabitList.setAdapter(staticHabitAdapter);
                     userHabitList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                         /**
                          * Start a FollowingHabitFragment when a habit in the

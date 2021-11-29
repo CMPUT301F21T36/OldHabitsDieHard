@@ -38,8 +38,8 @@ public class FollowingUserActivity extends AppCompatActivity {
         ListView userHabitList = findViewById(R.id.following_habits_list);
         TextView usernameHeader = findViewById(R.id.following_username);
         usernameHeader.setText(username);
-        SearchAdapter searchAdapter = new SearchAdapter(getApplicationContext(), user);
-        userHabitList.setAdapter(searchAdapter);
+        StaticHabitAdapter staticHabitAdapter = new StaticHabitAdapter(getApplicationContext(), user.getPublicHabits());
+        userHabitList.setAdapter(staticHabitAdapter);
         userHabitList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
