@@ -1,10 +1,32 @@
+/*
+ *  HabitEventListActivityTest
+ *
+ *  Version 1.0
+ *
+ *  November 28, 2021
+ *
+ *  Copyright 2021 Rowan Tilroe, Claire Martin, Filippo Ciandy,
+ *  Gurbani Baweja, Chanpreet Singh, and Paige Lekach
+ *
+ *  Licensed under the Apache License, Version 2.0 (the "License");
+ *  you may not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" BASIS,
+ *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  See the License for the specific language governing permissions and
+ *  limitations under the License.
+ */
+
 package com.example.oldhabitsdiehard;
 
 import static org.junit.Assert.assertTrue;
 
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 
 import androidx.test.platform.app.InstrumentationRegistry;
 import androidx.test.rule.ActivityTestRule;
@@ -19,9 +41,10 @@ import org.junit.Test;
 
 /**
  * Test class for HabitEventListActivity. UI tests are written here and robotium test framework is used
- * @author Gurbani Baweja, Filippo Ciandy and Paige Lekach
+ * @author Gurbani Baweja
+ * @author Filippo Ciandy
+ * @author Paige Lekach
  */
-
 public class HabitEventListActivityTest {
     private Solo solo;
 
@@ -34,13 +57,14 @@ public class HabitEventListActivityTest {
 
     }
 
+    /**
+     * Sets current activity to HabitEventListActivity
+     */
     @Rule
     public ActivityTestRule<HabitEventListActivity> rule = new ActivityTestRule<>(HabitEventListActivity.class);
 
-
     /**
      * Runs before all tests and creates solo instance
-     *
      * @throws Exception
      */
     @Before
@@ -84,7 +108,6 @@ public class HabitEventListActivityTest {
         solo.assertCurrentActivity("Wrong Activity", HabitEventListActivity.class);
     }
 
-
     /**
      * Navigates to the ProfileActivity after the profile button on navigation bar is clicked
      */
@@ -120,5 +143,4 @@ public class HabitEventListActivityTest {
         assertTrue("Not clicked", clicked);
         solo.assertCurrentActivity("Wrong Activity", SearchActivity.class);
     }
-
 }
