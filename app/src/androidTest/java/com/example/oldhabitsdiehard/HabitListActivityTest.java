@@ -29,7 +29,7 @@ public class HabitListActivityTest {
      */
     @BeforeClass
     public static void settingUser() {
-        CurrentUser.set(new User("test", "password"));
+        CurrentUser.set(new User("TestMe", "Pass123"));
 
     }
 
@@ -150,6 +150,8 @@ public class HabitListActivityTest {
         // Getting the floating action button to be clicked
         View fab = rule.getActivity().findViewById(R.id.add_habit_button);
         solo.clickOnView(fab);
+
+
         // waitForFragmentByTag returns true if ADD_HABIT fragment showed up
         assertTrue("Fragment not showed",solo.waitForFragmentByTag("ADD_HABIT"));
         // Checking that button was clicked and in correct activity
