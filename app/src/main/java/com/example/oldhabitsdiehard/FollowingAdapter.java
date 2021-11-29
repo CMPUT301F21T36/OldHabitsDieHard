@@ -1,6 +1,9 @@
 package com.example.oldhabitsdiehard;
 
+import static androidx.core.content.ContextCompat.startActivity;
+
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -42,6 +45,15 @@ public class FollowingAdapter extends ArrayAdapter<String> {
 
         Button unFollowingButton = view.findViewById(R.id.unfollow_button);
 
+        followingUser.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                User secondUser = db.getUser(follow);
+                Intent intent = new Intent(view.getContext(), FollowingUserActivity.class);
+                intent.putExtra("username",secondUser.getUsername());
+                startActivity(view.getContext(),intent, null);
+            }
+        });
         unFollowingButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
