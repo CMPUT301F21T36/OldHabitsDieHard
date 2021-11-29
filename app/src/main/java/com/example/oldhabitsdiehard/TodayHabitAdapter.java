@@ -46,8 +46,8 @@ public class TodayHabitAdapter extends ArrayAdapter<Habit> {
 
     /**
      * Constructor
-     * @param context
-     * @param user
+     * @param context the current context
+     * @param user the current user
      */
     @RequiresApi(api = Build.VERSION_CODES.O)
     public TodayHabitAdapter(Context context, User user) {
@@ -56,31 +56,31 @@ public class TodayHabitAdapter extends ArrayAdapter<Habit> {
         this.context = context;
     }
 
-
     /**
-     * Gets a view for the list of today's habits so that it can be displayed
+     * Gets a view for the list of today's habits so that it can be displayed.
      * @param position the position in the list
-     * @param convertView
-     * @param parent
+     * @param convertView the selected view
+     * @param parent the parent view, cannot be null
      * @return the view for the list of today's habits
      */
     @RequiresApi(api = Build.VERSION_CODES.O)
     @NonNull
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
+        // get the convertView
         View view = convertView;
-
         if (view == null) {
+            // inflate layout if view was null
             view = LayoutInflater.from(context).inflate(R.layout.habit_list_content, parent, false);
         }
 
+        // set up textView
         TextView habitTitle = view.findViewById(R.id.habit_title);
+        // get the current habit and set the textview to display its title
         Habit habit = user.getTodayHabits().get(position);
-
-        // Habit title
         habitTitle.setText(habit.getTitle());
 
-        // Habit score indicator
+        // show habit score indicator
         int score = habit.followScore();
         if (score == 3) {
             habitTitle.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_score3habit, 0);

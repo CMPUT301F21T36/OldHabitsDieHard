@@ -130,10 +130,12 @@ public class HabitEventListActivity extends AppCompatActivity implements HabitEv
                 findViewById(R.id.bottom_navigation);
         bottomNavigationView.setLabelVisibilityMode(NavigationBarView.LABEL_VISIBILITY_LABELED);
 
+        // listener for navigation buttons
         bottomNavigationView.setOnNavigationItemSelectedListener(
                 new BottomNavigationView.OnNavigationItemSelectedListener() {
                     /**
-                     * Defines action to take when the navigation buttons are pressed
+                     * Switches to a new activity based on which navigation
+                     * button was pressed.
                      * @param item the button that was pressed
                      * @return false if the activity fails to start
                      */
@@ -142,15 +144,19 @@ public class HabitEventListActivity extends AppCompatActivity implements HabitEv
                         //switching between the different actions
                         switch (item.getItemId()) {
                             case R.id.action_today:
+                                // today button was pressed
                                 startActivity(intentToday);
                                 break;
                             case R.id.action_habits:
+                                // habits button was pressed
                                 startActivity(intentHabits);
                                 break;
                             case R.id.action_profile:
+                                // profile button was pressed
                                 startActivity(intentProfile);
                                 break;
                             case R.id.action_search:
+                                // search button was pressed
                                 startActivity(intentSearch);
                                 break;
                         }

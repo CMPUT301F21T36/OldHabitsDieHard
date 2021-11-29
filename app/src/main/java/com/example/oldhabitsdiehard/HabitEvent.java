@@ -1,9 +1,9 @@
 /*
  *  HabitEvent
  *
- *  Version 1.0
+ *  Version 2.0
  *
- *  November 4, 2021
+ *  November 28, 2021
  *
  *  Copyright 2021 Rowan Tilroe, Claire Martin, Filippo Ciandy,
  *  Gurbani Baweja, Chanpreet Singh, and Paige Lekach
@@ -44,18 +44,18 @@ import java.util.List;
  * This is a class representing a Habit Event.
  *
  * @author Filippo Ciandy
+ * @author Claire Martin
  */
 public class HabitEvent implements Serializable {
-    private String habit; // the title of the habit this event is for
+    private String habit; //required
     private String comment;
-    private String image; /* NOT IMPLEMENTED */
+    private String image;
     private int day;
     private int month;
     private int year;
     private double lat;
     private double lon;
     private boolean hasLocation;
-    //private Location location; /* NOT IMPLEMENTED */
 
     /**
      * Empty constructor for Firestore Compatibility.
@@ -155,13 +155,10 @@ public class HabitEvent implements Serializable {
     }
 
     /**
-     * **NOT IMPLEMENTED**
      * Getter for image.
      * @return image of the Habit event
      */
     public String getImage(){
-        //byte[] decodedString = Base64.decode(image, Base64.URL_SAFE);
-        //Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
         return image;
     }
 
@@ -190,18 +187,25 @@ public class HabitEvent implements Serializable {
     }
 
     /**
-     * **NOT IMPLEMENTED**
-     * Getter for location.
-     * @return location of Habit event
+     * Getter for latitude.
+     * @return latitude of Habit event
      */
     public double getLat() {
         return lat;
     }
 
+    /**
+     * Getter for longitude.
+     * @return longitude of Habit event
+     */
     public double getLon() {
         return lon;
     }
 
+    /**
+     * Getter for whether the habit event has a location.
+     * @return true if the habit event has a location, false if not
+     */
     public boolean getHasLocation() {
         return hasLocation;
     }
@@ -226,23 +230,10 @@ public class HabitEvent implements Serializable {
     }
 
     /**
-     * **NOT IMPLEMENTED**
      * Setter for image.
-     * @param bm for Habit event
+     * @param img the reference string used to get the image from firebase
+     *            storage
      */
-/*    public void setImageBmap(Bitmap bm){
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        bm.compress(Bitmap.CompressFormat.JPEG, 1, baos);
-        byte[] data = baos.toByteArray();
-        *//*List<Byte> list = new ArrayList<>();
-        for (byte b : data) {
-            list.add(b);
-        }
-        this.image = list;*//*
-        String imageB64 = Base64.encodeToString(data, Base64.URL_SAFE);
-        setImage(imageB64);
-    }*/
-
     public void setImage(String img) {
         image = img;
     }
@@ -290,7 +281,6 @@ public class HabitEvent implements Serializable {
     }
 
     /**
-     * **NOT IMPLEMENTED**
      * Setter for location
      * @param location where this habit event occurred
      */
@@ -300,6 +290,10 @@ public class HabitEvent implements Serializable {
         hasLocation = true;
     }
 
+    /**
+     * Sets whether this habit event has a location.
+     * @param b true if the habit event has a location, false if not
+     */
     public void setHasLocation(boolean b) {
         hasLocation = b;
     }
@@ -312,5 +306,4 @@ public class HabitEvent implements Serializable {
     public int daysSince(){
         return 0;
     }
-
 }
