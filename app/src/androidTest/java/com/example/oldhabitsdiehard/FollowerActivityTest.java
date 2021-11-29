@@ -3,25 +3,22 @@ package com.example.oldhabitsdiehard;
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.click;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
-import static org.junit.Assert.assertTrue;
-import android.view.Menu;
-import android.view.MenuItem;
 
-import androidx.annotation.ContentView;
 import androidx.test.platform.app.InstrumentationRegistry;
 import androidx.test.rule.ActivityTestRule;
-import org.junit.BeforeClass;
-import com.google.android.material.bottomnavigation.BottomNavigationView;
+
 import com.robotium.solo.Solo;
+
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Rule;
 import org.junit.Test;
 
 /**
- * Test class for FollowingActivity. UI tests are written here and robotium test framework is used
+ * Test class for FollowerActivity. UI tests are written here and robotium test framework is used
  * @author Gurbani Baweja
  */
-public class FollowingActivityTest {
+public class FollowerActivityTest {
     private Solo solo;
 
     /**
@@ -33,8 +30,8 @@ public class FollowingActivityTest {
     }
 
     @Rule
-    public ActivityTestRule<FollowingActivity> rule =
-            new ActivityTestRule<>(FollowingActivity.class);
+    public ActivityTestRule<FollowerActivity> rule =
+            new ActivityTestRule<>(FollowerActivity.class);
 
     /**
      * Runs before all tests and creates solo instance
@@ -46,16 +43,17 @@ public class FollowingActivityTest {
     }
 
     /**
-     * Navigating to the followers option to see the followers
+     * Navigating to the following option to see the following users
      */
     @Test
-    public void checkFollowerClicked(){
-        // Asserts that the current activity is FollowingActivity
-        solo.assertCurrentActivity("Wrong Activity", FollowingActivity.class);
-        // Click on the Followers list option
-        onView(withId(R.id.follower_header)).perform(click());
+    public void checkFollowingClicked(){
+        // Asserts that the current activity is FollowerActivity
+        solo.assertCurrentActivity("Wrong Activity", FollowerActivity.class);
+        // Click on the Following list option
+        onView(withId(R.id.following_header)).perform(click());
         // Navigating back to the Profile page
         onView(withId(R.id.back_profile_following)).perform(click());
         solo.assertCurrentActivity("Wrong Activity", ProfileActivity.class);
     }
 }
+

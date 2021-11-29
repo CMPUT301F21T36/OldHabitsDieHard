@@ -1,6 +1,11 @@
 package com.example.oldhabitsdiehard;
 
+import static androidx.test.espresso.Espresso.onView;
+import static androidx.test.espresso.action.ViewActions.click;
+import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static org.junit.Assert.assertTrue;
+
+import android.app.Activity;
 import android.view.Menu;
 import android.view.MenuItem;
 import androidx.test.platform.app.InstrumentationRegistry;
@@ -14,6 +19,7 @@ import org.junit.Test;
 
 /**
  * Test class for ProfileActivity. UI tests are written here and robotium test framework is used
+ * @author Gurbani Baweja, Filippo Ciandy and Paige Lekach
  */
 public class ProfileActivityTest {
     private Solo solo;
@@ -23,7 +29,7 @@ public class ProfileActivityTest {
      */
     @BeforeClass
     public static void settingUser(){
-        CurrentUser.set(new User("test", "password"));;
+        CurrentUser.set(new User("gurbaniB", "Gurbani18"));;
     }
 
     @Rule
@@ -38,6 +44,8 @@ public class ProfileActivityTest {
     public void setUp() throws Exception{
         solo = new Solo(InstrumentationRegistry.getInstrumentation(),rule.getActivity());
     }
+
+
 
     /**
      * Navigates to the TodayActivity after the today button on navigation bar is clicked
@@ -93,29 +101,12 @@ public class ProfileActivityTest {
         solo.assertCurrentActivity("Wrong Activity", HabitEventListActivity.class);
     }
 
-    /**
-     * Stays on the ProfileActivity after the profile button on navigation bar is clicked
-     */
-    @Test
-    public void checkProfileClicked(){
-        // Asserts that the current activity is ProfileActivity
-        solo.assertCurrentActivity("Wrong Activity", ProfileActivity.class);
-        BottomNavigationView nav = rule.getActivity().findViewById(R.id.bottom_navigation);
-        // Getting the menu and items so profile can be clicked
-        Menu menu = nav.getMenu();
-        MenuItem item = menu.findItem(R.id.action_profile);
-        boolean clicked = menu.performIdentifierAction(item.getItemId(), 0);
-
-        // Checking that button was clicked and in correct activity
-        assertTrue("Not clicked", clicked);
-        solo.assertCurrentActivity("Wrong Activity", ProfileActivity.class);
-    }
 
     /**
-     * Navigates to the FollowingActivity after the following button on navigation bar is clicked
+     * Navigates to the SearchActivity after the search icon on navigation bar is clicked
      */
     @Test
-    public void checkFollowingClicked(){
+    public void checkSearchClicked(){
         // Asserts that the current activity is ProfileActivity
         solo.assertCurrentActivity("Wrong Activity", ProfileActivity.class);
         BottomNavigationView nav = rule.getActivity().findViewById(R.id.bottom_navigation);
@@ -126,6 +117,24 @@ public class ProfileActivityTest {
 
         // Checking that button was clicked and in correct activity
         assertTrue("Not clicked", clicked);
-        solo.assertCurrentActivity("Wrong Activity", FollowingActivity.class);
+        solo.assertCurrentActivity("Wrong Activity", SearchActivity.class);
     }
+
+    /**
+     * Clicks the Logout Button and activity switches to the main page of the app i.e., Login
+     */
+    @Test
+    public void logoutCheck() {
+        // Asserts that the current activity is ProfileActivity
+        solo.assertCurrentActivity("Wrong Activity", ProfileActivity.class);
+        // Log Out button clicked
+        onView(withId(R.id.logout_button)).perform(click());
+        //onView(())logout_button
+        //solo.clickOnButton("Log Out");
+        //Switching to the Login page
+        solo.assertCurrentActivity("Wrong Activity", Login.class);
+    }
+
+
+
 }

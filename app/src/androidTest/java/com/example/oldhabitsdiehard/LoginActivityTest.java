@@ -1,6 +1,7 @@
 package com.example.oldhabitsdiehard;
 
 import static androidx.test.espresso.Espresso.onView;
+import static androidx.test.espresso.action.ViewActions.closeSoftKeyboard;
 import static androidx.test.espresso.action.ViewActions.typeText;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static org.junit.Assert.assertEquals;
@@ -13,6 +14,7 @@ import org.junit.Test;
 
 /**
  * Test class for LoginActivity. UI tests are written here and robotium test framework is used
+ * @author Gurbani Baweja
  */
 public class LoginActivityTest {
     private Solo solo;
@@ -33,80 +35,49 @@ public class LoginActivityTest {
     }
 
     /**
-     * Types in username and password and clicks the create button which switches the the TodayActivity
-     * and sets the CurrentUser to passed in values
+     * Simple existing user login case switching to TodayActivity
      */
     @Test
-    public void checkCreateClicked(){
-        // Asserts that the current activity is LoginActivity
+    public void checkLogin() throws InterruptedException {
+        // Asserts that the current activity is Login
         solo.assertCurrentActivity("Wrong Activity", Login.class);
-        // Setting TextEdits to test values
-        onView(withId(R.id.username_box)).perform(typeText("test_login"));
-        onView(withId(R.id.password_box)).perform(typeText("test_login_password"));
-        // clicking button
-        solo.clickOnButton("Create");
-        // Switched activities
-        solo.assertCurrentActivity("Wrong Activity", TodayActivity.class);
-        assertEquals(CurrentUser.get().getUsername(), "test_login");
-        // Deleting the test user
-        db.deleteUser(new User("test_login", "test_login_password"));
-    }
+        db.addUser(new User("GurB","B@aw11111"));
 
-    /**
-     * Types in username and password and clicks the create button but the username already is created
-     * so the Activity is still LoginActivity
-     */
-    @Test
-    public void checkAlreadyCreatedUser(){
-        // Asserts that the current activity is LoginActivity
-        solo.assertCurrentActivity("Wrong Activity", Login.class);
         // Setting TextEdits to test values
-        onView(withId(R.id.username_box)).perform(typeText("test_login"));
-        onView(withId(R.id.password_box)).perform(typeText("test_login_password"));
-        // Adding user to the database
-        db.addUser(new User("test_login", "test_login_password"));
-        // clicking on create button
-        solo.clickOnButton("Create");
-        // Stay on LoginActivity
-        solo.assertCurrentActivity("Wrong Activity", Login.class);
-        db.deleteUser(new User("test_login", "test_login_password"));
-    }
+        onView(withId(R.id.username_login)).perform(typeText("GurB")).perform(closeSoftKeyboard());
+        Thread.sleep(250);  ////Sleeping for sometime
+        onView(withId(R.id.password_login)).perform(typeText("B@aw11111")).perform(closeSoftKeyboard());
+        Thread.sleep(250);
 
-    /**
-     * User is added to database and then the info is passed in and logged in so the Activity switches
-     * to the TodayActivity and the CurrentUser is set to the passed in value
-     */
-    @Test
-    public void checkLoginClicked(){
-        // Asserts that the current activity is LoginActivity
-        solo.assertCurrentActivity("Wrong Activity", Login.class);
-        //Adding user to database
-        db.addUser(new User("test_login", "test_login_password"));
-        // Setting TextEdits to test values
-        onView(withId(R.id.username_box)).perform(typeText("test_login"));
-        onView(withId(R.id.password_box)).perform(typeText("test_login_password"));
-        // Clicking login button
-        solo.clickOnButton("Login");
+        //Clicking the Sign In Button
+        solo.clickOnButton("Sign In");
+
         // Switching to TodayActivity
         solo.assertCurrentActivity("Wrong Activity", TodayActivity.class);
-        assertEquals(CurrentUser.get().getUsername(), "test_login");
-        // Deleting test user
-        db.deleteUser(new User("test_login", "test_login_password"));
+        assertEquals(CurrentUser.get().getUsername(), "GurB");
+        // Deleting the test user
+        db.deleteUser(new User("GurB", "B@aw11111"));
     }
 
     /**
-     * Not created user tries to login so the Activity stays as LoginActivity and doesn't change
+     * Not created user state, stays at Login Page
      */
     @Test
-    public void checkNotCreatedUserLoginClicked(){
+    public void checkNonExisistingUser() throws InterruptedException {
         // Asserts that the current activity is LoginActivity
         solo.assertCurrentActivity("Wrong Activity", Login.class);
         // Setting TextEdits to test values
-        onView(withId(R.id.username_box)).perform(typeText("test_login"));
-        onView(withId(R.id.password_box)).perform(typeText("test_login_password"));
-        // Clicking login button
-        solo.clickOnButton("Login");
-        // Should stay in LoginActivity
+        onView(withId(R.id.username_login)).perform(typeText("TestMe")).perform(closeSoftKeyboard());
+        Thread.sleep(250);   //Sleeping for sometime
+        onView(withId(R.id.password_login)).perform(typeText("Test01")).perform(closeSoftKeyboard());
+        Thread.sleep(250);   //Sleeping for sometime
+        // Clicking on the Sign In button
+        solo.clickOnButton("Sign In");
+
+        // Staying on LoginActivity
         solo.assertCurrentActivity("Wrong Activity", Login.class);
+
     }
+
+
 }
