@@ -19,6 +19,7 @@ import org.junit.Test;
 
 /**
  * Test class for HabitListActivity. UI tests are written here and robotium test framework is used
+ * @author Gurbani Baweja, Filippo Ciandy and Paige Lekach
  */
 
 public class HabitListActivityTest {
@@ -29,7 +30,7 @@ public class HabitListActivityTest {
      */
     @BeforeClass
     public static void settingUser() {
-        CurrentUser.set(new User("TestMe", "Pass123"));
+        CurrentUser.set(new User("gurbaniB", "Gurbani18"));
 
     }
 
@@ -65,23 +66,6 @@ public class HabitListActivityTest {
         solo.assertCurrentActivity("Wrong Activity", HabitListActivity.class);
     }
 
-    /**
-     * Navigates to the HabitListActivity after the habit button on navigation bar is clicked
-     */
-    @Test
-    public void checkHabitClicked(){
-        // Asserts that the current activity is HabitListActivity
-        solo.assertCurrentActivity("Wrong Activity", HabitListActivity.class);
-        BottomNavigationView nav = rule.getActivity().findViewById(R.id.bottom_navigation);
-        // Getting the menu and items so habits can be clicked
-        Menu menu = nav.getMenu();
-        MenuItem item = menu.findItem(R.id.action_habits);
-        boolean clicked = menu.performIdentifierAction(item.getItemId(), 0);
-
-        // Checking that button was clicked and in correct activity
-        assertTrue("Not clicked", clicked);
-        solo.assertCurrentActivity("Wrong Activity", HabitListActivity.class);
-    }
 
     /**
      * Navigates to the HabitEventListActivity after the events button on navigation bar is clicked
@@ -101,6 +85,7 @@ public class HabitListActivityTest {
         solo.assertCurrentActivity("Wrong Activity", HabitListActivity.class);
     }
 
+
     /**
      * Navigates to the ProfileActivity after the profile button on navigation bar is clicked
      */
@@ -119,12 +104,13 @@ public class HabitListActivityTest {
         solo.assertCurrentActivity("Wrong Activity", HabitListActivity.class);
     }
 
+
     /**
-     * Stays on the FollowingActivity after the following button on navigation bar is clicked
+     * Navigates to the SearchActivity after the search icon on navigation bar is clicked
      */
     @Test
-    public void checkFollowingClicked(){
-        // Asserts that the current activity is HabitListActivity
+    public void checkSearchClicked(){
+        // Asserts that the current activity is ProfileActivity
         solo.assertCurrentActivity("Wrong Activity", HabitListActivity.class);
         BottomNavigationView nav = rule.getActivity().findViewById(R.id.bottom_navigation);
         // Getting the menu and items so following can be clicked
@@ -134,27 +120,8 @@ public class HabitListActivityTest {
 
         // Checking that button was clicked and in correct activity
         assertTrue("Not clicked", clicked);
-        solo.assertCurrentActivity("Wrong Activity", HabitListActivity.class);
+        solo.assertCurrentActivity("Wrong Activity", SearchActivity.class);
     }
-    /**
-     * Checks if the floating action button (+) leads to the habit_fragment
-     */
-    @Test
-    public void checkAddFragmentClicked(){
-        // Asserts that the current activity is HabitListActivity
-        solo.assertCurrentActivity("Wrong Activity", HabitListActivity.class);
-        BottomNavigationView nav = rule.getActivity().findViewById(R.id.bottom_navigation);
-        // Getting the menu and items so events can be clicked
-        Menu menu = nav.getMenu();
-        MenuItem item = menu.findItem(R.id.action_habits);
-        // Getting the floating action button to be clicked
-        View fab = rule.getActivity().findViewById(R.id.add_habit_button);
-        solo.clickOnView(fab);
 
 
-        // waitForFragmentByTag returns true if ADD_HABIT fragment showed up
-        assertTrue("Fragment not showed",solo.waitForFragmentByTag("ADD_HABIT"));
-        // Checking that button was clicked and in correct activity
-        solo.assertCurrentActivity("Wrong Activity", HabitListActivity.class);
-    }
 }

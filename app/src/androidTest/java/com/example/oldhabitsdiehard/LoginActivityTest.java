@@ -14,6 +14,7 @@ import org.junit.Test;
 
 /**
  * Test class for LoginActivity. UI tests are written here and robotium test framework is used
+ * @author Gurbani Baweja
  */
 public class LoginActivityTest {
     private Solo solo;
@@ -34,24 +35,24 @@ public class LoginActivityTest {
     }
 
     /**
-     * Simple user login case switching to TodayActivity
+     * Simple existing user login case switching to TodayActivity
      */
     @Test
     public void checkLogin() throws InterruptedException {
         // Asserts that the current activity is Login
         solo.assertCurrentActivity("Wrong Activity", Login.class);
         db.addUser(new User("GurB","B@aw11111"));
+
         // Setting TextEdits to test values
         onView(withId(R.id.username_login)).perform(typeText("GurB")).perform(closeSoftKeyboard());
-        //solo.assertCurrentActivity("Wrong Activity", Login.class);
-        Thread.sleep(250);
+        Thread.sleep(250);  ////Sleeping for sometime
         onView(withId(R.id.password_login)).perform(typeText("B@aw11111")).perform(closeSoftKeyboard());
-        //onView(withId(R.id.bio_create)).perform(typeText("bio!"));
-        // clicking button
         Thread.sleep(250);
 
+        //Clicking the Sign In Button
         solo.clickOnButton("Sign In");
-        // Switched activities
+
+        // Switching to TodayActivity
         solo.assertCurrentActivity("Wrong Activity", TodayActivity.class);
         assertEquals(CurrentUser.get().getUsername(), "GurB");
         // Deleting the test user
@@ -62,19 +63,18 @@ public class LoginActivityTest {
      * Not created user state, stays at Login Page
      */
     @Test
-    public void checkNonExisitingUser() throws InterruptedException {
+    public void checkNonExisistingUser() throws InterruptedException {
         // Asserts that the current activity is LoginActivity
         solo.assertCurrentActivity("Wrong Activity", Login.class);
-        // Navigating to create profile
-        //solo.clickOnButton("Create Profile");
         // Setting TextEdits to test values
         onView(withId(R.id.username_login)).perform(typeText("TestMe")).perform(closeSoftKeyboard());
-        Thread.sleep(250);
+        Thread.sleep(250);   //Sleeping for sometime
         onView(withId(R.id.password_login)).perform(typeText("Test01")).perform(closeSoftKeyboard());
-        // clicking on sign in button
-        Thread.sleep(250);
+        Thread.sleep(250);   //Sleeping for sometime
+        // Clicking on the Sign In button
         solo.clickOnButton("Sign In");
-        // Stay on LoginActivity
+
+        // Staying on LoginActivity
         solo.assertCurrentActivity("Wrong Activity", Login.class);
 
     }

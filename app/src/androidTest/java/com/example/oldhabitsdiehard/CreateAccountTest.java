@@ -17,6 +17,7 @@ import org.junit.Test;
 
 /**
  * Test class for CreateAccountActivity. UI tests are written here and robotium test framework is used
+ * @author Gurbani Baweja
  */
 
 public class CreateAccountTest {
@@ -38,16 +39,10 @@ public class CreateAccountTest {
     }
 
     /**
-     * User creates a profile and then activity which switches the the TodayActivity
-     * and sets the CurrentUser to passed in values
+     * User creates a profile and then activity switches to  the TodayActivity
      */
     @Test
     public void checkCreateClicked() throws InterruptedException {
-        // Asserts that the current activity is CreateAccountActivity
-        //solo.assertCurrentActivity("Wrong Activity", Login.class);
-        // Navigating to create profile
-        //solo.clickOnButton("Create Profile");
-
         solo.assertCurrentActivity("Wrong Activity", CreateAccount.class);
 
         // Setting TextEdits to test values
@@ -55,39 +50,41 @@ public class CreateAccountTest {
         onView(withId(R.id.password_create)).perform(typeText("Alex34")).perform(closeSoftKeyboard());
         onView(withId(R.id.confirm_password)).perform(typeText("Alex34")).perform(closeSoftKeyboard());
         onView(withId(R.id.bio_create)).perform(typeText("bio")).perform(closeSoftKeyboard());
-        // clicking button
+
+        // Sleeping for sometime
         Thread.sleep(250);
+
+        // Clicking the Sign Up Button
         solo.clickOnButton("Sign Up");
+
         // Switched activities
         solo.assertCurrentActivity("Wrong Activity", TodayActivity.class);
         assertEquals(CurrentUser.get().getUsername(), "Alex1");
+
         // Deleting the test user
         db.deleteUser(new User("Alex1", "Alex34"));
     }
 
     /**
      * Types in username and password and clicks the create button but the username already is created
-     * so the Activity is still LoginActivity
+     * so the Activity is still CreateAccountActivity
      */
     @Test
     public void checkAlreadyCreatedUser() throws InterruptedException {
-        // Asserts that the current activity is CreateAccountActivity
-        //solo.assertCurrentActivity("Wrong Activity", Login.class);
-        // Navigating to create profile
-        //solo.clickOnButton("Create Profile");
-
         solo.assertCurrentActivity("Wrong Activity", CreateAccount.class);
 
         // Setting TextEdits to test values
         onView(withId(R.id.username_create)).perform(typeText("GurbaniB")).perform(closeSoftKeyboard());
         onView(withId(R.id.password_create)).perform(typeText("Baweja78")).perform(closeSoftKeyboard());
         onView(withId(R.id.confirm_password)).perform(typeText("Baweja78")).perform(closeSoftKeyboard());
-        //solo.clickOnButton("Enter a short bio");
         onView(withId(R.id.bio_create)).perform(typeText("bio")).perform(closeSoftKeyboard());
-        // clicking button
+
+        // Sleeping for sometime
         Thread.sleep(250);
+        //Clicking the Sign Up Button
         solo.clickOnButton("Sign Up");
-        // Stay on LoginActivity
+
+        // Staying on CreateAccountActivity as user already exists
         solo.assertCurrentActivity("Wrong Activity", CreateAccount.class);
         db.deleteUser(new User("GurbaniB", "Baweja78"));
     }
