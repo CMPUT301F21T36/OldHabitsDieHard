@@ -3,7 +3,7 @@
  *
  *  Version 1.0
  *
- *  November 4, 2021
+ *  November 28, 2021
  *
  *  Copyright 2021 Rowan Tilroe, Claire Martin, Filippo Ciandy,
  *  Gurbani Baweja, Chanpreet Singh, and Paige Lekach
@@ -34,11 +34,10 @@ import android.widget.TextView;
 
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
+
 /**
- * **NOT IMPLEMENTED YET**
  * Class that displays the Following page, which shows a list of users that the
- * current user is following. This is just a placeholder, the following
- * functionality will be implemented in Project Part 4.
+ * current user is following.
  *
  * @author Paige Lekach
  */
@@ -46,39 +45,49 @@ public class FollowingActivity extends AppCompatActivity {
     private User user;
 
     /**
-     * Declares action to take when this activity is started.
+     * Declares action to take when this activity is started. Upon creation, the
+     * activity defines UI elements, instantiates the follower and following
+     * lists, and defines listener methods.
      * @param savedInstanceState
      */
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        // set the following view
         setContentView(R.layout.following_view);
+
+        // get the database and current user
         UserDatabase db = UserDatabase.getInstance();
         user = db.getUser(CurrentUser.get().getUsername());
 
+        // define buttons and textviews
         Button backArrow = findViewById(R.id.back_profile_following);
         TextView followingHeader = findViewById(R.id.following_header);
         TextView followersHeader = findViewById(R.id.follower_header);
         @SuppressLint("WrongViewCast") TextView followerLayout = findViewById(R.id.followers_layout);
 
+        // define follower and following lists
         ListView followingList = findViewById(R.id.following_list_2);
         ListView followersList = findViewById(R.id.follower_list_2);
 
+        // define adapters and set them
         FollowingAdapter followingAdapter = new FollowingAdapter(this, user);
         FollowerAdapter followerAdapter = new FollowerAdapter(this, user);
-
         followingList.setAdapter(followingAdapter);
         followersList.setAdapter(followerAdapter);
 
+        // listener for the followers header
         followersHeader.setOnClickListener(new View.OnClickListener() {
             /**
-             * Define action to take when login button is clicked.
-             *
-             * @param view
+             * If the followers header is clicked, the app switches to the
+             * Follower activity.
+             * @param view the followers header
              */
             @Override
             public void onClick(View view) {
+                // create Follower intent and start it
                 Intent intent = new Intent(view.getContext(), FollowerActivity.class);
                 startActivity(intent);
             }
@@ -86,16 +95,16 @@ public class FollowingActivity extends AppCompatActivity {
 
         backArrow.setOnClickListener(new View.OnClickListener() {
             /**
-             * Define action to take when login button is clicked.
-             *
-             * @param view
+             * If the back arrow is pressed, the app switches back to the
+             * Profile activity.
+             * @param view the back arrow button
              */
             @Override
             public void onClick(View view) {
+                // create Profile intent and start it
                 Intent intent = new Intent(view.getContext(), ProfileActivity.class);
                 startActivity(intent);
             }
         });
-
     }
 }

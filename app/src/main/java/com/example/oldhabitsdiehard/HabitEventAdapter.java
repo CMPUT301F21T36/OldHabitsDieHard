@@ -48,8 +48,8 @@ public class HabitEventAdapter extends ArrayAdapter<HabitEvent> {
 
     /**
      * Constructor
-     * @param context
-     * @param user
+     * @param context the current context
+     * @param user the current user
      */
     public HabitEventAdapter(Context context, User user) {
         super(context, 0, user.getHabitEvents());

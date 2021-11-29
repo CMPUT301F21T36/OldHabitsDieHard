@@ -21,17 +21,14 @@ import java.util.ArrayList;
  *
  * @author Filippo Ciandy
  */
-
-public class HabitAdapter extends RecyclerView.Adapter<HabitAdapter.ViewHolder>{
-
+public class HabitAdapter extends RecyclerView.Adapter<HabitAdapter.ViewHolder> {
     private ArrayList<Habit> HabitList;
     private AdapterView.OnItemClickListener ItemClickListener;
 
-
     /**
      * Constructor
-     * @param HabitList
-     * @param ItemClickListener
+     * @param HabitList the list of habits to display
+     * @param ItemClickListener a listener to see if the habit was clicked
      */
     @RequiresApi(api = Build.VERSION_CODES.O)
     public HabitAdapter(ArrayList<Habit> HabitList,AdapterView.OnItemClickListener ItemClickListener) {
@@ -40,19 +37,20 @@ public class HabitAdapter extends RecyclerView.Adapter<HabitAdapter.ViewHolder>{
     }
 
     /**
-     * Inflates row layout from habit_list_content
-     * @param parent
-     * @param viewType
-     * @return
+     * Inflates row layout from habit_list_content.
+     * @param parent the parent ViewGroup, cannot be null
+     * @param viewType the type of view
+     * @return a ViewHolder for the list of habits
      */
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        // inflate the layout
         LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
         View view = layoutInflater.inflate(R.layout.habit_list_content,parent,false);
 
-        ViewHolder viewholder = new ViewHolder(view);
-        return viewholder;
+        // create the viewholder and return
+        return new ViewHolder(view);
 
     }
 
