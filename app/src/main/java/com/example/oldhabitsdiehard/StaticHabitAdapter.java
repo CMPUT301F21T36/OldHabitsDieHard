@@ -35,24 +35,25 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 
+import java.util.ArrayList;
+
 /**
- * Adapter class for the today view activity.
- *
+ * Adapter class for the habits
+ * Different from HabitAdapter, does not support clicking habits or reordering
  * @author Claire Martin
  */
-public class TodayHabitAdapter extends ArrayAdapter<Habit> {
+public class StaticHabitAdapter extends ArrayAdapter<Habit> {
     private Context context;
-    private User user;
-
+    private ArrayList<Habit> habits;
     /**
      * Constructor
      * @param context the current context
      * @param user the current user
      */
     @RequiresApi(api = Build.VERSION_CODES.O)
-    public TodayHabitAdapter(Context context, User user) {
-        super(context, 0, user.getTodayHabits());
-        this.user = user;
+    public StaticHabitAdapter(Context context, ArrayList<Habit> habits) {
+        super(context, 0, habits);
+        this.habits = habits;
         this.context = context;
     }
 
@@ -76,8 +77,9 @@ public class TodayHabitAdapter extends ArrayAdapter<Habit> {
 
         // set up textView
         TextView habitTitle = view.findViewById(R.id.habit_title);
-        // get the current habit and set the textview to display its title
-        Habit habit = user.getTodayHabits().get(position);
+        Habit habit = habits.get(position);
+
+        // Habit title
         habitTitle.setText(habit.getTitle());
 
         // show habit score indicator

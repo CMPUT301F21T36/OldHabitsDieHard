@@ -61,8 +61,9 @@ public class TodayActivity extends AppCompatActivity {
 
         // set up the today list
         ListView todaysHabitListView = findViewById(R.id.today_habits_list);
-        TodayHabitAdapter todaysHabitAdapter = new TodayHabitAdapter(this, user);
-        todaysHabitListView.setAdapter(todaysHabitAdapter);
+        //retrieving user's today habits
+        StaticHabitAdapter staticHabitAdapter = new StaticHabitAdapter(this, user.getTodayHabits());
+        todaysHabitListView.setAdapter(staticHabitAdapter);
 
         //creating intents for activities
         Intent intentHabits = new Intent(this, HabitListActivity.class);
