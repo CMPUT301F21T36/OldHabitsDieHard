@@ -1,9 +1,9 @@
 /*
  *  User
  *
- *  Version 1.0
+ *  Version 2.0
  *
- *  November 4, 2021
+ *  November 28, 2021
  *
  *  Copyright 2021 Rowan Tilroe, Claire Martin, Filippo Ciandy,
  *  Gurbani Baweja, Chanpreet Singh, and Paige Lekach
@@ -156,7 +156,7 @@ public class User {
      * @throws IllegalArgumentException
      */
     public void setPassword(String password) throws IllegalArgumentException {
-        // make sure lenght is at least 1
+        // make sure length is at least 1
         if (password.length() < 1) {
             throw new IllegalArgumentException();
         }
@@ -174,7 +174,7 @@ public class User {
     }
 
     /**
-     * Method to add a habit to this user's habit list.
+     * Add a habit to this user's habit list.
      * @param habit the habit to be added
      */
     @RequiresApi(api = Build.VERSION_CODES.O)
@@ -183,7 +183,7 @@ public class User {
     }
 
     /**
-     * Method to add a habit event to this user's habit event list
+     * Add a habit event to this user's habit event list
      * @param event the event to be added
      */
     public void addHabitEvent(HabitEvent event) {
@@ -201,41 +201,40 @@ public class User {
         }
     }
 
-
     /**
-     * Method to add a FollowRequest
-     * @param request
+     * Add a FollowRequest
+     * @param request the request to add
      */
     public void addFollowRequest(FollowRequest request){
       this.followRequests.add(request);
     }
 
     /**
-     * Method to remove a FollowRequest
-     * @param request
+     * Remove a FollowRequest
+     * @param request the request to remove
      */
     public void removeFollowRequest(FollowRequest request){
         this.followRequests.remove(request);
     }
 
     /**
-     * Method to remove a Following user
-     * @param s
+     * Remove a Following user
+     * @param s the name of the user to remove
      */
     public void removeFollowing(String s){
         this.following.remove(s);
     }
 
     /**
-     * Method to remove a Follower
-     * @param s
+     * Remove a Follower
+     * @param s the name of the user to remove
      */
     public void removeFollower(String s){
         this.followers.remove(s);
     }
 
     /**
-     * Method to delete a habit from this user.
+     * Delete a habit from this user.
      * @param habit the habit to be deleted
      */
     public void deleteHabit(Habit habit) {
@@ -250,7 +249,7 @@ public class User {
     }
 
     /**
-     * Method to delete a habit event from this user.
+     * Delete a habit event from this user.
      * @param event the event to be deleted
      */
     public void deleteHabitEvent(HabitEvent event) {
@@ -264,11 +263,10 @@ public class User {
         }
         // remove habit event from list
         habitEvents.remove(event);
-
     }
 
     /**
-     * Method to get the habits to be done today from this user's habit list.
+     * Get the habits to be done today from this user's habit list.
      * The list is recalculated every time this method is called so that it is
      * always updated with the correct date. Use this method to create the
      * Today page.
@@ -346,5 +344,4 @@ public class User {
     public ArrayList<Habit> getPublicHabits() {
         return (ArrayList<Habit>) habits.stream().filter(habit -> habit.getPublic()).collect(Collectors.toList());
     }
-
 }

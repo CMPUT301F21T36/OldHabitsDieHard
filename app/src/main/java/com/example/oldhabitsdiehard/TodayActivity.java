@@ -46,19 +46,21 @@ public class TodayActivity extends AppCompatActivity {
     private User user;
 
     /**
-     * Defines action to take when the activity is created.
-     * @param savedInstanceState
+     * Sets up UI elements and listeners when activity is created.
+     * @param savedInstanceState the current state of the app
      */
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
+        // set up the view
         setContentView(R.layout.today_view);
 
-        //instance of currentuser
+        // get the current user
         user = CurrentUser.get();
+
+        // set up the today list
         ListView todaysHabitListView = findViewById(R.id.today_habits_list);
-        //retrieving user's today habits
         TodayHabitAdapter todaysHabitAdapter = new TodayHabitAdapter(this, user);
         todaysHabitListView.setAdapter(todaysHabitAdapter);
 
@@ -73,10 +75,12 @@ public class TodayActivity extends AppCompatActivity {
                 findViewById(R.id.bottom_navigation);
         bottomNavigationView.setLabelVisibilityMode(NavigationBarView.LABEL_VISIBILITY_LABELED);
 
+        // listener for navigation buttons
         bottomNavigationView.setOnNavigationItemSelectedListener(
                 new BottomNavigationView.OnNavigationItemSelectedListener() {
                     /**
-                     * Defines action to take when navigation buttons are pressed.
+                     * Switches to new activities based on which navigation button
+                     * was pressed.
                      * @param item the button that was pressed
                      * @return false if the activity fails to start
                      */
@@ -85,15 +89,19 @@ public class TodayActivity extends AppCompatActivity {
                         //switching between activities
                         switch (item.getItemId()) {
                             case R.id.action_habits:
+                                // habit button was pressed
                                 startActivity(intentHabits);
                                 break;
                             case R.id.action_events:
+                                // events button was pressed
                                 startActivity(intentEvents);
                                 break;
                             case R.id.action_profile:
+                                // profile button was pressed
                                 startActivity(intentProfile);
                                 break;
                             case R.id.action_search:
+                                // search button was pressed
                                 startActivity(intentSearch);
                                 break;
                         }

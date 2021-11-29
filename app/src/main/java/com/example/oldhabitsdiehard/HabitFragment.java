@@ -169,7 +169,6 @@ public class HabitFragment extends DialogFragment {
             // create builder
             return builder
                     .setView(view)
-                    .setTitle("Edit Habit")
                     .setNegativeButton("Delete", new DialogInterface.OnClickListener() {
                         /**
                          * Defines action to take when delete button is pressed
@@ -251,7 +250,6 @@ public class HabitFragment extends DialogFragment {
             // we are adding a habit
             return builder
                     .setView(view)
-                    .setTitle("Add Habit")
                     .setNegativeButton("Cancel", null)
                     .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                         /**

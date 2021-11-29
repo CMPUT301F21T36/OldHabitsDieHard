@@ -1,9 +1,9 @@
 /*
  *  Habit
  *
- *  Version 1.0
+ *  Version 2.0
  *
- *  November 4, 2021
+ *  November 28, 2021
  *
  *  Copyright 2021 Rowan Tilroe, Claire Martin, Filippo Ciandy,
  *  Gurbani Baweja, Chanpreet Singh, and Paige Lekach
@@ -39,10 +39,11 @@ import java.util.List;
  * This class represents a habit.
  *
  * @author Claire Martin
+ * @author Filippo Ciandy
  */
 public class Habit implements Serializable {
     private String title; // required
-    private String reason; // required
+    private String reason;
     private int day;
     private int month;
     private int year;
@@ -327,19 +328,22 @@ public class Habit implements Serializable {
 
     /**
      *  Returns a score representing how well a user is following this habit.
-     *  Score starts at 3 (good) and is subtracted by 1 for every previous habit event missed, down to 0 (bad).
-     *  Only check previous 3 scheduled habit event dates to see if user did the habit.
-     *  @return the score
+     *  Score starts at 3 (good) and is subtracted by 1 for every previous habit
+     *  event missed, down to 0 (bad). Only check previous 3 scheduled habit
+     *  event dates to see if user did the habit.
+     *  @return a score from 0 to 3, with 3 being the best
      */
     @RequiresApi(api = Build.VERSION_CODES.O)
     public int followScore() {
+        // initialize score and count
         int score = 3;
         int countChecker = 3;
 
+        // get the current date and day of week
         LocalDate current = LocalDate.now();
         DayOfWeek currentDOW = current.getDayOfWeek();
+        // get the start date of the habit
         LocalDate start = LocalDate.of(year, month, day);
-
 
         while ((score > 0) && (countChecker > 0) && (current.isAfter(start))) {
             // Habit needs to be done this day
@@ -356,13 +360,13 @@ public class Habit implements Serializable {
                 for (HabitEvent he : habitEvents) {
                     LocalDate habitEventsDate = LocalDate.of(he.getYear(), he.getMonth(), he.getDay());
                     if (current.equals(habitEventsDate)) {
-
+                        // the habit was done on this day
                         flag = true;
                         break;
                     }
-
                 }
                 if (!flag) {
+                    // habit was not done on this day, decrement score
                     score--;
                 }
             }
@@ -373,4 +377,4 @@ public class Habit implements Serializable {
         }
         return score;
     }
-    }
+}

@@ -1,8 +1,31 @@
+/*
+ *  FollowRequest
+ *
+ *  Version 1.0
+ *
+ *  November 28, 2021
+ *
+ *  Copyright 2021 Rowan Tilroe, Claire Martin, Filippo Ciandy,
+ *  Gurbani Baweja, Chanpreet Singh, and Paige Lekach
+ *
+ *  Licensed under the Apache License, Version 2.0 (the "License");
+ *  you may not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" BASIS,
+ *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  See the License for the specific language governing permissions and
+ *  limitations under the License.
+ */
+
 package com.example.oldhabitsdiehard;
 
 /**
- * Class that holds follow requests between users.
- * Follow requests are held by the followee (user that is to be followed).
+ * Class that holds follow requests between users. Follow requests are held by
+ * the followee (user that is to be followed).
  *
  * @author Rowan Tilroe
  */
@@ -15,8 +38,8 @@ public class FollowRequest {
 
     /**
      * Constructor
-     * @param follower
-     * @param followee
+     * @param follower the user that wants to follow
+     * @param followee the user that is to be followed
      */
     public FollowRequest(String follower, String followee) {
         this.follower = follower;
@@ -25,13 +48,13 @@ public class FollowRequest {
 
     /**
      * Followee getter
-     * @return followee (User that is to be followed)
+     * @return the user that is to be followed)
      */
     public String getFollowee() { return followee; }
 
     /**
      * Follower getter
-     * @return follower
+     * @return the user that wants to follow
      */
     public String getFollower() { return follower; }
 
@@ -39,9 +62,12 @@ public class FollowRequest {
      * Remove the follow request
      */
     private void delete() {
+        // get the database
         UserDatabase db = UserDatabase.getInstance();
+        // remove this request from the followee
         User followeeUser = db.getUser(followee);
         followeeUser.getFollowRequests().remove(this);
+        // update database
         db.updateUser(followeeUser);
     }
 

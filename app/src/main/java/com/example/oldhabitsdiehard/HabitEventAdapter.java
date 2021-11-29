@@ -48,8 +48,8 @@ public class HabitEventAdapter extends ArrayAdapter<HabitEvent> {
 
     /**
      * Constructor
-     * @param context
-     * @param user
+     * @param context the current context
+     * @param user the current user
      */
     public HabitEventAdapter(Context context, User user) {
         super(context, 0, user.getHabitEvents());
@@ -67,12 +67,16 @@ public class HabitEventAdapter extends ArrayAdapter<HabitEvent> {
     @NonNull
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
+        // get the view
         View view = convertView;
         if(view == null){
+            // if view was not given, inflate it from the layout
             view = LayoutInflater.from(context).inflate(R.layout.habitevent_content, parent,false);
         }
+        // get the habit event
         HabitEvent habitEvent = user.getHabitEvents().get(position);
 
+        // set the textview to display the event comment
         TextView habitEventTitle = view.findViewById(R.id.habitevent_title);
         habitEventTitle.setText(habitEvent.getComment());
 

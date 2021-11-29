@@ -76,14 +76,17 @@ public class UserDatabase {
     /**
      * Attempt to add user to database
      * @param user User to add
-     * @return True if added, false if not added (i.e. user with username already exists)
+     * @return true if added, false if not added (i.e. user with username already exists)
      */
     public boolean addUser(User user) {
+        // check if user is in the database
         User check = getUser(user.getUsername());
         if (check != null) {
+            // user already exists
             return false;
         }
         else {
+            // add user to database
             userCollection.document(user.getUsername()).set(user);
             return true;
         }
@@ -92,7 +95,7 @@ public class UserDatabase {
     /**
      * Attempt to get User with given username
      * @param username Username of user to find
-     * @return User found (NULL if no user found)
+     * @return user found (NULL if no user found)
      */
     public User getUser(String username) {
         User result = null;
@@ -107,15 +110,18 @@ public class UserDatabase {
 
     /**
      * Updates the user's state in the database
-     * @param user User to update
-     * @return True if update successful, false if unsuccessful (i.e. User does not exist in
+     * @param user user to update
+     * @return true if update successful, false if unsuccessful (i.e. User does not exist in
      */
     public boolean updateUser(User user) {
+        // check if user is in database already
         User check = getUser(user.getUsername());
         if (check == null) {
+            // user does not exist
             return false;
         }
         else {
+            // update user in database
             userCollection.document(user.getUsername()).set(user);
             return true;
         }
@@ -127,11 +133,14 @@ public class UserDatabase {
      * @return true if deletion successful, false if unsuccessful (i.e. User doesn't exist)
      */
     public boolean deleteUser(User user) {
+        // check if user is in database
         User check = getUser(user.getUsername());
-        if (user == null) {
+        if (check == null) {
+            // user does not exist
             return false;
         }
         else {
+            // delete user from database
             userCollection.document(user.getUsername()).delete();
             return true;
         }
@@ -139,20 +148,23 @@ public class UserDatabase {
 
     /**
      * Attempt to verify login information
-     * @param username
-     * @param password
+     * @param username the entered username
+     * @param password the entered password
      * @return NULL if login information fails, User object if login information correct
      */
     public User checkLogin(String username, String password) {
+        // try to get the user from the database
         User user = getUser(username);
         if (user == null) {
+            // user does not exist
             return null;
-        }
-        else {
+        } else {
+            // check password
             if (password.equals(user.getPassword())) {
+                // login successful
                 return user;
-            }
-            else {
+            } else {
+                // login failed
                 return null;
             }
         }

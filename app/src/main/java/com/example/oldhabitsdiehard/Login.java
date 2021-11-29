@@ -1,9 +1,9 @@
 /*
  *  Login
  *
- *  Version 1.0
+ *  Version 2.0
  *
- *  November 4, 2021
+ *  November 28, 2021
  *
  *  Copyright 2021 Rowan Tilroe, Claire Martin, Filippo Ciandy,
  *  Gurbani Baweja, Chanpreet Singh, and Paige Lekach
@@ -36,17 +36,19 @@ import android.widget.Toast;
  * This class defines the Login activity which is called when the app starts.
  *
  * @author Rowan Tilroe
+ * @author Paige Lekach
  */
 public class Login extends AppCompatActivity {
     private User user;
 
     /**
      * Defines action to take when the activity is created.
-     * @param savedInstanceState
+     * @param savedInstanceState the current state of the app
      */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        // set the view
         setContentView(R.layout.activity_login);
 
         // set up boxes for user to enter login info
@@ -61,22 +63,24 @@ public class Login extends AppCompatActivity {
         // define create account button
         createButton.setOnClickListener(new View.OnClickListener() {
             /**
-             * Defines action to take when the create button is clicked
-             * @param view
+             * When the create button is clicked, the create account activity is
+             * started.
+             * @param view the create button
              */
             @Override
             public void onClick(View view) {
-
+                // start the create account activity
                 Intent intent = new Intent(view.getContext(), CreateAccount.class);
                 startActivity(intent);
-
             }
         });
 
         // define login button
         loginButton.setOnClickListener(new View.OnClickListener() {
             /**
-             * Define action to take when login button is clicked.
+             * When the login button is clicked, checks to make sure the login
+             * is valid. If so, starts the today activity. If not, displays an
+             * error message.
              * @param view
              */
             @Override
@@ -85,15 +89,16 @@ public class Login extends AppCompatActivity {
                 String username = usernameBox.getText().toString();
                 String password = passwordBox.getText().toString();
 
-                // empty box check
+                // check for empty boxes
                 if (username.length() < 1 || password.length() < 1) {
+                    // user must enter username and password
                     Toast.makeText(getApplicationContext(), "Incorrect username and/or password.\nPlease try again!", Toast.LENGTH_LONG).show();
                 } else {
                     // check whether the user info is correct
                     user = db.checkLogin(username, password);
 
                     if (user != null) {
-                        // login success
+                        // login success, set the current user
                         CurrentUser.set(user);
                         // start today view
                         Intent intent = new Intent(view.getContext(), TodayActivity.class);

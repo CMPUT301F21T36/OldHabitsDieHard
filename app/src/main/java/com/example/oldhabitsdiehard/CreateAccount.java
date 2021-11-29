@@ -1,3 +1,26 @@
+/*
+ *  CreateAccount
+ *
+ *  Version 1.0
+ *
+ *  November 28, 2021
+ *
+ *  Copyright 2021 Rowan Tilroe, Claire Martin, Filippo Ciandy,
+ *  Gurbani Baweja, Chanpreet Singh, and Paige Lekach
+ *
+ *  Licensed under the Apache License, Version 2.0 (the "License");
+ *  you may not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" BASIS,
+ *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  See the License for the specific language governing permissions and
+ *  limitations under the License.
+ */
+
 package com.example.oldhabitsdiehard;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -9,10 +32,22 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+/**
+ * Class that displays the Create Account activity, which allows the user
+ * to create an account with a unique username, a password and a bio.
+ *
+ * @author Paige Lekach
+ */
 public class CreateAccount extends AppCompatActivity{
     private User user;
     private final Integer minPasswordLength = 2;
 
+    /**
+     * Defines action to take when the Create Account activity is created. Upon
+     * creation, the activity defines the UI elements, instantiates the user
+     * database, and defines the listener methods.
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -32,8 +67,11 @@ public class CreateAccount extends AppCompatActivity{
         // define create account button
         createButton.setOnClickListener(new View.OnClickListener() {
             /**
-             * Defines action to take when the create button is clicked
-             * @param view
+             * When the create profile button is pressed, the username and
+             * password are checked to ensure they are valid. If so, the user is
+             * created and the app switches to the Today activity. If not, the
+             * app displays an error message.
+             * @param view the create account button
              */
             @Override
             public void onClick(View view) {
@@ -45,14 +83,14 @@ public class CreateAccount extends AppCompatActivity{
                 String bio = bioBox.getText().toString();
 
                 if (username.length() < 1) {
-                    //blank username make alert
+                    // blank username make alert
                     Toast.makeText(getApplicationContext(), "Please enter a valid username", Toast.LENGTH_LONG).show();
                 } else if (!password.equals(passwordConfirm)) {
                     // not matching password alert
                     Toast.makeText(getApplicationContext(), "Passwords do not match", Toast.LENGTH_LONG).show();
 
                 } else if (password.length() < minPasswordLength) {
-                    //too short password alert
+                    // too short password alert
                     Toast.makeText(getApplicationContext(), "Your password is too short and invalid", Toast.LENGTH_LONG).show();
 
                 } else {
@@ -70,7 +108,6 @@ public class CreateAccount extends AppCompatActivity{
                         Intent intent = new Intent(view.getContext(), TodayActivity.class);
                         startActivity(intent);
                     } else {
-                        // account already exists
                         // account already exists alert
                         Toast.makeText(getApplicationContext(), "Username already exists\nPlease try a different option!", Toast.LENGTH_LONG).show();
                     }
@@ -78,15 +115,18 @@ public class CreateAccount extends AppCompatActivity{
             }
         });
 
+        // set listener for back button
         backLoginButton.setOnClickListener(new View.OnClickListener() {
             /**
-             * Define action to take when login button is clicked.
-             *
-             * @param view
+             * If the back button is clicked, the app switches back to the Login
+             * activity.
+             * @param view the back button
              */
             @Override
             public void onClick(View view) {
+                // create intent for login page
                 Intent intent = new Intent(view.getContext(), Login.class);
+                // start intent
                 startActivity(intent);
             }
         });
