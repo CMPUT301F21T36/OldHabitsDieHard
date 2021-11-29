@@ -14,6 +14,7 @@ import org.junit.Test;
 
 /**
  * Test class for TodayActivity. UI tests are written here and robotium test framework is used
+ * @author Gurbani Baweja, Filippo Ciandy and Paige Lekach
  */
 public class TodayActivityTest {
     private Solo solo;
@@ -23,7 +24,7 @@ public class TodayActivityTest {
      */
     @BeforeClass
     public static void settingUser(){
-        CurrentUser.set(new User("test", "password"));;
+        CurrentUser.set(new User("gurbaniB", "Gurbani18"));;
     }
 
     @Rule
@@ -112,10 +113,10 @@ public class TodayActivityTest {
     }
 
     /**
-     * Navigate to the FollowingActivity after the following button on navigation bar is clicked
+     * Navigates to the SearchActivity after the search icon on navigation bar is clicked
      */
     @Test
-    public void checkFollowingClicked(){
+    public void checkSearchClicked(){
         // Asserts that the current activity is TodayActivity
         solo.assertCurrentActivity("Wrong Activity", TodayActivity.class);
         BottomNavigationView nav = rule.getActivity().findViewById(R.id.bottom_navigation);
@@ -126,6 +127,6 @@ public class TodayActivityTest {
 
         // Checking that button was clicked and in correct activity
         assertTrue("Not clicked", clicked);
-        solo.assertCurrentActivity("Wrong Activity", FollowingActivity.class);
+        solo.assertCurrentActivity("Wrong Activity", SearchActivity.class);
     }
 }
