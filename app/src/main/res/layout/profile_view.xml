@@ -48,6 +48,24 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <Button
+                android:id="@+id/logout_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="0sp"
+                android:layout_marginRight="10sp"
+                android:backgroundTint="@color/pink"
+                android:paddingHorizontal="0dp"
+                android:paddingVertical="0dp"
+                android:layout_weight="1"
+                android:text="Log Out"
+                android:textColor="@color/blue"
+                android:textSize="15sp"
+                android:textStyle="bold"
+                android:theme="@style/MyButtonStyle"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <Button
                 android:id="@+id/edit_profile"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

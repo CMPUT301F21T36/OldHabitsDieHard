@@ -34,7 +34,7 @@ public class EditProfileActivity extends AppCompatActivity {
         Button saveProfileButton = findViewById(R.id.save_profile_edits);
         Button backProfileButton = findViewById(R.id.back_profile);
         Button savePasswordButton = findViewById(R.id.save_password_edit);
-        Button logoutButton = findViewById(R.id.logout_button);
+
 
 
         usernameBox.setText(user.getUsername());
@@ -68,18 +68,6 @@ public class EditProfileActivity extends AppCompatActivity {
             }
         });
 
-        logoutButton.setOnClickListener(new View.OnClickListener() {
-            /**
-             * Defines action to take when the create button is clicked
-             *
-             * @param view
-             */
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(view.getContext(), Login.class);
-                startActivity(intent);
-            }
-        });
 
         savePasswordButton.setOnClickListener(new View.OnClickListener() {
             /**
