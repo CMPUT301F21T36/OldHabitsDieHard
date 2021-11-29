@@ -1,5 +1,5 @@
 /*
- *  TodayActivity
+ *  TodayActivityTest
  *
  *  Version 1.0
  *
