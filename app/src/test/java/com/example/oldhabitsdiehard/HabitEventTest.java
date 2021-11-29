@@ -5,6 +5,8 @@ package com.example.oldhabitsdiehard;
         import android.location.Location;
         import android.location.LocationManager;
 
+        import com.google.android.gms.maps.model.LatLng;
+
         import org.junit.jupiter.api.Test;
 
         import java.time.LocalDate;
@@ -16,7 +18,7 @@ public class HabitEventTest {
     private HabitEvent TestHabitEvent(){
         String habitTitle = "Exercise";
         LocalDate myDate = LocalDate.of(2021,1,1);
-        HabitEvent habitevent = new HabitEvent(habitTitle, "at the gym",null, myDate,new Location(LocationManager.PASSIVE_PROVIDER));
+        HabitEvent habitevent = new HabitEvent(habitTitle, "at the gym",null, myDate,new LatLng(0, 0));
         return habitevent;
     }
     @Test
