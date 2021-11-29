@@ -1,3 +1,26 @@
+/*
+ *  CreateAccountTest
+ *
+ *  Version 1.0
+ *
+ *  November 28, 2021
+ *
+ *  Copyright 2021 Rowan Tilroe, Claire Martin, Filippo Ciandy,
+ *  Gurbani Baweja, Chanpreet Singh, and Paige Lekach
+ *
+ *  Licensed under the Apache License, Version 2.0 (the "License");
+ *  you may not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" BASIS,
+ *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  See the License for the specific language governing permissions and
+ *  limitations under the License.
+ */
+
 package com.example.oldhabitsdiehard;
 
 import static androidx.test.espresso.Espresso.onView;
@@ -16,7 +39,9 @@ import org.junit.Rule;
 import org.junit.Test;
 
 /**
- * Test class for CreateAccountActivity. UI tests are written here and robotium test framework is used
+ * Test class for CreateAccountActivity. UI tests are written here and robotium
+ * test framework is used.
+ *
  * @author Gurbani Baweja
  */
 
@@ -24,12 +49,15 @@ public class CreateAccountTest {
     private Solo solo;
     private UserDatabase db;
 
+    /**
+     * Sets current activity to CreateAccount.
+     */
     @Rule
     public ActivityTestRule<CreateAccount> rule =
             new ActivityTestRule<>(CreateAccount.class);
 
     /**
-     * Runs before all tests and creates solo instance
+     * Runs before all tests and creates solo instance.
      * @throws Exception
      */
     @Before
@@ -39,7 +67,7 @@ public class CreateAccountTest {
     }
 
     /**
-     * User creates a profile and then activity switches to  the TodayActivity
+     * User creates a profile and then activity switches to the TodayActivity.
      */
     @Test
     public void checkCreateClicked() throws InterruptedException {
@@ -70,7 +98,7 @@ public class CreateAccountTest {
 
     /**
      * Types in username and password and clicks the create button but the username already is created
-     * so the Activity is still CreateAccountActivity
+     * so the Activity is still CreateAccountActivity.
      */
     @Test
     public void checkAlreadyCreatedUser() throws InterruptedException {
@@ -91,6 +119,4 @@ public class CreateAccountTest {
         solo.assertCurrentActivity("Wrong Activity", CreateAccount.class);
         db.deleteUser(new User("GurbaniB", "Baweja78"));
     }
-
-
 }
