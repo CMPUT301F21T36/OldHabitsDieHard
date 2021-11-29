@@ -58,8 +58,8 @@ public class SearchActivity extends AppCompatActivity {
 
                 if(searchUser != null){
                     ArrayList<Habit> userPublicHabits = searchUser.getPublicHabits();
-                    SearchAdapter searchAdapter = new SearchAdapter(getApplicationContext(), searchUser);
-                    userHabitList.setAdapter(searchAdapter);
+                    StaticHabitAdapter staticHabitAdapter = new StaticHabitAdapter(getApplicationContext(), userPublicHabits);
+                    userHabitList.setAdapter(staticHabitAdapter);
                     userHabitList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                         @Override
                         public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
