@@ -52,9 +52,10 @@ public class SearchActivity extends AppCompatActivity {
             public boolean onQueryTextSubmit(String s) {
                 UserDatabase db = UserDatabase.getInstance();
                 searchUser = db.getUser(s);
-                SearchAdapter searchAdapter = new SearchAdapter(getApplicationContext(), searchUser);
-                userHabitList.setAdapter(searchAdapter);
+
                 if(searchUser != null){
+                    SearchAdapter searchAdapter = new SearchAdapter(getApplicationContext(), searchUser);
+                    userHabitList.setAdapter(searchAdapter);
                     if(!searchUser.getUsername().equals(user.getUsername())){
                         searchResultHeader.setVisibility(View.VISIBLE);
                         searchUsername.setVisibility(View.VISIBLE);
