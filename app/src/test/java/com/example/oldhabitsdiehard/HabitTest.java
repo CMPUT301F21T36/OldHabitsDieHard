@@ -4,6 +4,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import com.google.android.gms.maps.model.LatLng;
+
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDate;
@@ -17,7 +19,7 @@ import java.util.List;
  */
 public class HabitTest {
     private Habit mockHabit() {
-        LocalDate myDate = LocalDate.of(2021,1,1);
+        LocalDate myDate = LocalDate.now();
         List<Boolean> myWeekdays = new ArrayList<Boolean>(Arrays.asList(new Boolean[7])); // initialized to false
         Collections.fill(myWeekdays, Boolean.FALSE);
         myWeekdays.set(0, Boolean.TRUE);
@@ -80,9 +82,9 @@ public class HabitTest {
     @Test
     void testGetStartDate() {
         Habit myHabit = mockHabit();
-        assertEquals(2021, myHabit.getYear());
-        assertEquals(1, myHabit.getMonth());
-        assertEquals(1, myHabit.getDay());
+        assertEquals(LocalDate.now().getYear(), myHabit.getYear());
+        assertEquals(LocalDate.now().getMonthValue(), myHabit.getMonth());
+        assertEquals(LocalDate.now().getDayOfMonth(), myHabit.getDay());
     }
 
     @Test
@@ -168,4 +170,25 @@ public class HabitTest {
         assertFalse(myHabit.getPublic());
     }
 
+    @Test
+    void testHabitScore() {
+        List<Boolean> weekdays = new ArrayList<Boolean>(Arrays.asList(new Boolean[7])); // initialized to false
+        Collections.fill(weekdays, Boolean.TRUE);
+        Habit myHabit = new Habit("Habit", "Reason", weekdays); // start date today
+
+        // Score 3
+        assertEquals(3, myHabit.followScore());
+
+        // Score 2
+        myHabit.setStartDate(LocalDate.now().minusDays(1));
+        assertEquals(2, myHabit.followScore());
+
+        // Score 1
+        myHabit.setStartDate(LocalDate.now().minusDays(2));
+        assertEquals(1, myHabit.followScore());
+
+        // Score 0
+        myHabit.setStartDate(LocalDate.now().minusDays(3));
+        assertEquals(0, myHabit.followScore());
+    }
 }

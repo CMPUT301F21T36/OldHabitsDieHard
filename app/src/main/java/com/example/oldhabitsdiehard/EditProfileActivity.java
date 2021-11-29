@@ -67,7 +67,7 @@ public class EditProfileActivity extends AppCompatActivity {
         Button saveProfileButton = findViewById(R.id.save_profile_edits);
         Button backProfileButton = findViewById(R.id.back_profile);
         Button savePasswordButton = findViewById(R.id.save_password_edit);
-        Button logoutButton = findViewById(R.id.logout_button);
+
 
         // set the text of the boxes to the current values
         usernameBox.setText(user.getUsername());
@@ -106,20 +106,6 @@ public class EditProfileActivity extends AppCompatActivity {
             }
         });
 
-        // listener for the logout button
-        logoutButton.setOnClickListener(new View.OnClickListener() {
-            /**
-             * When the logout button is pressed, the app switches to the Login
-             * page.
-             * @param view the logout button
-             */
-            @Override
-            public void onClick(View view) {
-                // create login intent and start it
-                Intent intent = new Intent(view.getContext(), Login.class);
-                startActivity(intent);
-            }
-        });
 
         // listener for the save password button
         savePasswordButton.setOnClickListener(new View.OnClickListener() {

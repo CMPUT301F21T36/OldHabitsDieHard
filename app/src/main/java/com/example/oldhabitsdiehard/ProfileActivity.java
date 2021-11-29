@@ -73,6 +73,7 @@ public class ProfileActivity extends AppCompatActivity {
         TextView followingCount = findViewById(R.id.profile_following_count);
         LinearLayout followerLayout = findViewById(R.id.followers_layout);
         LinearLayout followingLayout = findViewById(R.id.following_layout);
+        Button logoutButton = findViewById(R.id.logout_button);
         Button editProfileButton = findViewById(R.id.edit_profile);
 
         // set the follower and following counts
@@ -101,6 +102,19 @@ public class ProfileActivity extends AppCompatActivity {
         Intent intentSearch = new Intent(this, SearchActivity.class);
 
         // listener for edit profile button
+        logoutButton.setOnClickListener(new View.OnClickListener() {
+            /**
+             * Defines action to take when the create button is clicked
+             *
+             * @param view
+             */
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(view.getContext(), Login.class);
+                startActivity(intent);
+            }
+        });
+
         editProfileButton.setOnClickListener(new View.OnClickListener() {
             /**
              * Start edit profile activity when edit profile button is clicked.

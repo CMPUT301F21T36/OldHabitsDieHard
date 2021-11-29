@@ -28,12 +28,15 @@ import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
+
+import java.util.ArrayList;
 
 /**
  * Class that displays the Following page, which shows a list of users that the
@@ -43,6 +46,7 @@ import androidx.appcompat.app.AppCompatActivity;
  */
 public class FollowingActivity extends AppCompatActivity {
     private User user;
+    private ArrayList<String> followingValList;
 
     /**
      * Declares action to take when this activity is started. Upon creation, the
@@ -61,6 +65,7 @@ public class FollowingActivity extends AppCompatActivity {
         // get the database and current user
         UserDatabase db = UserDatabase.getInstance();
         user = db.getUser(CurrentUser.get().getUsername());
+        followingValList = user.getFollowing();
 
         // define buttons and textviews
         Button backArrow = findViewById(R.id.back_profile_following);
@@ -70,13 +75,8 @@ public class FollowingActivity extends AppCompatActivity {
 
         // define follower and following lists
         ListView followingList = findViewById(R.id.following_list_2);
-        ListView followersList = findViewById(R.id.follower_list_2);
-
-        // define adapters and set them
         FollowingAdapter followingAdapter = new FollowingAdapter(this, user);
-        FollowerAdapter followerAdapter = new FollowerAdapter(this, user);
         followingList.setAdapter(followingAdapter);
-        followersList.setAdapter(followerAdapter);
 
         // listener for the followers header
         followersHeader.setOnClickListener(new View.OnClickListener() {
@@ -106,5 +106,17 @@ public class FollowingActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+        followingList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                final String followingUser = followingValList.get(position);
+
+                Intent intent = new Intent(getApplicationContext(), FollowingUserActivity.class);
+                intent.putExtra("username",followingUser);
+                startActivity(intent);
+            }
+        });
+
     }
 }
