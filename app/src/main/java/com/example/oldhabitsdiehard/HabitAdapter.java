@@ -1,6 +1,7 @@
 package com.example.oldhabitsdiehard;
 
 import android.content.Context;
+import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,6 +11,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
@@ -62,7 +64,26 @@ public class HabitAdapter extends RecyclerView.Adapter<HabitAdapter.ViewHolder>{
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int _) {
         int position = holder.getAdapterPosition();
-        holder.textView.setText(HabitList.get(position).getTitle());
+        Habit habit = HabitList.get(position);
+
+        // Habit title
+        holder.textView.setText(habit.getTitle());
+
+        // Habit score indicator
+        int score = habit.followScore();
+        if (score == 3) {
+            holder.textView.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_score3habit, 0);
+        }
+        else if (score == 2) {
+            holder.textView.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_score2habit, 0);
+        }
+        else if (score == 1) {
+            holder.textView.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_score1habit, 0);
+        }
+        else {
+            holder.textView.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_score0habit, 0);
+        }
+
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
