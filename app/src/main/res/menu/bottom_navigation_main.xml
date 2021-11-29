@@ -14,18 +14,18 @@
         android:title="@string/habits"
         app:showAsAction="withText" />
     <item
+        android:id="@+id/action_profile"
+        android:enabled="true"
+        android:icon="@drawable/ic_profile"
+        android:title="@string/profile"
+        app:showAsAction="withText" />
+    <item
         android:id="@+id/action_events"
         android:enabled="true"
         android:icon="@drawable/ic_event"
         android:title="@string/events"
         app:showAsAction="withText"
     />
-    <item
-        android:id="@+id/action_profile"
-        android:enabled="true"
-        android:icon="@drawable/ic_profile"
-        android:title="@string/profile"
-        app:showAsAction="withText" />
     <item
         android:id="@+id/action_search"
         android:enabled="true"
