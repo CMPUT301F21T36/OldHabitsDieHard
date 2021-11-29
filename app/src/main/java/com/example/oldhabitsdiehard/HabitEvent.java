@@ -23,22 +23,14 @@
 
 package com.example.oldhabitsdiehard;
 
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.location.Location;
 import android.os.Build;
-import android.util.Base64;
 
 import androidx.annotation.RequiresApi;
 
 import com.google.android.gms.maps.model.LatLng;
-import com.google.common.primitives.Bytes;
 
-import java.io.ByteArrayOutputStream;
 import java.io.Serializable;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * This is a class representing a Habit Event.
@@ -298,12 +290,4 @@ public class HabitEvent implements Serializable {
         hasLocation = b;
     }
 
-    /**
-     * **NOT IMPLEMENTED**
-     * Method for days since this Habit event is done.
-     * @return the number of days since the event is completed
-     */
-    public int daysSince(){
-        return 0;
-    }
 }

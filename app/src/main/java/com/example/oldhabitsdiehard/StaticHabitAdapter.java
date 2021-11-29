@@ -1,9 +1,9 @@
 /*
- *  TodayHabitAdapter
+ *  StaticHabitAdapter
  *
  *  Version 1.0
  *
- *  November 4, 2021
+ *  November 28, 2021
  *
  *  Copyright 2021 Rowan Tilroe, Claire Martin, Filippo Ciandy,
  *  Gurbani Baweja, Chanpreet Singh, and Paige Lekach
@@ -38,17 +38,20 @@ import androidx.annotation.RequiresApi;
 import java.util.ArrayList;
 
 /**
- * Adapter class for the habits
- * Different from HabitAdapter, does not support clicking habits or reordering
+ * Adapter class for the habits.
+ * Different from HabitAdapter, does not support clicking habits or reordering.
+ *
  * @author Claire Martin
+ * @author Rowan Tilroe
  */
 public class StaticHabitAdapter extends ArrayAdapter<Habit> {
     private Context context;
     private ArrayList<Habit> habits;
+
     /**
      * Constructor
      * @param context the current context
-     * @param user the current user
+     * @param habits an ArrayList of Habits
      */
     @RequiresApi(api = Build.VERSION_CODES.O)
     public StaticHabitAdapter(Context context, ArrayList<Habit> habits) {
@@ -79,7 +82,7 @@ public class StaticHabitAdapter extends ArrayAdapter<Habit> {
         TextView habitTitle = view.findViewById(R.id.habit_title);
         Habit habit = habits.get(position);
 
-        // Habit title
+        // set the habit title box
         habitTitle.setText(habit.getTitle());
 
         // show habit score indicator
