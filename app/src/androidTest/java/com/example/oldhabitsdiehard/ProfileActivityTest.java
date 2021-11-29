@@ -1,3 +1,26 @@
+/*
+ *  ProfileActivityTest
+ *
+ *  Version 1.0
+ *
+ *  November 28, 2021
+ *
+ *  Copyright 2021 Rowan Tilroe, Claire Martin, Filippo Ciandy,
+ *  Gurbani Baweja, Chanpreet Singh, and Paige Lekach
+ *
+ *  Licensed under the Apache License, Version 2.0 (the "License");
+ *  you may not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" BASIS,
+ *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  See the License for the specific language governing permissions and
+ *  limitations under the License.
+ */
+
 package com.example.oldhabitsdiehard;
 
 import static androidx.test.espresso.Espresso.onView;
@@ -5,7 +28,6 @@ import static androidx.test.espresso.action.ViewActions.click;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static org.junit.Assert.assertTrue;
 
-import android.app.Activity;
 import android.view.Menu;
 import android.view.MenuItem;
 import androidx.test.platform.app.InstrumentationRegistry;
@@ -19,7 +41,9 @@ import org.junit.Test;
 
 /**
  * Test class for ProfileActivity. UI tests are written here and robotium test framework is used
- * @author Gurbani Baweja, Filippo Ciandy and Paige Lekach
+ * @author Gurbani Baweja
+ * @author Filippo Ciandy
+ * @author Paige Lekach
  */
 public class ProfileActivityTest {
     private Solo solo;
@@ -32,6 +56,9 @@ public class ProfileActivityTest {
         CurrentUser.set(new User("gurbaniB", "Gurbani18"));;
     }
 
+    /**
+     * Sets current activity to ProfileActivity
+     */
     @Rule
     public ActivityTestRule<ProfileActivity> rule =
             new ActivityTestRule<>(ProfileActivity.class);
@@ -44,8 +71,6 @@ public class ProfileActivityTest {
     public void setUp() throws Exception{
         solo = new Solo(InstrumentationRegistry.getInstrumentation(),rule.getActivity());
     }
-
-
 
     /**
      * Navigates to the TodayActivity after the today button on navigation bar is clicked
@@ -101,7 +126,6 @@ public class ProfileActivityTest {
         solo.assertCurrentActivity("Wrong Activity", HabitEventListActivity.class);
     }
 
-
     /**
      * Navigates to the SearchActivity after the search icon on navigation bar is clicked
      */
@@ -134,7 +158,4 @@ public class ProfileActivityTest {
         //Switching to the Login page
         solo.assertCurrentActivity("Wrong Activity", Login.class);
     }
-
-
-
 }

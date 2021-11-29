@@ -1,3 +1,26 @@
+/*
+ *  TodayActivity
+ *
+ *  Version 1.0
+ *
+ *  November 28, 2021
+ *
+ *  Copyright 2021 Rowan Tilroe, Claire Martin, Filippo Ciandy,
+ *  Gurbani Baweja, Chanpreet Singh, and Paige Lekach
+ *
+ *  Licensed under the Apache License, Version 2.0 (the "License");
+ *  you may not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" BASIS,
+ *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  See the License for the specific language governing permissions and
+ *  limitations under the License.
+ */
+
 package com.example.oldhabitsdiehard;
 
 import static org.junit.Assert.assertTrue;
@@ -14,7 +37,9 @@ import org.junit.Test;
 
 /**
  * Test class for TodayActivity. UI tests are written here and robotium test framework is used
- * @author Gurbani Baweja, Filippo Ciandy and Paige Lekach
+ * @author Gurbani Baweja
+ * @author Filippo Ciandy
+ * @author Paige Lekach
  */
 public class TodayActivityTest {
     private Solo solo;
@@ -27,6 +52,9 @@ public class TodayActivityTest {
         CurrentUser.set(new User("gurbaniB", "Gurbani18"));;
     }
 
+    /**
+     * Sets current activity to TodayActivity
+     */
     @Rule
     public ActivityTestRule<TodayActivity> rule =
             new ActivityTestRule<>(TodayActivity.class);
