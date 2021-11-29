@@ -23,7 +23,9 @@
 
 package com.example.oldhabitsdiehard;
 
+import static org.junit.Assert.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+
 
 import android.location.Location;
 import android.location.LocationManager;
@@ -50,7 +52,7 @@ public class HabitEventTest {
     private HabitEvent TestHabitEvent(){
         String habitTitle = "Exercise";
         LocalDate myDate = LocalDate.of(2021,1,1);
-        HabitEvent habitevent = new HabitEvent(habitTitle, "at the gym",null, myDate,new LatLng(0, 0));
+        HabitEvent habitevent = new HabitEvent(habitTitle, "at the gym","myImage", myDate,new LatLng(0, 0));
         return habitevent;
     }
 
@@ -66,6 +68,8 @@ public class HabitEventTest {
         assertEquals("Exercise",habitevent.getHabit());
         assertEquals(myDate,LocalDate.of(habitevent.getYear(),habitevent.getMonth(),habitevent.getDay()));
         assertEquals("at the gym",habitevent.getComment());
+        assertEquals("myImage",habitevent.getImage());
+        assertTrue(habitevent.getHasLocation());
     }
 
     /**
@@ -87,6 +91,16 @@ public class HabitEventTest {
         HabitEvent habitevent = TestHabitEvent();
         assertEquals("at the gym", habitevent.getComment());
     }
+    
+    /**
+     * Tests the getImage() method of the HabitEvent class. Gets the comment
+     * and checks to make sure it is correct.
+     */
+    @Test
+    void TestgetImage(){
+        HabitEvent habitevent = TestHabitEvent();
+        assertEquals("myImage", habitevent.getImage());
+    }
 
     /**
      * Tests the getDate() method of the HabitEvent class. Gets the date as a
@@ -97,7 +111,34 @@ public class HabitEventTest {
         HabitEvent habitevent = TestHabitEvent();
         assertEquals(LocalDate.of(2021,1,1), LocalDate.of(habitevent.getYear(),habitevent.getMonth(),habitevent.getDay()));
     }
-
+    
+    /**
+     * Tests the getLat() method of the HabitEvent class.
+     */
+    @Test
+    void TestgetLat(){
+        HabitEvent habitevent = TestHabitEvent();
+        assertEquals(0, habitevent.getLat());
+    }
+    
+    /**
+     * Tests the getLon() method of the HabitEvent class.
+     */
+    @Test
+    void TestgetLon(){
+        HabitEvent habitevent = TestHabitEvent();
+        assertEquals(0, habitevent.getLon());
+    }
+    
+    /**
+     * Tests the getHasLocation() method of the HabitEvent class.
+     */
+    @Test
+    void TestgetHasLocation(){
+        HabitEvent habitevent = TestHabitEvent();
+        assertTrue(habitevent.getHasLocation());
+    }
+    
     /**
      * Tests the setHabit() method of the HabitEvent Class. Changes the habit
      * for our test HabitEvent, and checks to make sure this change is reflected
@@ -124,6 +165,26 @@ public class HabitEventTest {
         // add comment longer than 20 characters
         habitevent.setComment("bro today was such a tiring day!");
         assertEquals("bro today was such a",habitevent.getComment());
+    }
+    
+    /**
+     * Tests the setImage() method of the HabitEvent class.
+     */
+    @Test
+    void TestsetImage(){
+        HabitEvent habitevent = TestHabitEvent();
+        habitevent.setImage("test image");
+        assertEquals("test image",habitevent.getImage());
+    }
+    
+    /**
+     * Tests the getSetLocation() method of the HabitEvent class.
+     */
+    @Test
+    void TestsetLocation(){
+        HabitEvent habitevent = TestHabitEvent();
+        habitevent.setLocation(new LatLng(0,0));
+        assertTrue(habitevent.getHasLocation());
     }
 
     /**
